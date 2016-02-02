@@ -3,4 +3,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_add_card">Add Card</string>
+    <string name="new_module">New Module</string>
+    <string name="dictionary">Dictionary</string>
+    <string name="plus">+</string>
+    <string name="action_delete_category">Delete category</string>
 </resources>
