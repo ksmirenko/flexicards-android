@@ -7,4 +7,8 @@
     <string name="dictionary">Dictionary</string>
     <string name="plus">+</string>
     <string name="action_delete_category">Delete category</string>
+    <string name="hint_category_name">category name</string>
+    <string name="hint_category_lang">language code</string>
+    <string name="hint_card_front">front side</string>
+    <string name="hint_card_back">back side (in category\'s primary lang)</string>
 </resources>

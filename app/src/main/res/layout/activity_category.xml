@@ -26,13 +26,6 @@
             android:gravity="center"
             android:text="@string/dictionary"/>
 
-    <ListView
-            android:id="@+id/modules_listview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/tv_dictionary"
-            android:layout_above="@id/layout_add_module"/>
-
     <RelativeLayout
             android:id="@+id/layout_add_module"
             android:layout_width="match_parent"
@@ -58,6 +51,13 @@
                 android:text="@string/new_module"
                 tools:ignore="RtlHardcoded"/>
     </RelativeLayout>
+
+    <ListView
+            android:id="@+id/modules_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tv_dictionary"
+            android:layout_above="@id/layout_add_module"/>
 
 
 </RelativeLayout>
