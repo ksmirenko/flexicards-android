@@ -1,22 +1,21 @@
 package com.ksmirenko.flexicards.app.datatypes
 
 /**
- * A Category contains cards related to a specific subject or area of study.
+ * A CategoryInfo describes a category and is shown on the category select screen.
  */
 data class Category(
         /**
-         * Category info.
+         * Unique category ID.
          */
-        var info : CategoryInfo,
+        var id : Int,
         /**
-         * Cards which the category contains; the dictionary of the category.
+         * Category name.
          */
-        var cards : Array<Card>,
+        var name : String,
         /**
-         * Modules which exist in the category.
+         * Primary language of the category. Presumably it's the speaking language of the category user
+         * (the language for the user to translate vocabulary into or to learn terms in)
          */
-        var modules : Array<Module>
+        var language : String
 ) {
-    constructor(name : String, primaryLanguage : String, cards : Array<Card>, modules : Array<Module>) :
-    this(CategoryInfo(name, primaryLanguage), cards, modules)
 }

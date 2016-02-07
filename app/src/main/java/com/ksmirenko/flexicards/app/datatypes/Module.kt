@@ -5,12 +5,20 @@ package com.ksmirenko.flexicards.app.datatypes
  */
 data class Module(
         /**
+         * Unique module ID.
+         */
+        var id : Int,
+        /**
+         * ID of the category to which the card belongs.
+         */
+        var categoryId : Int,
+        /**
          * Module name.
          */
         var name : String,
         /**
          * IDs of cards which are packed in the module.
          */
-        var cardIds : Array<Int>
+        var cards : Array<Int>
 ) {
 }

@@ -1,31 +1,30 @@
 package com.ksmirenko.flexicards.app
 
 import com.ksmirenko.flexicards.app.datatypes.Category
-import com.ksmirenko.flexicards.app.datatypes.CategoryInfo
 
 /**
  * Generates stub data for app testing.
  */
 object StubDataGenerator {
-    val categories = arrayOf(
+    /*val categories = arrayOf(
             Category("Английский", "RU", emptyArray(), emptyArray()),
             Category("Испанский", "RU", emptyArray(), emptyArray()),
             Category("Spanish", "EN", emptyArray(), emptyArray())
-    )
+    )*/
     /**
      * Generates and returns STUB categories.
      */
-    fun getStubCategoryInfos() : Array<CategoryInfo> = arrayOf(
-        CategoryInfo("Английский", "RU"),
-        CategoryInfo("Испанский", "RU"),
-        CategoryInfo("Немецкий", "RU"),
-        CategoryInfo("Петуханский", "RU"),
-        CategoryInfo("Spanish", "EN"),
-        CategoryInfo("German", "EN"),
-        CategoryInfo("Russian", "EN"),
-        CategoryInfo("Englisch", "DE"),
-        CategoryInfo("Ingles", "ES"),
+    fun getStubCategories() : List<Category> = listOf(
+        Category(1, "Английский", "RU"),
+        Category(2, "Испанский", "RU"),
+        Category(3, "Немецкий", "RU"),
+        Category(4, "Петуханский", "RU"),
+        Category(5, "Spanish", "EN"),
+        Category(6, "German", "EN"),
+        Category(7, "Russian", "EN"),
+        Category(8, "Englisch", "DE"),
+        Category(9, "Ingles", "ES"),
         //CategoryInfo("Inglés", "ES"),
-        CategoryInfo("Ruso", "ES")
+        Category(10, "Ruso", "ES")
     )
 }

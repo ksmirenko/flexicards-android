@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
+    <!-- TODO: fix layout: bigger fonts, separator after title -->
     <EditText
             android:id="@+id/edittext_category_name"
             android:layout_width="match_parent"

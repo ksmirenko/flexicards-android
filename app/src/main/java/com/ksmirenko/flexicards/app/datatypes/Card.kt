@@ -5,9 +5,13 @@ package com.ksmirenko.flexicards.app.datatypes
  */
 data class Card(
         /**
-         * An ID which must be unique within a category.
+         * Unique card ID.
          */
         var id : Int,
+        /**
+         * ID of the category to which the card belongs.
+         */
+        var categoryId : Int,
         /**
          * Front side content ("word").
          */
