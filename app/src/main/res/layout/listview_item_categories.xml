@@ -4,15 +4,12 @@
               android:layout_height="wrap_content"
               android:orientation="vertical"
               android:paddingBottom="8dp">
-
-    <!-- TODO: improve design -->
-
     <TextView
             android:id="@+id/textview_mainscr_cat_language"
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"/>
+            android:textColor="@color/textSecondary"/>
 
     <TextView
             android:id="@+id/textview_mainscr_cat_name"
@@ -22,7 +19,7 @@
             android:paddingRight="8dp"
             android:paddingTop="8dp"
             android:singleLine="true"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="@color/textPrimary"
             android:textSize="16sp"
             android:textStyle="bold"/>
 

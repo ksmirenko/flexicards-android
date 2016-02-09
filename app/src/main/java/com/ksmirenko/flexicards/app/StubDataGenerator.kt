@@ -18,7 +18,7 @@ object StubDataGenerator {
         Category(1, "Английский", "RU"),
         Category(2, "Испанский", "RU"),
         Category(3, "Немецкий", "RU"),
-        Category(4, "Петуханский", "RU"),
+        Category(4, "Эльфийский", "RU"),
         Category(5, "Spanish", "EN"),
         Category(6, "German", "EN"),
         Category(7, "Russian", "EN"),
