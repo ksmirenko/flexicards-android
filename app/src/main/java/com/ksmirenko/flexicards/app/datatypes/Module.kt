@@ -19,6 +19,6 @@ data class Module(
         /**
          * IDs of cards which are packed in the module.
          */
-        var cards : Array<Int>
+        var cards : List<Int>
 ) {
 }

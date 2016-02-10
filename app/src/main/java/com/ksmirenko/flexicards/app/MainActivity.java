@@ -1,6 +1,8 @@
 package com.ksmirenko.flexicards.app;
 
 import android.content.Context;
+import android.database.CharArrayBuffer;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,8 +12,13 @@ import com.ksmirenko.flexicards.app.datatypes.Category;
 
 import java.util.List;
 
+/**
+ * Main activity - category selection screen.
+ *
+ * @author Kirill Smirenko
+ */
 public class MainActivity extends AppCompatActivity {
-    private CategoriyInfosAdapter adapter;
+    private CategoryArrayAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         // filling the main list view with categoryInfos
         List<Category> categories = StubDataGenerator.INSTANCE.getStubCategories();
         ListView listView = (ListView) findViewById(R.id.categories_listview);
-        CategoriyInfosAdapter adapter = new CategoriyInfosAdapter(this, categories);
+        CategoryArrayAdapter adapter = new CategoryArrayAdapter(this, categories);
         listView.setAdapter(adapter);
     }
 
@@ -47,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private static class CategoriyInfosAdapter extends ArrayAdapter<Category> {
-        public CategoriyInfosAdapter(Context context, List<Category> categories) {
+    private static class CategoryArrayAdapter extends ArrayAdapter<Category> {
+        public CategoryArrayAdapter(Context context, List<Category> categories) {
             super(context, R.layout.listview_item_categories, categories);
         }
 
@@ -73,5 +80,7 @@ public class MainActivity extends AppCompatActivity {
             return convertView;
         }
     }
+
+
 
 }
