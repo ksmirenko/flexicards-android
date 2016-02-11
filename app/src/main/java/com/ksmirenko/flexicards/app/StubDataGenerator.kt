@@ -4,6 +4,8 @@ import com.ksmirenko.flexicards.app.datatypes.Category
 
 /**
  * Generates stub data for app testing.
+ *
+ * @author Kirill Smirenko
  */
 object StubDataGenerator {
     /*val categories = arrayOf(

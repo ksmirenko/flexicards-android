@@ -2,6 +2,8 @@ package com.ksmirenko.flexicards.app
 
 /**
  * Utilities such as data converting.
+ *
+ * @author Kirill Smirenko
  */
 object Utils {
     private val separator = "_,_"

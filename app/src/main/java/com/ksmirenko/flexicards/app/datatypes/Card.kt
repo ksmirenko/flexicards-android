@@ -2,6 +2,8 @@ package com.ksmirenko.flexicards.app.datatypes
 
 /**
  * A Card is a flash card with two sides.
+ *
+ * @author Kirill Smirenko
  */
 data class Card(
         /**

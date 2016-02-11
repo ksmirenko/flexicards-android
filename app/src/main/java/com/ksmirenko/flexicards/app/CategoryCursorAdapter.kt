@@ -19,13 +19,6 @@ class CategoryCursorAdapter(context : Context, c : Cursor) : CursorAdapter(conte
         private val NAME_BUFFER_SIZE = 256
     }
 
-    private data class CategoryListItemViewHolder(
-            var languageView : TextView,
-            var languageBuffer : CharArrayBuffer,
-            var nameView : TextView,
-            var nameBuffer : CharArrayBuffer
-    ) {}
-
     override fun newView(context : Context, cursor : Cursor, parent : ViewGroup) : View {
         val view = LayoutInflater.from(context).inflate(R.layout.listview_item_categories, parent, false)
         view.tag = CategoryListItemViewHolder(
@@ -44,4 +37,10 @@ class CategoryCursorAdapter(context : Context, c : Cursor) : CursorAdapter(conte
         cursor.copyStringToBuffer(DatabaseManager.CategoryQuery.COLUMN_INDEX_NAME, holder.nameBuffer)
     }
 
+    private data class CategoryListItemViewHolder(
+            var languageView : TextView,
+            var languageBuffer : CharArrayBuffer,
+            var nameView : TextView,
+            var nameBuffer : CharArrayBuffer
+    ) {}
 }

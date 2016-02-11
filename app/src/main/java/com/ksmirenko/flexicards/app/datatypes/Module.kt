@@ -2,6 +2,8 @@ package com.ksmirenko.flexicards.app.datatypes
 
 /**
  * A Module is a holistic pack of cards of one category.
+ *
+ * @author Kirill Smirenko
  */
 data class Module(
         /**

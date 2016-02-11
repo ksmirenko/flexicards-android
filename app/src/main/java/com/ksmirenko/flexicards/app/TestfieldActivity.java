@@ -17,6 +17,8 @@ import java.util.List;
 
 /**
  * Testfield for pieces of app layout and logic. Is used for development only and will not be included into release.
+ *
+ * @author Kirill Smirenko
  */
 public class TestfieldActivity extends AppCompatActivity {
 

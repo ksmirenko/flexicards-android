@@ -11,6 +11,8 @@ import com.ksmirenko.flexicards.app.Utils
 
 /**
  * Application's SQL database manager.
+ *
+ * @author Kirill Smirenko
  */
 class DatabaseManager(context : Context) :
         SQLiteOpenHelper(context, DatabaseManager.DATABASE_NAME, null, DatabaseManager.DATABASE_VERSION) {
