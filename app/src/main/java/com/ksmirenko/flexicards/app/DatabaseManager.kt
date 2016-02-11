@@ -29,7 +29,7 @@ class DatabaseManager(context : Context) :
                     "${CardEntry.COLUMN_NAME_FRONT_CONTENT} TEXT, " +
                     "${CardEntry.COLUMN_NAME_BACK_CONTENT} TEXT )";
     private val SQL_CREATE_CATEGORY_TABLE =
-            "CREATE TABLE ${CategoryEntry.TABLE_NAME} (" +
+            "CREATE TABLE IF NOT EXISTS ${CategoryEntry.TABLE_NAME} (" +
                     "${CategoryEntry._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "${CategoryEntry.COLUMN_NAME_NAME} TEXT, " +
                     "${CategoryEntry.COLUMN_NAME_LANGUAGE} TEXT )";
@@ -47,30 +47,42 @@ class DatabaseManager(context : Context) :
 
 
     override fun onCreate(db : SQLiteDatabase) {
-        db.execSQL(SQL_DELETE_CARD_TABLE)
-        db.execSQL(SQL_DELETE_CATEGORY_TABLE)
-        db.execSQL(SQL_DELETE_MODULE_TABLE)
-        db.execSQL(SQL_CREATE_CARD_TABLE)
+        //        db.execSQL(SQL_DELETE_CARD_TABLE)
+        //        db.execSQL(SQL_DELETE_CATEGORY_TABLE)
+        //        db.execSQL(SQL_DELETE_MODULE_TABLE)
+        //        db.execSQL(SQL_CREATE_CARD_TABLE)
         db.execSQL(SQL_CREATE_CATEGORY_TABLE)
-        db.execSQL(SQL_CREATE_MODULE_TABLE)
+        //        db.execSQL(SQL_CREATE_MODULE_TABLE)
     }
 
     override fun onUpgrade(db : SQLiteDatabase, oldVersion : Int, newVersion : Int) {
-        db.execSQL(SQL_DELETE_CARD_TABLE)
+        //        db.execSQL(SQL_DELETE_CARD_TABLE)
         db.execSQL(SQL_DELETE_CATEGORY_TABLE)
-        db.execSQL(SQL_DELETE_MODULE_TABLE)
+        //        db.execSQL(SQL_DELETE_MODULE_TABLE)
         onCreate(db)
+    }
+
+    /**
+     * FIXME: workaround that manually resets DB.
+     */
+    fun reinit() {
+        val db = this.readableDatabase
+        db.execSQL(SQL_DELETE_CATEGORY_TABLE)
+        db.execSQL(SQL_CREATE_CATEGORY_TABLE)
     }
 
     /**
      * Adds a new [category] to database.
      */
     fun createCategory(category : Category) : Boolean {
+        val db = this.writableDatabase
+        // FIXME: another workaround
+        db.execSQL(SQL_CREATE_CATEGORY_TABLE)
+
         val values = ContentValues()
         values.put(CategoryEntry.COLUMN_NAME_NAME, category.name)
         values.put(CategoryEntry.COLUMN_NAME_LANGUAGE, category.language)
 
-        val db = this.writableDatabase
         val createSuccessful = db.insert(CategoryEntry.TABLE_NAME, null, values) > 0
         db.close()
         return createSuccessful
@@ -123,9 +135,9 @@ class DatabaseManager(context : Context) :
      */
     fun clearDatabase() {
         val db = this.writableDatabase
-        db.execSQL(SQL_DELETE_CARD_TABLE)
+        //        db.execSQL(SQL_DELETE_CARD_TABLE)
         db.execSQL(SQL_DELETE_CATEGORY_TABLE)
-        db.execSQL(SQL_DELETE_MODULE_TABLE)
+        //        db.execSQL(SQL_DELETE_MODULE_TABLE)
     }
 
     public class CategoryQuery {

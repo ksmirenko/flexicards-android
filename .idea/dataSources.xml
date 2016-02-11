@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="1066749946">
+    <data-source source="LOCAL" name="Android SQLite FlexiCards Nexus S" uuid="44386a32-4619-494a-95a7-8084d3aafebd">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\Delgado\.IntelliJIdea15\system\android\databases\EMULATOR_Nexus_S_API_23\com.ksmirenko.flexicards.app\internal\FlexiCardsDatabase</jdbc-url>
+      <default-dialect>SQLite</default-dialect>
+    </data-source>
+  </component>
+</project>

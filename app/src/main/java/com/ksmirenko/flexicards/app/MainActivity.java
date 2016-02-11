@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         // initializing DB manager and database
         dbmanager = new DatabaseManager(getBaseContext());
-        dbmanager.getReadableDatabase();
+        dbmanager.reinit();
         // setting up top action bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
         setSupportActionBar(toolbar);
