@@ -8,15 +8,10 @@ import com.ksmirenko.flexicards.app.datatypes.Category
  * @author Kirill Smirenko
  */
 object StubDataGenerator {
-    /*val categories = arrayOf(
-            Category("Английский", "RU", emptyArray(), emptyArray()),
-            Category("Испанский", "RU", emptyArray(), emptyArray()),
-            Category("Spanish", "EN", emptyArray(), emptyArray())
-    )*/
     /**
-     * Generates and returns STUB categories.
+     * Generates and returns stub categories.
      */
-    fun getStubCategories() : List<Category> = listOf(
+    public val stubCategories : List<Category> = listOf(
         Category(1, "Английский", "RU"),
         Category(2, "Испанский", "RU"),
         Category(3, "Немецкий", "RU"),
@@ -29,4 +24,9 @@ object StubDataGenerator {
         //CategoryInfo("Inglés", "ES"),
         Category(10, "Ruso", "ES")
     )
+
+    public fun fillDatabaseWithCategories(dbmanager : DatabaseManager) {
+        dbmanager.clearDatabase()
+        stubCategories.forEach { cat -> dbmanager.createCategory(cat) }
+    }
 }

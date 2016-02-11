@@ -45,7 +45,11 @@ class DatabaseManager(context : Context) :
     private val SQL_DELETE_CATEGORY_TABLE = "DROP TABLE IF EXISTS " + CategoryEntry.TABLE_NAME;
     private val SQL_DELETE_MODULE_TABLE = "DROP TABLE IF EXISTS " + ModuleEntry.TABLE_NAME;
 
+
     override fun onCreate(db : SQLiteDatabase) {
+        db.execSQL(SQL_DELETE_CARD_TABLE)
+        db.execSQL(SQL_DELETE_CATEGORY_TABLE)
+        db.execSQL(SQL_DELETE_MODULE_TABLE)
         db.execSQL(SQL_CREATE_CARD_TABLE)
         db.execSQL(SQL_CREATE_CATEGORY_TABLE)
         db.execSQL(SQL_CREATE_MODULE_TABLE)
@@ -110,7 +114,18 @@ class DatabaseManager(context : Context) :
         val db = readableDatabase
         val sql = "SELECT * FROM ${CategoryEntry.TABLE_NAME} " +
                 "ORDER BY ${CategoryEntry.COLUMN_NAME_LANGUAGE}, ${CategoryEntry.COLUMN_NAME_NAME}"
+        // FIXME: fails here with "no such table: categories"
         return db.rawQuery(sql, null)
+    }
+
+    /**
+     * Clears the database.
+     */
+    fun clearDatabase() {
+        val db = this.writableDatabase
+        db.execSQL(SQL_DELETE_CARD_TABLE)
+        db.execSQL(SQL_DELETE_CATEGORY_TABLE)
+        db.execSQL(SQL_DELETE_MODULE_TABLE)
     }
 
     public class CategoryQuery {
@@ -154,7 +169,7 @@ class DatabaseManager(context : Context) :
         companion object {
             val _ID = BaseColumns._ID
             val _COUNT = BaseColumns._COUNT
-            val TABLE_NAME = "categories"
+            val TABLE_NAME = "modules"
             val COLUMN_NAME_CATEGORY_ID = "moduleCatId"
             val COLUMN_NAME_NAME = "moduleName"
             var COLUMN_NAME_CARDS = "moduleCards" // this one is actually an array, so we'll have to decode it

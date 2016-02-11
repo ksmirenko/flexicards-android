@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.CharArrayBuffer;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.*;
@@ -18,19 +19,24 @@ import java.util.List;
  * @author Kirill Smirenko
  */
 public class MainActivity extends AppCompatActivity {
-    private CategoryArrayAdapter adapter;
+    private DatabaseManager dbmanager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // initializing DB manager and database
+        dbmanager = new DatabaseManager(getBaseContext());
+        dbmanager.getReadableDatabase();
         // setting up top action bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
         setSupportActionBar(toolbar);
+        // calling StubDataGenerator so that he would create stub categories DB
+        StubDataGenerator.INSTANCE.fillDatabaseWithCategories(dbmanager);
         // filling the main list view with categoryInfos
-        List<Category> categories = StubDataGenerator.INSTANCE.getStubCategories();
         ListView listView = (ListView) findViewById(R.id.categories_listview);
-        CategoryArrayAdapter adapter = new CategoryArrayAdapter(this, categories);
+        Cursor cursor = dbmanager.getCategories();
+        CategoryCursorAdapter adapter = new CategoryCursorAdapter(this, cursor);
         listView.setAdapter(adapter);
     }
 
@@ -80,7 +86,4 @@ public class MainActivity extends AppCompatActivity {
             return convertView;
         }
     }
-
-
-
 }
