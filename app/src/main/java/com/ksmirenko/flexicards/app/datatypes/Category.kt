@@ -2,6 +2,7 @@ package com.ksmirenko.flexicards.app.datatypes
 
 /**
  * A CategoryInfo describes a category and is shown on the category select screen.
+ * This is how a Category is stored in the app's SQL database.
  *
  * @author Kirill Smirenko
  */

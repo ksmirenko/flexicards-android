@@ -2,6 +2,7 @@ package com.ksmirenko.flexicards.app.datatypes
 
 /**
  * A Card is a flash card with two sides.
+ * This is how a Card is stored in the app's SQL database.
  *
  * @author Kirill Smirenko
  */

@@ -140,6 +140,9 @@ class DatabaseManager(context : Context) :
         //        db.execSQL(SQL_DELETE_MODULE_TABLE)
     }
 
+    /**
+     * Contract for extracting a Category from SQL row.
+     */
     public class CategoryQuery {
         companion object {
             val COLUMN_INDEX_NAME = 1

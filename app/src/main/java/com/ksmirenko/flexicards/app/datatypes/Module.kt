@@ -2,6 +2,7 @@ package com.ksmirenko.flexicards.app.datatypes
 
 /**
  * A Module is a holistic pack of cards of one category.
+ * This is how a Module is stored in the app's SQL database.
  *
  * @author Kirill Smirenko
  */
