@@ -31,8 +31,9 @@ public class MainActivity extends AppCompatActivity {
         // setting up top action bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
         setSupportActionBar(toolbar);
-        // calling StubDataGenerator so that he would create stub categories DB
+        // calling StubDataGenerator
         StubDataGenerator.INSTANCE.fillDatabaseWithCategories(dbmanager);
+        StubDataGenerator.INSTANCE.fillDatabaseWithStubPacks(dbmanager);
         // filling the main list view with categoryInfos
         ListView listView = (ListView) findViewById(R.id.categories_listview);
         Cursor cursor = dbmanager.getCategories();

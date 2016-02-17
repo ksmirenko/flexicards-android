@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
 import com.ksmirenko.flexicards.app.datatypes.*
 import com.ksmirenko.flexicards.app.Utils
+import java.util.*
 
 /**
  * Application's SQL database manager.
@@ -23,7 +24,7 @@ class DatabaseManager(context : Context) :
 
     // SQLs for creating tables
     private val SQL_CREATE_CARD_TABLE =
-            "CREATE TABLE ${CardEntry.TABLE_NAME} (" +
+            "CREATE TABLE IF NOT EXISTS ${CardEntry.TABLE_NAME} (" +
                     "${CardEntry._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "${CardEntry.COLUMN_NAME_CATEGORY_ID} INTEGER, " +
                     "${CardEntry.COLUMN_NAME_FRONT_CONTENT} TEXT, " +
@@ -34,7 +35,7 @@ class DatabaseManager(context : Context) :
                     "${CategoryEntry.COLUMN_NAME_NAME} TEXT, " +
                     "${CategoryEntry.COLUMN_NAME_LANGUAGE} TEXT )";
     private val SQL_CREATE_MODULE_TABLE =
-            "CREATE TABLE ${ModuleEntry.TABLE_NAME} (" +
+            "CREATE TABLE IF NOT EXISTS ${ModuleEntry.TABLE_NAME} (" +
                     "${ModuleEntry._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "${ModuleEntry.COLUMN_NAME_CATEGORY_ID} INTEGER, " +
                     "${ModuleEntry.COLUMN_NAME_NAME} TEXT, " +
@@ -69,55 +70,26 @@ class DatabaseManager(context : Context) :
         val db = this.readableDatabase
         db.execSQL(SQL_DELETE_CATEGORY_TABLE)
         db.execSQL(SQL_CREATE_CATEGORY_TABLE)
+        db.execSQL(SQL_DELETE_CARD_TABLE)
+        db.execSQL(SQL_CREATE_CARD_TABLE)
+        db.execSQL(SQL_DELETE_MODULE_TABLE)
+        db.execSQL(SQL_CREATE_MODULE_TABLE)
     }
 
     /**
      * Adds a new [category] to database.
      */
-    fun createCategory(category : Category) : Boolean {
-        val db = this.writableDatabase
-        // FIXME: another workaround
-        db.execSQL(SQL_CREATE_CATEGORY_TABLE)
-
-        val values = ContentValues()
-        values.put(CategoryEntry.COLUMN_NAME_NAME, category.name)
-        values.put(CategoryEntry.COLUMN_NAME_LANGUAGE, category.language)
-
-        val createSuccessful = db.insert(CategoryEntry.TABLE_NAME, null, values) > 0
-        db.close()
-        return createSuccessful
-    }
+    fun createCategory(category : Category) = addCategory(category) > 0
 
     /**
      * Adds a new [card] to database.
      */
-    fun createCard(card : Card) : Boolean {
-        val values = ContentValues()
-        values.put(CardEntry.COLUMN_NAME_CATEGORY_ID, card.categoryId)
-        values.put(CardEntry.COLUMN_NAME_FRONT_CONTENT, card.frontContent)
-        values.put(CardEntry.COLUMN_NAME_BACK_CONTENT, card.backContent)
-
-        val db = this.writableDatabase
-        val createSuccessful = db.insert(CardEntry.TABLE_NAME, null, values) > 0
-        db.close()
-        return createSuccessful
-    }
+    fun createCard(card : Card) = addCard(card) > 0
 
     /**
      * Adds a new [module] to database.
      */
-    fun createModule(module : Module) : Boolean {
-        val values = ContentValues()
-        values.put(ModuleEntry.COLUMN_NAME_CATEGORY_ID, module.categoryId)
-        values.put(ModuleEntry.COLUMN_NAME_NAME, module.name)
-        val cardsString = Utils.listToString(module.cards)
-        values.put(ModuleEntry.COLUMN_NAME_CARDS, cardsString)
-
-        val db = this.writableDatabase
-        val createSuccessful = db.insert(ModuleEntry.TABLE_NAME, null, values) > 0
-        db.close()
-        return createSuccessful
-    }
+    fun createModule(module : Module) = addModule(module) > 0
 
     /**
      * Returns a Cursor to all categories (for category selecting).
@@ -131,13 +103,139 @@ class DatabaseManager(context : Context) :
     }
 
     /**
-     * Clears the database.
+     * Inserts [pack] into DB.
+     * @param shouldAppendModule
+     *  If true, new cards will be added to the existing module (if it exists).
+     *  Otherwise the module will be overwritten.
      */
-    fun clearDatabase() {
+    fun insertCardPack(pack : CardPack, shouldAppendModule : Boolean) : Boolean {
+        if (pack.categoryName == null) return false
+        val db = writableDatabase
+        // finding or creating category and memorizing its ID
+        val categoryCursor = db.query(
+                CategoryEntry.TABLE_NAME,
+                arrayOf(CategoryEntry._ID),
+                CategoryEntry.COLUMN_NAME_NAME + "=?",
+                arrayOf(pack.categoryName),
+                null, null, null)
+        var categoryId = 0L
+        if (categoryCursor != null && categoryCursor.moveToFirst())
+            categoryId = categoryCursor.getString(0).toLong()
+        else {
+            if (pack.language == null) return false
+            val values = ContentValues()
+            values.put(CategoryEntry.COLUMN_NAME_NAME, pack.categoryName)
+            values.put(CategoryEntry.COLUMN_NAME_LANGUAGE, pack.language)
+            categoryId = db.insert(CategoryEntry.TABLE_NAME, null, values)
+        }
+        categoryCursor.close()
+        // adding cards to DB and memorizing their IDs
+        val cardIds = addCards(categoryId, pack.cardList)
+        // creating or updating module
+        if (pack.moduleName == null) return true
+        val moduleCursor = db.query(
+                ModuleEntry.TABLE_NAME,
+                arrayOf(ModuleEntry._ID, ModuleEntry.COLUMN_NAME_CARDS),
+                ModuleEntry.COLUMN_NAME_NAME + "=?",
+                arrayOf(pack.moduleName),
+                null, null, null)
+        if (moduleCursor.count > 0) {
+            val moduleId = categoryCursor.getString(0)
+            val newCardIdsString = if (shouldAppendModule) {
+                val existingCardIds = Utils.stringToIntList(categoryCursor.getString(1))
+                Utils.listToString(existingCardIds.union(cardIds).toList())
+            }
+            else {
+                Utils.listToString(cardIds)
+            }
+            val values = ContentValues()
+            values.put(ModuleEntry.COLUMN_NAME_CARDS, newCardIdsString)
+            val res = db.update(ModuleEntry.TABLE_NAME, values, ModuleEntry._ID + "=?", arrayOf(moduleId.toString()))
+            moduleCursor.close()
+            db.close()
+            return res > 0
+        }
+        else {
+            val values = ContentValues()
+            values.put(ModuleEntry.COLUMN_NAME_CATEGORY_ID, categoryId)
+            values.put(ModuleEntry.COLUMN_NAME_NAME, pack.moduleName)
+            values.put(ModuleEntry.COLUMN_NAME_CARDS, Utils.listToString(cardIds))
+            val res = db.insert(ModuleEntry.TABLE_NAME, null, values)
+            moduleCursor.close()
+            db.close()
+            return res > 0
+        }
+    }
+
+    // TODO: should not add if a category/module with the same name exists
+    /**
+     * Adds a new category to DB (private method).
+     * @return Row ID of the new category.
+     */
+    private fun addCategory(category : Category) : Long {
         val db = this.writableDatabase
-        //        db.execSQL(SQL_DELETE_CARD_TABLE)
-        db.execSQL(SQL_DELETE_CATEGORY_TABLE)
-        //        db.execSQL(SQL_DELETE_MODULE_TABLE)
+        // FIXME: another workaround
+        db.execSQL(SQL_CREATE_CATEGORY_TABLE)
+
+        val values = ContentValues()
+        values.put(CategoryEntry.COLUMN_NAME_NAME, category.name)
+        values.put(CategoryEntry.COLUMN_NAME_LANGUAGE, category.language)
+
+        val newCategoryId = db.insert(CategoryEntry.TABLE_NAME, null, values)
+        return newCategoryId
+    }
+
+    /**
+     * Adds a new card to DB (private method).
+     * @return Row ID of the new card.
+     */
+    private fun addCard(card : Card) : Long {
+        val db = this.writableDatabase
+        db.execSQL(SQL_CREATE_CARD_TABLE)
+
+        val values = ContentValues()
+        values.put(CardEntry.COLUMN_NAME_CATEGORY_ID, card.categoryId)
+        values.put(CardEntry.COLUMN_NAME_FRONT_CONTENT, card.frontContent)
+        values.put(CardEntry.COLUMN_NAME_BACK_CONTENT, card.backContent)
+
+        val newCardId = db.insert(CardEntry.TABLE_NAME, null, values)
+        return newCardId
+    }
+
+    /**
+     * Adds several cards to DB (private method).
+     * @return IDs of the new cards.
+     */
+    private fun addCards(categoryId : Long, cardContentList : List<Pair<String, String>>) : List<Long> {
+        val db = this.writableDatabase
+        val newCardIds = ArrayList<Long>()
+        val values = ContentValues()
+        for (item in cardContentList) {
+            values.clear()
+            values.put(CardEntry.COLUMN_NAME_CATEGORY_ID, categoryId)
+            values.put(CardEntry.COLUMN_NAME_FRONT_CONTENT, item.first)
+            values.put(CardEntry.COLUMN_NAME_BACK_CONTENT, item.second)
+            newCardIds.add(db.insert(CardEntry.TABLE_NAME, null, values))
+        }
+        return newCardIds
+    }
+
+    /**
+     * Adds a new module to DB (private method).
+     * @return Row ID of the new module.
+     */
+    private fun addModule(module : Module) : Long {
+        val db = this.writableDatabase
+        db.execSQL(SQL_CREATE_MODULE_TABLE)
+
+        val values = ContentValues()
+        values.put(ModuleEntry.COLUMN_NAME_CATEGORY_ID, module.categoryId)
+        values.put(ModuleEntry.COLUMN_NAME_NAME, module.name)
+        val cardsString = Utils.listToString(module.cards)
+        values.put(ModuleEntry.COLUMN_NAME_CARDS, cardsString)
+
+        val newModuleId = db.insert(ModuleEntry.TABLE_NAME, null, values)
+        return newModuleId
     }
 
     /**

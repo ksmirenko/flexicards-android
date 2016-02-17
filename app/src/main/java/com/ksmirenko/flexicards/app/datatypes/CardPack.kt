@@ -12,6 +12,10 @@ data class CardPack(
          */
         var categoryName : String?,
         /**
+         * Primary language of category; is needed for creating a new category in the DB.
+         */
+        var language : String?,
+        /**
          * Module name (not required).
          */
         var moduleName : String?,
