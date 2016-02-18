@@ -11,16 +11,14 @@ import com.ksmirenko.flexicards.app.Utils
 import java.util.*
 
 /**
- * Application's SQL database manager. TODO: make it a singleton
+ * Application's SQL database manager.
  *
  * @author Kirill Smirenko
  */
-class DatabaseManager(context : Context) :
-        SQLiteOpenHelper(context, DatabaseManager.DATABASE_NAME, null, DatabaseManager.DATABASE_VERSION) {
-    companion object {
-        protected val DATABASE_NAME = "FlexiCardsDatabase"
-        private val DATABASE_VERSION = 1
-    }
+object DatabaseManager :
+        SQLiteOpenHelper(MainActivity.getAppContext(), DatabaseManager.DATABASE_NAME, null, DatabaseManager.DATABASE_VERSION) {
+    private val DATABASE_NAME = "FlexiCardsDatabase"
+    private val DATABASE_VERSION = 1
 
     // SQLs for creating tables
     private val SQL_CREATE_CARD_TABLE =
@@ -48,25 +46,25 @@ class DatabaseManager(context : Context) :
 
 
     override fun onCreate(db : SQLiteDatabase) {
-        //        db.execSQL(SQL_DELETE_CARD_TABLE)
-        //        db.execSQL(SQL_DELETE_CATEGORY_TABLE)
-        //        db.execSQL(SQL_DELETE_MODULE_TABLE)
-        //        db.execSQL(SQL_CREATE_CARD_TABLE)
+        db.execSQL(SQL_DELETE_CARD_TABLE)
+        db.execSQL(SQL_DELETE_CATEGORY_TABLE)
+        db.execSQL(SQL_DELETE_MODULE_TABLE)
+        db.execSQL(SQL_CREATE_CARD_TABLE)
         db.execSQL(SQL_CREATE_CATEGORY_TABLE)
-        //        db.execSQL(SQL_CREATE_MODULE_TABLE)
+        db.execSQL(SQL_CREATE_MODULE_TABLE)
     }
 
     override fun onUpgrade(db : SQLiteDatabase, oldVersion : Int, newVersion : Int) {
-        //        db.execSQL(SQL_DELETE_CARD_TABLE)
+        db.execSQL(SQL_DELETE_CARD_TABLE)
         db.execSQL(SQL_DELETE_CATEGORY_TABLE)
-        //        db.execSQL(SQL_DELETE_MODULE_TABLE)
+        db.execSQL(SQL_DELETE_MODULE_TABLE)
         onCreate(db)
     }
 
     /**
      * Manually resets DB.
      */
-    fun reinit() {
+    fun reset() {
         val db = this.readableDatabase
         db.execSQL(SQL_DELETE_CATEGORY_TABLE)
         db.execSQL(SQL_CREATE_CATEGORY_TABLE)
@@ -102,11 +100,14 @@ class DatabaseManager(context : Context) :
     }
 
     /**
-     * TODO: Returns a Cursor to modules for the specified category.
+     * Returns a Cursor to modules for the specified category.
      */
-    fun getModules(categoryId : Long) /*: Cursor*/ {
-
-    }
+    fun getModules(categoryId : Long) = readableDatabase.query(
+            ModuleEntry.TABLE_NAME,
+            arrayOf(ModuleEntry._ID, ModuleEntry.COLUMN_NAME_NAME),
+            ModuleEntry.COLUMN_NAME_CATEGORY_ID + "=?",
+            arrayOf(categoryId.toString()),
+            null, null, null)
 
     /**
      * Inserts [pack] into DB.
@@ -173,7 +174,7 @@ class DatabaseManager(context : Context) :
         }
     }
 
-    // TODO: should not add if a category/module with the same name exists
+    // FIXME: should not add if a category/module with the same name exists
     /**
      * Adds a new category to DB (private method).
      * @return Row ID of the new category.
@@ -250,6 +251,15 @@ class DatabaseManager(context : Context) :
         companion object {
             val COLUMN_INDEX_NAME = 1
             val COLUMN_INDEX_LANGUAGE = 2
+        }
+    }
+
+    /**
+     * Contract for extracting a Module from SQL row.
+     */
+    public class ModuleQuery {
+        companion object {
+            val COLUMN_INDEX_NAME = 1
         }
     }
 

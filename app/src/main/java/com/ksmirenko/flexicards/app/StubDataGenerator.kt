@@ -57,7 +57,7 @@ object StubDataGenerator {
     )
 
     public fun fillDatabaseWithCategories(dbmanager : DatabaseManager) {
-        dbmanager.reinit()
+        dbmanager.reset()
         stubCategories.forEach { cat -> dbmanager.createCategory(cat) }
     }
 

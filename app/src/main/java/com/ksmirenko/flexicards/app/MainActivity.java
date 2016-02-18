@@ -2,10 +2,8 @@ package com.ksmirenko.flexicards.app;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.CharArrayBuffer;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.*;
@@ -20,33 +18,39 @@ import java.util.List;
  * @author Kirill Smirenko
  */
 public class MainActivity extends AppCompatActivity {
+    private static Context context;
     private DatabaseManager dbmanager;
+
+    public static Context getAppContext() {
+        return MainActivity.context;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MainActivity.context = getApplicationContext();
         setContentView(R.layout.activity_main);
-        // initializing DB manager and database
-        dbmanager = new DatabaseManager(getBaseContext());
-        dbmanager.reinit();
+        // initializing DB manager
+        DatabaseManager.INSTANCE.reset();
         // setting up top action bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
         setSupportActionBar(toolbar);
         // calling StubDataGenerator
-        StubDataGenerator.INSTANCE.fillDatabaseWithCategories(dbmanager);
-        StubDataGenerator.INSTANCE.fillDatabaseWithStubPacks(dbmanager);
+        StubDataGenerator.INSTANCE.fillDatabaseWithCategories(DatabaseManager.INSTANCE);
+        StubDataGenerator.INSTANCE.fillDatabaseWithStubPacks(DatabaseManager.INSTANCE);
         // filling the main list view with categoryInfos
         ListView listView = (ListView) findViewById(R.id.categories_listview);
-        Cursor cursor = dbmanager.getCategories();
-        CategoryCursorAdapter adapter = new CategoryCursorAdapter(this, cursor);
+        Cursor cursor = DatabaseManager.INSTANCE.getCategories();
+        final CategoryCursorAdapter adapter = new CategoryCursorAdapter(this, cursor);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // TODO: launching category detail activity
-                /*Intent detailIntent = new Intent(this, ItemDetailActivity.class);
-                detailIntent.putExtra(ItemDetailFragment.ARG_CATEGORY_ID, id);
-                startActivity(detailIntent);*/
+                // launching category detail activity
+                Intent detailIntent = new Intent(getApplicationContext(), CategoryActivity.class);
+                detailIntent.putExtra(CategoryFragment.ARG_CATEGORY_ID, id);
+                detailIntent.putExtra(CategoryActivity.ARG_CATEGORY_NAME, adapter.getCategoryName(position));
+                startActivity(detailIntent);
             }
         });
     }

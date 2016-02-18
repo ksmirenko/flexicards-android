@@ -83,6 +83,14 @@ class CategoryCursorAdapter(context : Context, cursor : Cursor?) : CursorAdapter
         holder.nameView.setText(holder.nameBuffer.data, 0, holder.nameBuffer.sizeCopied)
     }
 
+    public fun getCategoryName(position : Int) : String {
+        val prevCursorPosition = cursor.position
+        cursor.moveToPosition(position)
+        val catName = cursor.getString(DatabaseManager.CategoryQuery.COLUMN_INDEX_NAME)
+        cursor.moveToPosition(prevCursorPosition)
+        return catName
+    }
+
     private data class CategoryListItemViewHolder(
             var languageView : TextView,
             var languageBuffer : CharArrayBuffer,

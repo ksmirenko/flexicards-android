@@ -16,12 +16,10 @@ public class CategoryFragment extends Fragment {
      * The fragment argument representing the category ID that this fragment represents.
      */
     public static final String ARG_CATEGORY_ID = "cat_id";
-    public static final String ARG_CATEGORY_NAME = "cat_name";
 
     /**
-     * The category this fragment is presenting.
+     * The category's modules.
      */
-    private String categoryName;
     private CursorAdapter modulesAdapter;
 
     /**
@@ -36,11 +34,10 @@ public class CategoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         Bundle arguments = getArguments();
-        if (arguments.containsKey(ARG_CATEGORY_ID) && arguments.containsKey(ARG_CATEGORY_NAME)) {
-            // TODO: loading category name and cursor to the list of modules
-            categoryName = arguments.getString(ARG_CATEGORY_NAME);
-//            Cursor cursor = DatabaseManager.INSTANCE.getModules(arguments.getLong(ARG_CATEGORY_ID));
-//            modulesAdapter = new CategoryCursorAdapter(getContext(), cursor);
+        if (arguments.containsKey(ARG_CATEGORY_ID)) {
+            // loading cursor to the list of modules
+            Cursor cursor = DatabaseManager.INSTANCE.getModules(arguments.getLong(ARG_CATEGORY_ID));
+            modulesAdapter = new ModuleCursorAdapter(getContext(), cursor);
         }
     }
 
@@ -49,7 +46,7 @@ public class CategoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_category, container, false);
 
-        // TODO: fill the list with modules
+        // filling the list with modules
         if (modulesAdapter != null) {
             ((ListView) rootView.findViewById(R.id.listview_modules)).setAdapter(modulesAdapter);
         }

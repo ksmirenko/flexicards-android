@@ -8,6 +8,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 public class CategoryActivity extends AppCompatActivity {
+    /**
+     * The fragment argument representing the category ID that this fragment represents.
+     */
+    public static final String ARG_CATEGORY_NAME = "cat_name";
 
     @SuppressWarnings("ConstantConditions")
     @Override
@@ -16,17 +20,16 @@ public class CategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category);
 
         // setting up top action bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.category_activity_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(getIntent().getStringExtra(CategoryActivity.ARG_CATEGORY_NAME));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // manually adding fragment if the state is null
         if (savedInstanceState == null) {
-            // Create the detail fragment and add it to the activity
-            // using a fragment transaction.
+            // manually adding fragment if the state is null
             Bundle arguments = new Bundle();
-            arguments.putString(CategoryFragment.ARG_CATEGORY_ID,
-                    getIntent().getStringExtra(CategoryFragment.ARG_CATEGORY_ID));
+            arguments.putLong(CategoryFragment.ARG_CATEGORY_ID,
+                    getIntent().getLongExtra(CategoryFragment.ARG_CATEGORY_ID, 0));
             CategoryFragment fragment = new CategoryFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -39,7 +42,8 @@ public class CategoryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
+            //NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
