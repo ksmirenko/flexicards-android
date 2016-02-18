@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView
+            android:id="@+id/tv_dictionary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:padding="10dp"
+            android:background="#FC9"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:text="@string/dictionary"/>
+
+    <RelativeLayout
+            android:id="@+id/layout_add_module"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+        <ImageView
+                android:id="@+id/img_add_module"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:src="@drawable/ic_add_black_48dp"
+                android:contentDescription="@string/plus"
+                tools:ignore="RtlHardcoded"/>
+        <TextView
+                android:id="@+id/tv_add_module"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/img_add_module"
+                android:padding="10dp"
+                android:background="#FC9"
+                android:textSize="20sp"
+                android:gravity="left"
+                android:text="@string/new_module"
+                tools:ignore="RtlHardcoded"/>
+    </RelativeLayout>
+
+    <ListView
+            android:id="@+id/listview_modules"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tv_dictionary"
+            android:layout_above="@id/layout_add_module"/>
+</RelativeLayout>

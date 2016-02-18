@@ -15,49 +15,11 @@
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <TextView
-            android:id="@+id/tv_dictionary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/category_activity_toolbar"
-            android:padding="10dp"
-            android:background="#FC9"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:text="@string/dictionary"/>
-
-    <RelativeLayout
-            android:id="@+id/layout_add_module"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true">
-        <ImageView
-                android:id="@+id/img_add_module"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:src="@drawable/ic_add_black_48dp"
-                android:contentDescription="@string/plus"
-                tools:ignore="RtlHardcoded"/>
-        <TextView
-                android:id="@+id/tv_add_module"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/img_add_module"
-                android:padding="10dp"
-                android:background="#FC9"
-                android:textSize="20sp"
-                android:gravity="left"
-                android:text="@string/new_module"
-                tools:ignore="RtlHardcoded"/>
-    </RelativeLayout>
-
-    <ListView
-            android:id="@+id/modules_listview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/tv_dictionary"
-            android:layout_above="@id/layout_add_module"/>
-
+    <FrameLayout android:id="@+id/category_detail_container"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_below="@id/category_activity_toolbar"
+                 tools:context="com.ksmirenko.androidsandbox.ItemDetailActivity"
+                 tools:ignore="MergeRootFrame"/>
 
 </RelativeLayout>

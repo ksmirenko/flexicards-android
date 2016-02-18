@@ -1,6 +1,7 @@
 package com.ksmirenko.flexicards.app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.CharArrayBuffer;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -39,6 +40,15 @@ public class MainActivity extends AppCompatActivity {
         Cursor cursor = dbmanager.getCategories();
         CategoryCursorAdapter adapter = new CategoryCursorAdapter(this, cursor);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // TODO: launching category detail activity
+                /*Intent detailIntent = new Intent(this, ItemDetailActivity.class);
+                detailIntent.putExtra(ItemDetailFragment.ARG_CATEGORY_ID, id);
+                startActivity(detailIntent);*/
+            }
+        });
     }
 
     @Override
@@ -78,8 +88,7 @@ public class MainActivity extends AppCompatActivity {
             languageView.setText(catInfo.getLanguage());
             if (position == 0 || !getItem(position - 1).getLanguage().equals(catInfo.getLanguage())) {
                 languageView.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 languageView.setVisibility(View.GONE);
             }
             ((TextView) convertView.findViewById(R.id.textview_mainscr_cat_name))

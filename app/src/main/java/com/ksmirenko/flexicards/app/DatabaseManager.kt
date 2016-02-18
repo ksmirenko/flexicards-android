@@ -11,7 +11,7 @@ import com.ksmirenko.flexicards.app.Utils
 import java.util.*
 
 /**
- * Application's SQL database manager.
+ * Application's SQL database manager. TODO: make it a singleton
  *
  * @author Kirill Smirenko
  */
@@ -64,7 +64,7 @@ class DatabaseManager(context : Context) :
     }
 
     /**
-     * FIXME: workaround that manually resets DB.
+     * Manually resets DB.
      */
     fun reinit() {
         val db = this.readableDatabase
@@ -98,8 +98,14 @@ class DatabaseManager(context : Context) :
         val db = readableDatabase
         val sql = "SELECT * FROM ${CategoryEntry.TABLE_NAME} " +
                 "ORDER BY ${CategoryEntry.COLUMN_NAME_LANGUAGE}, ${CategoryEntry.COLUMN_NAME_NAME}"
-        // FIXME: fails here with "no such table: categories"
         return db.rawQuery(sql, null)
+    }
+
+    /**
+     * TODO: Returns a Cursor to modules for the specified category.
+     */
+    fun getModules(categoryId : Long) /*: Cursor*/ {
+
     }
 
     /**
@@ -174,7 +180,6 @@ class DatabaseManager(context : Context) :
      */
     private fun addCategory(category : Category) : Long {
         val db = this.writableDatabase
-        // FIXME: another workaround
         db.execSQL(SQL_CREATE_CATEGORY_TABLE)
 
         val values = ContentValues()
