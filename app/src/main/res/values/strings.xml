@@ -11,4 +11,5 @@
     <string name="hint_category_lang">language code</string>
     <string name="hint_card_front">front side</string>
     <string name="hint_card_back">back side (in category\'s primary lang)</string>
+    <string name="help">help</string>
 </resources>
