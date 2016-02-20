@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_size_card">24sp</dimen>
+    <dimen name="text_size_card_hint_big">32sp</dimen>
+    <dimen name="text_size_card_hint_small">24sp</dimen>
+    <dimen name="text_size_dialog">16sp</dimen>
+    <dimen name="margin_card_sides">10dp</dimen>
+    <dimen name="margin_card_topbottom">70dp</dimen>
+    <dimen name="margin_dialog_items">5sp</dimen>
+</resources>

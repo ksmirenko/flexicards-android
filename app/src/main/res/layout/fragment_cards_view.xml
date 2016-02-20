@@ -19,5 +19,15 @@
             android:id="@+id/textview_cardview_mainfield"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/margin_card_topbottom"
+            android:layout_marginBottom="@dimen/margin_card_topbottom"
+            android:layout_marginLeft="@dimen/margin_card_sides"
+            android:layout_marginStart="@dimen/margin_card_sides"
+            android:layout_marginRight="@dimen/margin_card_sides"
+            android:layout_marginEnd="@dimen/margin_card_sides"
+            android:textSize="@dimen/text_size_card"
+            android:textColor="@color/textPrimary"
+            android:singleLine="false"
             tools:ignore="RelativeOverlap"/>
 </RelativeLayout>

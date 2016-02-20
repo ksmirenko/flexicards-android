@@ -12,4 +12,13 @@
     <string name="hint_card_front">front side</string>
     <string name="hint_card_back">back side (in category\'s primary lang)</string>
     <string name="help">help</string>
+    <string name="tap_to_flip">tap to\nflip</string>
+    <string name="arrow_down">down arrow</string>
+    <string name="arrow_up">up arrow</string>
+    <string name="arrow_right">right arrow</string>
+    <string name="arrow_left">left arrow</string>
+    <string name="text_card_hint_down">Didn\'t\nknow it :(</string>
+    <string name="text_card_hint_up">Knew it!</string>
+    <string name="text_card_hint_right">Back</string>
+    <string name="text_card_hint_left">Skip</string>
 </resources>

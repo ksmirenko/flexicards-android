@@ -7,7 +7,8 @@
             android:layout_width="match_parent"
             android:layout_height="2sp"
             android:background="@color/primaryDark"
-            android:layout_marginTop="@dimen/margin_dialog_items"/>
+            android:layout_marginTop="@dimen/margin_dialog_items"
+            tools:ignore="SmallSp"/>
     <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
