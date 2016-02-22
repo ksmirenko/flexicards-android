@@ -89,6 +89,20 @@ object DatabaseManager :
      */
     fun createModule(module : Module) = addModule(module) > 0
 
+    fun getModuleCards(moduleId : Long, doShuffle : Boolean) : Cursor? {
+        // TODO: implement, not it is a stub
+        val cardIds = arrayOf(0L, 1L, 23L)
+        val inClause = cardIds.toString().replace("[","(").replace("]",")")
+        val cardsCursor = readableDatabase.query(
+                CardEntry.TABLE_NAME,
+                arrayOf(CardEntry.COLUMN_NAME_FRONT_CONTENT,
+                        CardEntry.COLUMN_NAME_BACK_CONTENT),
+                CardEntry._ID + " in " + inClause,
+                arrayOf(moduleId.toString()),
+                null, null, null)
+        return null
+    }
+
     /**
      * Returns a Cursor to all categories (for category selecting).
      */

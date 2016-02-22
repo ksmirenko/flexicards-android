@@ -1,15 +1,15 @@
 package com.ksmirenko.flexicards.app;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import com.ksmirenko.flexicards.app.datatypes.Category;
 
 public class CategoryFragment extends Fragment {
     /**
@@ -46,9 +46,19 @@ public class CategoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_category, container, false);
 
-        // filling the list with modules
+        // filling the list with modules and setting up onClick
         if (modulesAdapter != null) {
-            ((ListView) rootView.findViewById(R.id.listview_modules)).setAdapter(modulesAdapter);
+            ListView listView = (ListView) rootView.findViewById(R.id.listview_modules);
+            listView.setAdapter(modulesAdapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // launching card view activity
+                    Intent detailIntent = new Intent(getContext(), CardsViewActivity.class);
+                    detailIntent.putExtra(CardsViewActivity.ARG_MODULE_ID, id);
+                    startActivity(detailIntent);
+                }
+            });
         }
 
         return rootView;
