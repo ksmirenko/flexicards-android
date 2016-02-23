@@ -1,12 +1,15 @@
 package com.ksmirenko.flexicards.app;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+/**
+ * Activity for category screen that shows a link to dictionary and modules list.
+ *
+ * @author Kirill Smirenko
+ */
 public class CategoryActivity extends AppCompatActivity {
     /**
      * The fragment argument representing the category ID that this fragment represents.

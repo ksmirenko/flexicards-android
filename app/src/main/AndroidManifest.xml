@@ -20,6 +20,9 @@
                 android:name=".CategoryActivity">
         </activity>
         <activity
+                android:name=".CardsViewActivity">
+        </activity>
+        <activity
                 android:name=".TestfieldActivity"
                 android:label="Testfield">
             <intent-filter>

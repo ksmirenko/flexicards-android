@@ -22,4 +22,6 @@ object Utils {
         val arr = str.split(separator.toRegex()).dropLastWhile { it.isEmpty() }.map { it.toInt() }
         return arr
     }
+
+    fun stringToSqlReadyString(str : String) = "(" + str.replace("_", "") + ")"
 }

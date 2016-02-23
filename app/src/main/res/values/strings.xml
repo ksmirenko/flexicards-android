@@ -21,4 +21,6 @@
     <string name="text_card_hint_up">Knew it!</string>
     <string name="text_card_hint_right">Back</string>
     <string name="text_card_hint_left">Skip</string>
+    <string name="button_knew">Knew it!</string>
+    <string name="button_notknew">Didn\'t know it</string>
 </resources>

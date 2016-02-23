@@ -5,9 +5,14 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+/**
+ * Activity for card viewing, i.e. main purpose of the app.
+ *
+ * @author Kirill Smirenko
+ */
 public class CardsViewActivity extends AppCompatActivity {
     /**
-     * The fragment argument representing the category ID that this fragment represents.
+     * The argument representing ID of the currently viewed module.
      */
     public static final String ARG_MODULE_ID = "module_id";
 
@@ -18,6 +23,7 @@ public class CardsViewActivity extends AppCompatActivity {
 
         long moduleId = getIntent().getLongExtra(ARG_MODULE_ID, 0);
         Cursor cursor = DatabaseManager.INSTANCE.getModuleCards(moduleId);
-//        ((ViewPager) findViewById(R.id.viewpager_card_container)).setAdapter();
+        CardsPagerAdapter pagerAdapter = new CardsPagerAdapter(getSupportFragmentManager(), cursor);
+        ((ViewPager) findViewById(R.id.viewpager_card_container)).setAdapter(pagerAdapter);
     }
 }

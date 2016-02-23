@@ -92,7 +92,7 @@ object DatabaseManager :
     /**
      * Returns a Cursor to cards of the specified module.
      */
-    fun getModuleCards(moduleId : Long) : Cursor? {
+    fun getModuleCards(moduleId : Long) : Cursor {
         val moduleCursor = readableDatabase.query(
                 ModuleEntry.TABLE_NAME,
                 arrayOf(ModuleEntry.COLUMN_NAME_CARDS),
@@ -100,11 +100,10 @@ object DatabaseManager :
                 arrayOf(moduleId.toString()),
                 null, null, null)
         moduleCursor.moveToFirst()
-        val inClause = moduleCursor.getString(0).replace("[","(").replace("]",")")
+        val inClause = Utils.stringToSqlReadyString(moduleCursor.getString(0))
         return readableDatabase.query(
                 CardEntry.TABLE_NAME,
-                arrayOf(CardEntry.COLUMN_NAME_FRONT_CONTENT,
-                        CardEntry.COLUMN_NAME_BACK_CONTENT),
+                CardQuery.getQueryArg(),
                 CardEntry._ID + " in " + inClause,
                 null, null, null, null)
     }
@@ -114,6 +113,7 @@ object DatabaseManager :
      */
     fun getCategories() : Cursor {
         val db = readableDatabase
+        // This SQL call should be conformed with CategoryQuery
         val sql = "SELECT * FROM ${CategoryEntry.TABLE_NAME} " +
                 "ORDER BY ${CategoryEntry.COLUMN_NAME_LANGUAGE}, ${CategoryEntry.COLUMN_NAME_NAME}"
         return db.rawQuery(sql, null)
@@ -124,7 +124,7 @@ object DatabaseManager :
      */
     fun getModules(categoryId : Long) = readableDatabase.query(
             ModuleEntry.TABLE_NAME,
-            arrayOf(ModuleEntry._ID, ModuleEntry.COLUMN_NAME_NAME),
+            ModuleQuery.getNamesQueryArg(),
             ModuleEntry.COLUMN_NAME_CATEGORY_ID + "=?",
             arrayOf(categoryId.toString()),
             null, null, null)
@@ -275,11 +275,24 @@ object DatabaseManager :
     }
 
     /**
+     * Contract for extracting a Card from SQL row.
+     */
+    public class CardQuery {
+        companion object {
+            val COLUMN_INDEX_FRONT = 0
+            val COLUMN_INDEX_BACK = 1
+            fun getQueryArg() = arrayOf(CardEntry.COLUMN_NAME_FRONT_CONTENT,
+                    CardEntry.COLUMN_NAME_BACK_CONTENT)
+        }
+    }
+
+    /**
      * Contract for extracting a Module from SQL row.
      */
     public class ModuleQuery {
         companion object {
             val COLUMN_INDEX_NAME = 1
+            fun getNamesQueryArg() = arrayOf(ModuleEntry._ID, ModuleEntry.COLUMN_NAME_NAME)
         }
     }
 
