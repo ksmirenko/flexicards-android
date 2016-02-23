@@ -89,18 +89,24 @@ object DatabaseManager :
      */
     fun createModule(module : Module) = addModule(module) > 0
 
-    fun getModuleCards(moduleId : Long, doShuffle : Boolean) : Cursor? {
-        // TODO: implement, not it is a stub
-        val cardIds = arrayOf(0L, 1L, 23L)
-        val inClause = cardIds.toString().replace("[","(").replace("]",")")
-        val cardsCursor = readableDatabase.query(
+    /**
+     * Returns a Cursor to cards of the specified module.
+     */
+    fun getModuleCards(moduleId : Long) : Cursor? {
+        val moduleCursor = readableDatabase.query(
+                ModuleEntry.TABLE_NAME,
+                arrayOf(ModuleEntry.COLUMN_NAME_CARDS),
+                ModuleEntry._ID + "=?",
+                arrayOf(moduleId.toString()),
+                null, null, null)
+        moduleCursor.moveToFirst()
+        val inClause = moduleCursor.getString(0).replace("[","(").replace("]",")")
+        return readableDatabase.query(
                 CardEntry.TABLE_NAME,
                 arrayOf(CardEntry.COLUMN_NAME_FRONT_CONTENT,
                         CardEntry.COLUMN_NAME_BACK_CONTENT),
                 CardEntry._ID + " in " + inClause,
-                arrayOf(moduleId.toString()),
-                null, null, null)
-        return null
+                null, null, null, null)
     }
 
     /**
