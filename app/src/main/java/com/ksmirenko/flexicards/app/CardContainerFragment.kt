@@ -49,15 +49,7 @@ class CardContainerFragment : Fragment() {
             savedInstanceState : Bundle?) : View? {
         val rootView = inflater!!.inflate(R.layout.fragment_cards_view_container, container, false)
         val args = arguments
-
-        if (savedInstanceState == null) {
-            isShowingBack = args.getBoolean(ARG_IS_BACK_FIRST)
-
-        }
-        else {
-            // not sure if it will ever be called
-            isShowingBack = fragmentManager.backStackEntryCount > 0
-        }
+        isShowingBack = args.getBoolean(ARG_IS_BACK_FIRST)
 
         // adding card layout
         val cardFragment = CardFrontFragment()
@@ -69,7 +61,7 @@ class CardContainerFragment : Fragment() {
         // adding tap event handler
         val layout = rootView.findViewById(R.id.layout_card_container)
         layout.setOnTouchListener { view, motionEvent ->
-            flipCard()
+//            flipCard()
             false
         }
 
@@ -77,20 +69,22 @@ class CardContainerFragment : Fragment() {
     }
 
     private fun flipCard() {
-        if (isShowingBack) {
-            fragmentManager.popBackStack()
-            return
-        }
-        isShowingBack = true
-        childFragmentManager
+        //        if (isShowingBack) {
+        //            fragmentManager.popBackStack()
+        //            return
+        //        }
+        val newFragment = if (isShowingBack) CardFrontFragment() else CardBackFragment()
+        newFragment.arguments = arguments
+        fragmentManager
                 .beginTransaction()
                 .setCustomAnimations(
                         R.animator.card_flip_right_in, R.animator.card_flip_right_out,
                         R.animator.card_flip_left_in, R.animator.card_flip_left_out
                 )
-                .replace(R.id.layout_card_container, CardBackFragment())
-                .addToBackStack(null)
+                .replace(R.id.layout_card_container, newFragment)
+                //                .addToBackStack(null)
                 .commit()
+        isShowingBack = !isShowingBack
     }
 
     class CardFrontFragment : Fragment() {

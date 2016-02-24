@@ -25,12 +25,11 @@ class CardsPagerAdapter(fm : FragmentManager, private val cardsCursor : Cursor)
         // stub; in future user will be setting translation direction
         args.putBoolean(CardContainerFragment.ARG_IS_BACK_FIRST, false)
         fragment.arguments = args
+
         return fragment
     }
 
     override fun getCount() : Int {
         return cardsCursor.count
     }
-
-
 }
