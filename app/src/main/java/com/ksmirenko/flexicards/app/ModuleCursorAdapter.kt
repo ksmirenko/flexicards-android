@@ -34,7 +34,7 @@ class ModuleCursorAdapter(context : Context, cursor : Cursor?) : CursorAdapter(c
         holder.nameView.setText(holder.nameBuffer.data, 0, holder.nameBuffer.sizeCopied)
     }
 
-    public fun getModuleName(position : Int) : String {
+    fun getModuleName(position : Int) : String {
         val prevCursorPosition = cursor.position
         cursor.moveToPosition(position)
         val catName = cursor.getString(DatabaseManager.CategoryQuery.COLUMN_INDEX_NAME)

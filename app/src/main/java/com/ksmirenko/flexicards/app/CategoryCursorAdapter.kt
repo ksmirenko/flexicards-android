@@ -83,7 +83,7 @@ class CategoryCursorAdapter(context : Context, cursor : Cursor?) : CursorAdapter
         holder.nameView.setText(holder.nameBuffer.data, 0, holder.nameBuffer.sizeCopied)
     }
 
-    public fun getCategoryName(position : Int) : String {
+    fun getCategoryName(position : Int) : String {
         val prevCursorPosition = cursor.position
         cursor.moveToPosition(position)
         val catName = cursor.getString(DatabaseManager.CategoryQuery.COLUMN_INDEX_NAME)

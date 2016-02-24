@@ -267,7 +267,7 @@ object DatabaseManager :
     /**
      * Contract for extracting a Category from SQL row.
      */
-    public class CategoryQuery {
+    class CategoryQuery {
         companion object {
             val COLUMN_INDEX_NAME = 1
             val COLUMN_INDEX_LANGUAGE = 2
@@ -277,7 +277,7 @@ object DatabaseManager :
     /**
      * Contract for extracting a Card from SQL row.
      */
-    public class CardQuery {
+    class CardQuery {
         companion object {
             val COLUMN_INDEX_FRONT = 0
             val COLUMN_INDEX_BACK = 1
@@ -289,7 +289,7 @@ object DatabaseManager :
     /**
      * Contract for extracting a Module from SQL row.
      */
-    public class ModuleQuery {
+    class ModuleQuery {
         companion object {
             val COLUMN_INDEX_NAME = 1
             fun getNamesQueryArg() = arrayOf(ModuleEntry._ID, ModuleEntry.COLUMN_NAME_NAME)

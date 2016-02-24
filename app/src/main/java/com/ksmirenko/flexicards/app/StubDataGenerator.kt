@@ -12,7 +12,7 @@ object StubDataGenerator {
     /**
      * Generates and returns stub categories.
      */
-    public val stubCategories : List<Category> = listOf(
+    val stubCategories : List<Category> = listOf(
             Category(1, "Английский", "RU"),
             Category(2, "Испанский", "RU"),
             Category(3, "Немецкий", "RU"),
@@ -26,7 +26,7 @@ object StubDataGenerator {
             Category(10, "Ruso", "ES")
     )
 
-    public val stubPacks : List<CardPack> = listOf(
+    val stubPacks : List<CardPack> = listOf(
             CardPack(
                     "Английский",
                     "RU",
@@ -56,12 +56,12 @@ object StubDataGenerator {
             )
     )
 
-    public fun fillDatabaseWithCategories(dbmanager : DatabaseManager) {
+    fun fillDatabaseWithCategories(dbmanager : DatabaseManager) {
         dbmanager.reset()
         stubCategories.forEach { cat -> dbmanager.createCategory(cat) }
     }
 
-    public fun fillDatabaseWithStubPacks(dbmanager : DatabaseManager) {
+    fun fillDatabaseWithStubPacks(dbmanager : DatabaseManager) {
         stubPacks.forEach { pack -> dbmanager.insertCardPack(pack, false) }
     }
 }
