@@ -23,7 +23,8 @@ public class CardsViewActivity extends AppCompatActivity {
 
         long moduleId = getIntent().getLongExtra(ARG_MODULE_ID, 0);
         Cursor cursor = DatabaseManager.INSTANCE.getModuleCards(moduleId);
-        CardsPagerAdapter pagerAdapter = new CardsPagerAdapter(getSupportFragmentManager(), cursor);
+//        CardsPagerAdapter pagerAdapter = new CardsPagerAdapter(getSupportFragmentManager(), cursor);
+        CardsPagerAdapter pagerAdapter = new CardsPagerAdapter(getFragmentManager(), cursor);
         ((ViewPager) findViewById(R.id.viewpager_card_container)).setAdapter(pagerAdapter);
     }
 }

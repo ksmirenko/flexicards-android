@@ -17,8 +17,9 @@
 
 package com.ksmirenko.flexicards.app
 
+import android.app.Fragment
 import android.os.Bundle
-import android.support.v4.app.Fragment
+//import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,8 +46,8 @@ class CardContainerFragment : Fragment() {
 
     private var isShowingBack = false
 
-    override fun onCreateView(inflater : LayoutInflater?, container : ViewGroup?,
-            savedInstanceState : Bundle?) : View? {
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+            savedInstanceState: Bundle?): View? {
         val rootView = inflater!!.inflate(R.layout.fragment_cards_view_container, container, false)
         val args = arguments
         isShowingBack = args.getBoolean(ARG_IS_BACK_FIRST)
@@ -54,6 +55,7 @@ class CardContainerFragment : Fragment() {
         // adding card layout
         val cardFragment = CardFrontFragment()
         cardFragment.arguments = args // small workaround
+        //        fragmentManager
         childFragmentManager
                 .beginTransaction()
                 .add(R.id.layout_card_container, cardFragment)
@@ -61,7 +63,7 @@ class CardContainerFragment : Fragment() {
         // adding tap event handler
         val layout = rootView.findViewById(R.id.layout_card_container)
         layout.setOnTouchListener { view, motionEvent ->
-//            flipCard()
+            flipCard()
             false
         }
 
@@ -75,7 +77,8 @@ class CardContainerFragment : Fragment() {
         //        }
         val newFragment = if (isShowingBack) CardFrontFragment() else CardBackFragment()
         newFragment.arguments = arguments
-        fragmentManager
+//        fragmentManager
+        childFragmentManager
                 .beginTransaction()
                 .setCustomAnimations(
                         R.animator.card_flip_right_in, R.animator.card_flip_right_out,
@@ -88,8 +91,8 @@ class CardContainerFragment : Fragment() {
     }
 
     class CardFrontFragment : Fragment() {
-        override fun onCreateView(inflater : LayoutInflater?, container : ViewGroup?,
-                savedInstanceState : Bundle?) : View? {
+        override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+                savedInstanceState: Bundle?): View? {
             val rootView = inflater!!.inflate(R.layout.fragment_cards_view, container, false)
             val textView = rootView.findViewById(R.id.textview_cardview_mainfield) as TextView
             textView.text = arguments.getString(CardContainerFragment.ARG_FRONT_CONTENT)
@@ -98,8 +101,8 @@ class CardContainerFragment : Fragment() {
     }
 
     class CardBackFragment : Fragment() {
-        override fun onCreateView(inflater : LayoutInflater?, container : ViewGroup?,
-                savedInstanceState : Bundle?) : View? {
+        override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+                savedInstanceState: Bundle?): View? {
             val rootView = inflater!!.inflate(R.layout.fragment_cards_view, container, false)
             val textView = rootView.findViewById(R.id.textview_cardview_mainfield) as TextView
             textView.text = arguments.getString(CardContainerFragment.ARG_BACK_CONTENT)
