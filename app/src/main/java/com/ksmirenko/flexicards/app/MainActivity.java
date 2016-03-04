@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.*;
 import android.widget.*;
+import com.ksmirenko.flexicards.app.adapters.CategoryCursorAdapter;
 import com.ksmirenko.flexicards.app.datatypes.Category;
 
 import java.util.List;

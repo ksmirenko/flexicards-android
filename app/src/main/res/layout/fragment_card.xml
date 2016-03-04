@@ -43,14 +43,14 @@
             android:layout_marginBottom="50dp"
             android:orientation="horizontal">
         <Button
-                android:id="@+id/button_cardview_knew"
+                android:id="@+id/button_cardview_know"
                 style="?attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/button_knew"
                 android:textSize="@dimen/text_size_dialog"/>
         <Button
-                android:id="@+id/button_cardview_notknew"
+                android:id="@+id/button_cardview_notknow"
                 style="?attr/buttonBarButtonStyle"
                 android:layout_marginLeft="30dp"
                 android:layout_width="wrap_content"

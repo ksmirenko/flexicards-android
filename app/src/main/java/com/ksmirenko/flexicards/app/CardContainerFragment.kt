@@ -18,6 +18,7 @@
 package com.ksmirenko.flexicards.app
 
 import android.app.Fragment
+import android.content.Context
 import android.os.Bundle
 //import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -42,18 +43,26 @@ class CardContainerFragment : Fragment() {
          * The argument representing whether the back side should be shown first
          */
         val ARG_IS_BACK_FIRST = "backfirst"
+
+        private val dummyCallbacks = DummyCallbacks()
     }
 
+    private var callbacks : Callbacks = dummyCallbacks
     private var isShowingBack = false
+
+    override fun onAttach(context : Context) {
+        super.onAttach(context)
+        callbacks = context as Callbacks
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
             savedInstanceState: Bundle?): View? {
-        val rootView = inflater!!.inflate(R.layout.fragment_cards_view_container, container, false)
+        val rootView = inflater!!.inflate(R.layout.fragment_cards_container, container, false)
         val args = arguments
         isShowingBack = args.getBoolean(ARG_IS_BACK_FIRST)
 
         // adding card layout
-        val cardFragment = CardFrontFragment()
+        val cardFragment = CardFrontFragment(callbacks)
         cardFragment.arguments = args // small workaround
         //        fragmentManager
         childFragmentManager
@@ -66,8 +75,12 @@ class CardContainerFragment : Fragment() {
             flipCard()
             false
         }
-
         return rootView
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks = dummyCallbacks
     }
 
     private fun flipCard() {
@@ -75,9 +88,9 @@ class CardContainerFragment : Fragment() {
         //            fragmentManager.popBackStack()
         //            return
         //        }
-        val newFragment = if (isShowingBack) CardFrontFragment() else CardBackFragment()
+        val newFragment = if (isShowingBack) CardFrontFragment(callbacks) else CardBackFragment(callbacks)
         newFragment.arguments = arguments
-//        fragmentManager
+        //        fragmentManager
         childFragmentManager
                 .beginTransaction()
                 .setCustomAnimations(
@@ -90,23 +103,36 @@ class CardContainerFragment : Fragment() {
         isShowingBack = !isShowingBack
     }
 
-    class CardFrontFragment : Fragment() {
+    class CardFrontFragment(val callbacks : Callbacks) : Fragment() {
         override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                 savedInstanceState: Bundle?): View? {
-            val rootView = inflater!!.inflate(R.layout.fragment_cards_view, container, false)
+            val rootView = inflater!!.inflate(R.layout.fragment_card, container, false)
             val textView = rootView.findViewById(R.id.textview_cardview_mainfield) as TextView
             textView.text = arguments.getString(CardContainerFragment.ARG_FRONT_CONTENT)
+            rootView.findViewById(R.id.button_cardview_know).setOnClickListener { callbacks.onCardButtonClicked(true) }
+            rootView.findViewById(R.id.button_cardview_notknow).setOnClickListener { callbacks.onCardButtonClicked(false) }
             return rootView
         }
     }
 
-    class CardBackFragment : Fragment() {
+    class CardBackFragment(val callbacks : Callbacks) : Fragment() {
         override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                 savedInstanceState: Bundle?): View? {
-            val rootView = inflater!!.inflate(R.layout.fragment_cards_view, container, false)
+            val rootView = inflater!!.inflate(R.layout.fragment_card, container, false)
             val textView = rootView.findViewById(R.id.textview_cardview_mainfield) as TextView
             textView.text = arguments.getString(CardContainerFragment.ARG_BACK_CONTENT)
+            rootView.findViewById(R.id.button_cardview_know).setOnClickListener { callbacks.onCardButtonClicked(true) }
+            rootView.findViewById(R.id.button_cardview_notknow).setOnClickListener { callbacks.onCardButtonClicked(false) }
             return rootView
         }
+    }
+
+    class DummyCallbacks() : Callbacks {
+        override fun onCardButtonClicked(knowIt: Boolean) {
+        }
+    }
+
+    interface Callbacks {
+        fun onCardButtonClicked(knowIt: Boolean)
     }
 }

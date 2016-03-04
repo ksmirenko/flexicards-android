@@ -20,7 +20,7 @@
                 android:name=".CategoryActivity">
         </activity>
         <activity
-                android:name=".CardsViewActivity">
+                android:name=".CardViewActivity">
         </activity>
         <activity
                 android:name=".TestfieldActivity"

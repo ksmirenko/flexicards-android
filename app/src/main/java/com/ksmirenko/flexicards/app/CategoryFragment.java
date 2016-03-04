@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
+import com.ksmirenko.flexicards.app.adapters.ModuleCursorAdapter;
 
 public class CategoryFragment extends Fragment {
     /**
@@ -54,8 +55,8 @@ public class CategoryFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // launching card view activity
-                    Intent detailIntent = new Intent(getContext(), CardsViewActivity.class);
-                    detailIntent.putExtra(CardsViewActivity.ARG_MODULE_ID, id);
+                    Intent detailIntent = new Intent(getContext(), CardViewActivity.class);
+                    detailIntent.putExtra(CardViewActivity.ARG_MODULE_ID, id);
                     startActivity(detailIntent);
                 }
             });

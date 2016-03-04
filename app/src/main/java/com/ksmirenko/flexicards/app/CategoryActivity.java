@@ -45,6 +45,7 @@ public class CategoryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
+            // old solution for exiting, but it was freezing the app for too long
             //NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
             finish();
             return true;
