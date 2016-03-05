@@ -10,6 +10,7 @@
     <item name="textHint" type="color">#61000000</item>
     <item name="textLight" type="color">#ffffffff</item>
     <item name="background" type="color">#cce0f7fa</item>
+    <item name="backgroundDark" type="color">#ccb2ebf2</item>
     <item name="backgroundDialog" type="color">#ffffffff</item>
 
     <integer-array name="androidcolors">
@@ -23,6 +24,7 @@
         <item>@color/textHint</item>
         <item>@color/textLight</item>
         <item>@color/background</item>
+        <item>@color/backgroundDark</item>
         <item>@color/backgroundDialog</item>
     </integer-array>
 </resources>

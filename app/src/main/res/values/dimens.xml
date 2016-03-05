@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="text_size_card">24sp</dimen>
+    <dimen name="text_size_card">28sp</dimen>
     <dimen name="text_size_card_hint_big">32sp</dimen>
     <dimen name="text_size_card_hint_small">24sp</dimen>
     <dimen name="text_size_dialog">16sp</dimen>

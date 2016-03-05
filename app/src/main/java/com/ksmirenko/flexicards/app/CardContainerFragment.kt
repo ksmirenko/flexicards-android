@@ -20,6 +20,8 @@ package com.ksmirenko.flexicards.app
 import android.app.Fragment
 import android.content.Context
 import android.os.Bundle
+import android.support.annotation.ColorRes
+import android.support.v4.content.ContextCompat
 //import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -107,6 +109,7 @@ class CardContainerFragment : Fragment() {
         override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                 savedInstanceState: Bundle?): View? {
             val rootView = inflater!!.inflate(R.layout.fragment_card, container, false)
+            rootView.setBackgroundColor(ContextCompat.getColor(context, R.color.background))
             val textView = rootView.findViewById(R.id.textview_cardview_mainfield) as TextView
             textView.text = arguments.getString(CardContainerFragment.ARG_FRONT_CONTENT)
             rootView.findViewById(R.id.button_cardview_know).setOnClickListener { callbacks.onCardButtonClicked(true) }
@@ -119,6 +122,7 @@ class CardContainerFragment : Fragment() {
         override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                 savedInstanceState: Bundle?): View? {
             val rootView = inflater!!.inflate(R.layout.fragment_card, container, false)
+            rootView.setBackgroundColor(ContextCompat.getColor(context, R.color.backgroundDark))
             val textView = rootView.findViewById(R.id.textview_cardview_mainfield) as TextView
             textView.text = arguments.getString(CardContainerFragment.ARG_BACK_CONTENT)
             rootView.findViewById(R.id.button_cardview_know).setOnClickListener { callbacks.onCardButtonClicked(true) }
