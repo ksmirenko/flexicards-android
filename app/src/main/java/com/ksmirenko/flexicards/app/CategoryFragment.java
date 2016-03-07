@@ -1,5 +1,6 @@
 package com.ksmirenko.flexicards.app;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import com.ksmirenko.flexicards.app.adapters.ModuleCursorAdapter;
 
 public class CategoryFragment extends Fragment {
@@ -17,6 +19,12 @@ public class CategoryFragment extends Fragment {
      * The fragment argument representing the category ID that this fragment represents.
      */
     public static final String ARG_CATEGORY_ID = "cat_id";
+
+    // Request code and arguments for CardViewActivity result
+    public static final int RES_REQUEST_CODE = 1;
+    public static final String ARG_CARDS_UNANSWERED = "CARDS_UNANSWERED";
+    public static final String ARG_CARDS_UNANSWERED_CNT = "CARDS_UNANSWERED_CNT";
+    public static final String ARG_CARDS_TOTAL_CNT = "CARDS_TOTAL_CNT";
 
     /**
      * The category's modules.
@@ -57,11 +65,28 @@ public class CategoryFragment extends Fragment {
                     // launching card view activity
                     Intent detailIntent = new Intent(getContext(), CardViewActivity.class);
                     detailIntent.putExtra(CardViewActivity.ARG_MODULE_ID, id);
-                    startActivity(detailIntent);
+                    startActivityForResult(detailIntent, RES_REQUEST_CODE);
                 }
             });
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RES_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            int unansweredCount = data.getIntExtra(ARG_CARDS_UNANSWERED_CNT, 0);
+            int totalCount = data.getIntExtra(ARG_CARDS_TOTAL_CNT, 0);
+            // TODO: save user progress on module
+            //String unanswered = data.getStringExtra(ARG_CARDS_UNANSWERED);
+            // TODO: show dialog with [rerun all | rerun unanswered | close]
+            Toast.makeText(
+                    getContext(),
+                    "Cards answered: " + (totalCount - unansweredCount) + "/" + totalCount,
+                    Toast.LENGTH_SHORT
+            ).show();
+        }
     }
 }

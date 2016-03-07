@@ -29,7 +29,7 @@ public class CategoryActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState == null) {
-            // manually adding fragment if the state is null
+            // manually adding category fragment if the state is null
             Bundle arguments = new Bundle();
             arguments.putLong(CategoryFragment.ARG_CATEGORY_ID,
                     getIntent().getLongExtra(CategoryFragment.ARG_CATEGORY_ID, 0));

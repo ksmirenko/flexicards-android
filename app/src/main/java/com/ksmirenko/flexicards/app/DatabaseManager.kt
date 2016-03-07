@@ -100,11 +100,11 @@ object DatabaseManager :
                 arrayOf(moduleId.toString()),
                 null, null, null)
         moduleCursor.moveToFirst()
-        val inClause = Utils.stringToSqlReadyString(moduleCursor.getString(0))
+        val moduleCards = Utils.stringToSqlReadyString(moduleCursor.getString(0))
         return readableDatabase.query(
                 CardEntry.TABLE_NAME,
                 CardQuery.getQueryArg(),
-                CardEntry._ID + " in " + inClause,
+                CardEntry._ID + " in " + moduleCards,
                 null, null, null, null)
     }
 

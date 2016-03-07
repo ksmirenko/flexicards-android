@@ -23,5 +23,8 @@ object Utils {
         return arr
     }
 
+    /**
+     * Converts [str] of Utils.listToString format to SQL request ready format.
+     */
     fun stringToSqlReadyString(str : String) = "(" + str.replace("_", "") + ")"
 }
