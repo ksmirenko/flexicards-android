@@ -12,7 +12,6 @@ import android.widget.*;
 import com.ksmirenko.flexicards.app.datatypes.Card;
 import com.ksmirenko.flexicards.app.datatypes.Category;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -68,7 +67,7 @@ public class TestfieldActivity extends AppCompatActivity {
         // preparing card edit dialog
         final Context context = view.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View cardEditView = inflater.inflate(R.layout.form_card_edit, null, false);
+        final View cardEditView = inflater.inflate(R.layout.form_card_add, null, false);
         final Spinner spinnerCardCategory = (Spinner) cardEditView.findViewById(R.id.spinner_card_category);
         spinnerCardCategory.setAdapter(categorySpinnerAdapter);
         final EditText editTextCardFront = (EditText) cardEditView.findViewById(R.id.edittext_card_front);

@@ -23,7 +23,7 @@ public class CategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category);
 
         // setting up top action bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.category_activity_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_activity_category);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getIntent().getStringExtra(CategoryActivity.ARG_CATEGORY_NAME));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

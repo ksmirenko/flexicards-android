@@ -5,19 +5,20 @@
                 tools:context="${relativePackage}.${activityClass}">
 
     <android.support.v7.widget.Toolbar
-            android:id="@+id/main_activity_toolbar"
+            android:id="@+id/toolbar_activity_main"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/primaryLight"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            tools:ignore="UnusedAttribute"/>
 
     <ListView
-            android:id="@+id/categories_listview"
+            android:id="@+id/listview_dictionary"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/main_activity_toolbar">
+            android:layout_below="@id/toolbar_activity_main">
     </ListView>
 
 </RelativeLayout>

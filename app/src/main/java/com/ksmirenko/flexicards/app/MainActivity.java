@@ -34,13 +34,13 @@ public class MainActivity extends AppCompatActivity {
         // initializing DB manager
         DatabaseManager.INSTANCE.reset();
         // setting up top action bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_activity_main);
         setSupportActionBar(toolbar);
         // calling StubDataGenerator
         StubDataGenerator.INSTANCE.fillDatabaseWithCategories(DatabaseManager.INSTANCE);
         StubDataGenerator.INSTANCE.fillDatabaseWithStubPacks(DatabaseManager.INSTANCE);
         // filling the main list view with categoryInfos
-        ListView listView = (ListView) findViewById(R.id.categories_listview);
+        ListView listView = (ListView) findViewById(R.id.listview_dictionary);
         Cursor cursor = DatabaseManager.INSTANCE.getCategories();
         final CategoryCursorAdapter adapter = new CategoryCursorAdapter(this, cursor);
         listView.setAdapter(adapter);

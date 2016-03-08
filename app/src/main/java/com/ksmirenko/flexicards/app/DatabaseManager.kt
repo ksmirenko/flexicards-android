@@ -45,7 +45,7 @@ object DatabaseManager :
     private val SQL_DELETE_MODULE_TABLE = "DROP TABLE IF EXISTS " + ModuleEntry.TABLE_NAME;
 
 
-    override fun onCreate(db : SQLiteDatabase) {
+    override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(SQL_DELETE_CARD_TABLE)
         db.execSQL(SQL_DELETE_CATEGORY_TABLE)
         db.execSQL(SQL_DELETE_MODULE_TABLE)
@@ -54,7 +54,7 @@ object DatabaseManager :
         db.execSQL(SQL_CREATE_MODULE_TABLE)
     }
 
-    override fun onUpgrade(db : SQLiteDatabase, oldVersion : Int, newVersion : Int) {
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL(SQL_DELETE_CARD_TABLE)
         db.execSQL(SQL_DELETE_CATEGORY_TABLE)
         db.execSQL(SQL_DELETE_MODULE_TABLE)
@@ -77,22 +77,32 @@ object DatabaseManager :
     /**
      * Adds a new [category] to database.
      */
-    fun createCategory(category : Category) = addCategory(category) > 0
+    fun createCategory(category: Category) = addCategory(category) > 0
 
     /**
      * Adds a new [card] to database.
      */
-    fun createCard(card : Card) = addCard(card) > 0
+    fun createCard(card: Card) = addCard(card) > 0
 
     /**
      * Adds a new [module] to database.
      */
-    fun createModule(module : Module) = addModule(module) > 0
+    fun createModule(module: Module) = addModule(module) > 0
 
     /**
      * Returns a Cursor to cards of the specified module.
      */
-    fun getModuleCards(moduleId : Long) : Cursor {
+    fun getDictionary(categoryId: Long) = readableDatabase.query(
+            CardEntry.TABLE_NAME,
+            CardQuery.getQueryArg(),
+            CardEntry.COLUMN_NAME_CATEGORY_ID + "=?",
+            arrayOf(categoryId.toString()),
+            null, null, null)
+
+    /**
+     * Returns a Cursor to cards of the specified module.
+     */
+    fun getModuleCards(moduleId: Long): Cursor {
         val moduleCursor = readableDatabase.query(
                 ModuleEntry.TABLE_NAME,
                 arrayOf(ModuleEntry.COLUMN_NAME_CARDS),
@@ -111,7 +121,7 @@ object DatabaseManager :
     /**
      * Returns a Cursor to all categories (for category selecting).
      */
-    fun getCategories() : Cursor {
+    fun getCategories(): Cursor {
         val db = readableDatabase
         // This SQL call should be conformed with CategoryQuery
         val sql = "SELECT * FROM ${CategoryEntry.TABLE_NAME} " +
@@ -122,7 +132,7 @@ object DatabaseManager :
     /**
      * Returns a Cursor to modules for the specified category.
      */
-    fun getModules(categoryId : Long) = readableDatabase.query(
+    fun getModules(categoryId: Long) = readableDatabase.query(
             ModuleEntry.TABLE_NAME,
             ModuleQuery.getNamesQueryArg(),
             ModuleEntry.COLUMN_NAME_CATEGORY_ID + "=?",
@@ -135,7 +145,7 @@ object DatabaseManager :
      *  If true, new cards will be added to the existing module (if it exists).
      *  Otherwise the module will be overwritten.
      */
-    fun insertCardPack(pack : CardPack, shouldAppendModule : Boolean) : Boolean {
+    fun insertCardPack(pack: CardPack, shouldAppendModule: Boolean): Boolean {
         if (pack.categoryName == null) return false
         val db = writableDatabase
         // finding or creating category and memorizing its ID
@@ -199,7 +209,7 @@ object DatabaseManager :
      * Adds a new category to DB (private method).
      * @return Row ID of the new category.
      */
-    private fun addCategory(category : Category) : Long {
+    private fun addCategory(category: Category): Long {
         val db = this.writableDatabase
         db.execSQL(SQL_CREATE_CATEGORY_TABLE)
 
@@ -215,7 +225,7 @@ object DatabaseManager :
      * Adds a new card to DB (private method).
      * @return Row ID of the new card.
      */
-    private fun addCard(card : Card) : Long {
+    private fun addCard(card: Card): Long {
         val db = this.writableDatabase
         db.execSQL(SQL_CREATE_CARD_TABLE)
 
@@ -232,7 +242,7 @@ object DatabaseManager :
      * Adds several cards to DB (private method).
      * @return IDs of the new cards.
      */
-    private fun addCards(categoryId : Long, cardContentList : List<Pair<String, String>>) : List<Long> {
+    private fun addCards(categoryId: Long, cardContentList: List<Pair<String, String>>): List<Long> {
         val db = this.writableDatabase
         val newCardIds = ArrayList<Long>()
         val values = ContentValues()
@@ -250,7 +260,7 @@ object DatabaseManager :
      * Adds a new module to DB (private method).
      * @return Row ID of the new module.
      */
-    private fun addModule(module : Module) : Long {
+    private fun addModule(module: Module): Long {
         val db = this.writableDatabase
         db.execSQL(SQL_CREATE_MODULE_TABLE)
 
