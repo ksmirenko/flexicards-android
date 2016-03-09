@@ -45,7 +45,6 @@ public class DictionaryActivity extends AppCompatActivity {
         final DictionaryCursorAdapter adapter = new DictionaryCursorAdapter(this, cursor);
         final ListView listView = (ListView) findViewById(R.id.listview_dictionary);
         listView.setAdapter(adapter);
-        // TODO: onclicklistener for showing details
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

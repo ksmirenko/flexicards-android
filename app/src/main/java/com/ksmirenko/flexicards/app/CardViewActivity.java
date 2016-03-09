@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import com.ksmirenko.flexicards.app.adapters.CardsPagerAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Activity for card viewing, i.e. main purpose of the app.
@@ -23,9 +22,10 @@ public class CardViewActivity extends AppCompatActivity
     public static final String ARG_MODULE_ID = "module_id";
 
     private ViewPager cardContainerPager;
+    private Cursor cardCursor;
 
     private int cardsTotalCount;
-    private ArrayList<Integer> cardsUnanswered;
+    private ArrayList<Long> cardsUnansweredIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +33,15 @@ public class CardViewActivity extends AppCompatActivity
         setContentView(R.layout.activity_cards_view);
 
         long moduleId = getIntent().getLongExtra(ARG_MODULE_ID, 0);
-        Cursor cursor = DatabaseManager.INSTANCE.getModuleCards(moduleId);
-//        CardsPagerAdapter pagerAdapter = new CardsPagerAdapter(getSupportFragmentManager(), cursor);
-        CardsPagerAdapter pagerAdapter = new CardsPagerAdapter(getFragmentManager(), cursor);
+        cardCursor = DatabaseManager.INSTANCE.getModuleCards(moduleId);
+//        CardsPagerAdapter pagerAdapter = new CardsPagerAdapter(getSupportFragmentManager(), cardCursor);
+        CardsPagerAdapter pagerAdapter = new CardsPagerAdapter(getFragmentManager(), cardCursor);
         cardContainerPager = (ViewPager) findViewById(R.id.viewpager_card_container);
         cardContainerPager.setAdapter(pagerAdapter);
 
         // initializing counters
-        cardsTotalCount = cursor.getCount();
-        cardsUnanswered = new ArrayList<Integer>();
+        cardsTotalCount = cardCursor.getCount();
+        cardsUnansweredIds = new ArrayList<Long>();
     }
 
     // callback for cards' buttons
@@ -51,14 +51,17 @@ public class CardViewActivity extends AppCompatActivity
         if (position + 1 >= cardsTotalCount) {
             // setting module passage result and closing the activity
             Intent intent = new Intent();
-            intent.putExtra(CategoryFragment.ARG_CARDS_UNANSWERED, Utils.INSTANCE.listToString(cardsUnanswered));
-            intent.putExtra(CategoryFragment.ARG_CARDS_UNANSWERED_CNT, cardsUnanswered.size());
+            intent.putExtra(CategoryFragment.ARG_CARDS_UNANSWERED, Utils.INSTANCE.listToString(cardsUnansweredIds));
+            intent.putExtra(CategoryFragment.ARG_CARDS_UNANSWERED_CNT, cardsUnansweredIds.size());
             intent.putExtra(CategoryFragment.ARG_CARDS_TOTAL_CNT, cardsTotalCount);
             setResult(RESULT_OK, intent);
             finish();
         } else {
-            if (!knowIt)
-                cardsUnanswered.add(position);
+            if (!knowIt) {
+                cardCursor.moveToPosition(position);
+                // should I just write "0" as column index in the next line?
+                cardsUnansweredIds.add(cardCursor.getLong(DatabaseManager.CardQuery.Companion.getCOLUMN_INDEX_ID()));
+            }
             cardContainerPager.setCurrentItem(position + 1, true);
         }
     }

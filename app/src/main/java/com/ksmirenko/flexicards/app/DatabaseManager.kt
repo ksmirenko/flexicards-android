@@ -97,7 +97,7 @@ object DatabaseManager :
             CardQuery.getQueryArg(),
             CardEntry.COLUMN_NAME_CATEGORY_ID + "=?",
             arrayOf(categoryId.toString()),
-            null, null, null)
+            null, null, CardEntry.COLUMN_NAME_FRONT_CONTENT)
 
     /**
      * Returns a Cursor to cards of the specified module.
@@ -289,6 +289,7 @@ object DatabaseManager :
      */
     class CardQuery {
         companion object {
+            val COLUMN_INDEX_ID = 0
             val COLUMN_INDEX_FRONT = 1
             val COLUMN_INDEX_BACK = 2
             fun getQueryArg() = arrayOf(CardEntry._ID, CardEntry.COLUMN_NAME_FRONT_CONTENT,
