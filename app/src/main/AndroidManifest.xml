@@ -23,6 +23,9 @@
                 android:name=".CardViewActivity">
         </activity>
         <activity
+                android:name=".DictionaryActivity">
+        </activity>
+        <activity
                 android:name=".TestfieldActivity"
                 android:label="Testfield">
             <intent-filter>

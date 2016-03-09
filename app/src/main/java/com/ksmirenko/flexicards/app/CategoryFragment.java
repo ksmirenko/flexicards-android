@@ -8,10 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.CursorAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.*;
 import com.ksmirenko.flexicards.app.adapters.ModuleCursorAdapter;
 
 public class CategoryFragment extends Fragment {
@@ -26,9 +23,7 @@ public class CategoryFragment extends Fragment {
     public static final String ARG_CARDS_UNANSWERED_CNT = "CARDS_UNANSWERED_CNT";
     public static final String ARG_CARDS_TOTAL_CNT = "CARDS_TOTAL_CNT";
 
-    /**
-     * The category's modules.
-     */
+    private long categoryId;
     private CursorAdapter modulesAdapter;
 
     /**
@@ -45,7 +40,8 @@ public class CategoryFragment extends Fragment {
         Bundle arguments = getArguments();
         if (arguments.containsKey(ARG_CATEGORY_ID)) {
             // loading cursor to the list of modules
-            Cursor cursor = DatabaseManager.INSTANCE.getModules(arguments.getLong(ARG_CATEGORY_ID));
+            categoryId = arguments.getLong(ARG_CATEGORY_ID);
+            Cursor cursor = DatabaseManager.INSTANCE.getModules(categoryId);
             modulesAdapter = new ModuleCursorAdapter(getContext(), cursor);
         }
     }
@@ -54,6 +50,18 @@ public class CategoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_category, container, false);
+
+        // setting up onClick for dictionary opening
+        TextView tvDictionary = (TextView) rootView.findViewById(R.id.textview_catscr_dictionary);
+        tvDictionary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // launcing dictionary activity
+                Intent dictIntent = new Intent(getContext(), DictionaryActivity.class);
+                dictIntent.putExtra(DictionaryActivity.ARG_CATEGORY_ID, categoryId);
+                startActivity(dictIntent);
+            }
+        });
 
         // filling the list with modules and setting up onClick
         if (modulesAdapter != null) {
@@ -81,7 +89,6 @@ public class CategoryFragment extends Fragment {
             int totalCount = data.getIntExtra(ARG_CARDS_TOTAL_CNT, 0);
             // TODO: save user progress on module
             //String unanswered = data.getStringExtra(ARG_CARDS_UNANSWERED);
-            // TODO: show dialog with [rerun all | rerun unanswered | close]
             Toast.makeText(
                     getContext(),
                     "Cards answered: " + (totalCount - unansweredCount) + "/" + totalCount,

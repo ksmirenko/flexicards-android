@@ -289,9 +289,9 @@ object DatabaseManager :
      */
     class CardQuery {
         companion object {
-            val COLUMN_INDEX_FRONT = 0
-            val COLUMN_INDEX_BACK = 1
-            fun getQueryArg() = arrayOf(CardEntry.COLUMN_NAME_FRONT_CONTENT,
+            val COLUMN_INDEX_FRONT = 1
+            val COLUMN_INDEX_BACK = 2
+            fun getQueryArg() = arrayOf(CardEntry._ID, CardEntry.COLUMN_NAME_FRONT_CONTENT,
                     CardEntry.COLUMN_NAME_BACK_CONTENT)
         }
     }

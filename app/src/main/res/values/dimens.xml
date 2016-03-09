@@ -13,4 +13,5 @@
     <dimen name="height_list_item_twoline">72dp</dimen>
     <dimen name="padding_list_item_left">16dp</dimen>
     <dimen name="padding_list_item_topbottom">20dp</dimen>
+
 </resources>
