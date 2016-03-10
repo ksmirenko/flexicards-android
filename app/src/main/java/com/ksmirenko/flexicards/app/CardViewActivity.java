@@ -16,10 +16,11 @@ import java.util.ArrayList;
  */
 public class CardViewActivity extends AppCompatActivity
         implements CardContainerFragment.Callbacks {
-    /**
-     * The argument representing ID of the currently viewed module.
-     */
+    // intent arguments
     public static final String ARG_MODULE_ID = "module_id";
+    public static final String ARG_IS_BACK_FIRST = "back_first";
+    public static final String ARG_IS_RANDOM = "random";
+    public static final String ARG_IS_UNANSWERED_ONLY = "unanswered";
 
     private ViewPager cardContainerPager;
     private Cursor cardCursor;
@@ -32,7 +33,14 @@ public class CardViewActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cards_view);
 
-        long moduleId = getIntent().getLongExtra(ARG_MODULE_ID, 0);
+        // extracting arguments
+        Intent intent = getIntent();
+        long moduleId = intent.getLongExtra(ARG_MODULE_ID, 0);
+        boolean isBackFirst = intent.getBooleanExtra(ARG_IS_BACK_FIRST, false);
+        boolean isRandom = intent.getBooleanExtra(ARG_IS_RANDOM, true);
+        boolean isUnansweredOnly = intent.getBooleanExtra(ARG_IS_UNANSWERED_ONLY, false);
+
+        // preparing content
         cardCursor = DatabaseManager.INSTANCE.getModuleCards(moduleId);
 //        CardsPagerAdapter pagerAdapter = new CardsPagerAdapter(getSupportFragmentManager(), cardCursor);
         CardsPagerAdapter pagerAdapter = new CardsPagerAdapter(getFragmentManager(), cardCursor);

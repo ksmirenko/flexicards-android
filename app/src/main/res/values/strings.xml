@@ -23,4 +23,8 @@
     <string name="text_card_hint_left">Skip</string>
     <string name="button_knew">Knew it!</string>
     <string name="button_notknew">Didn\'t know it</string>
+    <string name="front_side_first">Front side first</string>
+    <string name="back_side_first">Front side first</string>
+    <string name="random_order">Random order</string>
+    <string name="only_unanswered">Only unanswered last time</string>
 </resources>

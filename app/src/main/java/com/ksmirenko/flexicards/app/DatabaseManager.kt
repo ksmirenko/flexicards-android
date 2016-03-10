@@ -100,7 +100,7 @@ object DatabaseManager :
             null, null, CardEntry.COLUMN_NAME_FRONT_CONTENT)
 
     /**
-     * Returns a Cursor to cards of the specified module.
+     * Returns a Cursor to all cards of the specified module.
      */
     fun getModuleCards(moduleId: Long): Cursor {
         val moduleCursor = readableDatabase.query(
@@ -115,6 +115,25 @@ object DatabaseManager :
                 CardEntry.TABLE_NAME,
                 CardQuery.getQueryArg(),
                 CardEntry._ID + " in " + moduleCards,
+                null, null, null, null)
+    }
+
+    /**
+     * Returns a Cursor to all cards of the specified module.
+     */
+    fun getModuleUnanswered(moduleId: Long): Cursor {
+        val moduleCursor = readableDatabase.query(
+                ModuleEntry.TABLE_NAME,
+                arrayOf(ModuleEntry.COLUMN_NAME_UNANSWERED),
+                ModuleEntry._ID + "=?",
+                arrayOf(moduleId.toString()),
+                null, null, null)
+        moduleCursor.moveToFirst()
+        val moduleCardsUnanswered = Utils.stringToSqlReadyString(moduleCursor.getString(0))
+        return readableDatabase.query(
+                CardEntry.TABLE_NAME,
+                CardQuery.getQueryArg(),
+                CardEntry._ID + " in " + moduleCardsUnanswered,
                 null, null, null, null)
     }
 
@@ -316,8 +335,8 @@ object DatabaseManager :
             val _COUNT = BaseColumns._COUNT
             val TABLE_NAME = "cards"
             val COLUMN_NAME_CATEGORY_ID = "cardCatId"
-            var COLUMN_NAME_FRONT_CONTENT = "front"
-            var COLUMN_NAME_BACK_CONTENT = "back"
+            val COLUMN_NAME_FRONT_CONTENT = "front"
+            val COLUMN_NAME_BACK_CONTENT = "back"
         }
     }
 
@@ -330,7 +349,7 @@ object DatabaseManager :
             val _COUNT = BaseColumns._COUNT
             val TABLE_NAME = "categories"
             val COLUMN_NAME_NAME = "catName"
-            var COLUMN_NAME_LANGUAGE = "catLang"
+            val COLUMN_NAME_LANGUAGE = "catLang"
         }
     }
 
@@ -344,7 +363,8 @@ object DatabaseManager :
             val TABLE_NAME = "modules"
             val COLUMN_NAME_CATEGORY_ID = "moduleCatId"
             val COLUMN_NAME_NAME = "moduleName"
-            var COLUMN_NAME_CARDS = "moduleCards" // this one is actually an array, so we'll have to decode it
+            val COLUMN_NAME_CARDS = "moduleCards" // this one is actually an array, so we'll have to decode it
+            val COLUMN_NAME_UNANSWERED = "moduleUnanswred" // and this one
         }
     }
 }

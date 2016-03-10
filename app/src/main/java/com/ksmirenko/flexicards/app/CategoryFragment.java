@@ -1,15 +1,19 @@
 package com.ksmirenko.flexicards.app;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.ksmirenko.flexicards.app.adapters.ModuleCursorAdapter;
+import com.ksmirenko.flexicards.app.datatypes.Category;
 
 public class CategoryFragment extends Fragment {
     /**
@@ -70,10 +74,42 @@ public class CategoryFragment extends Fragment {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    // launching card view activity
-                    Intent detailIntent = new Intent(getContext(), CardViewActivity.class);
-                    detailIntent.putExtra(CardViewActivity.ARG_MODULE_ID, id);
-                    startActivityForResult(detailIntent, RES_REQUEST_CODE);
+                    // preparing module settings dialog
+                    final long moduleId = id;
+                    final Context context = view.getContext();
+                    LayoutInflater inflater =
+                            (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    final View dlgView = inflater.inflate(R.layout.fragment_module_settings, null, false);
+                    final TextView tvWhichSide = (TextView) dlgView.findViewById(R.id.textview_dlg_module_whichside);
+                    final Switch switchWhichSide = (Switch) dlgView.findViewById(R.id.switch_dlg_module_whichside);
+                    final CheckBox cbRandom = (CheckBox) dlgView.findViewById(R.id.cb_dlg_module_random);
+                    final CheckBox cbUnanswered = (CheckBox) dlgView.findViewById(R.id.cb_dlg_module_unanswered);
+                    switchWhichSide.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            tvWhichSide.setText(isChecked ? R.string.back_side_first : R.string.front_side_first);
+                        }
+                    });
+                    // showing module settings dialog dialog
+                    new AlertDialog.Builder(context)
+                            .setView(dlgView)
+                            .setTitle("Edit Card")
+                            .setPositiveButton("OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.dismiss();
+                                            // launching card view activity
+                                            Intent detailIntent = new Intent(getContext(), CardViewActivity.class);
+                                            detailIntent.putExtra(CardViewActivity.ARG_MODULE_ID, moduleId);
+                                            detailIntent.putExtra(CardViewActivity.ARG_IS_BACK_FIRST,
+                                                    switchWhichSide.isChecked());
+                                            detailIntent.putExtra(CardViewActivity.ARG_IS_RANDOM,
+                                                    cbRandom.isChecked());
+                                            detailIntent.putExtra(CardViewActivity.ARG_IS_UNANSWERED_ONLY,
+                                                    cbUnanswered.isChecked());
+                                            startActivityForResult(detailIntent, RES_REQUEST_CODE);
+                                        }
+                                    }).show();
                 }
             });
         }
