@@ -27,4 +27,5 @@
     <string name="back_side_first">Front side first</string>
     <string name="random_order">Random order</string>
     <string name="only_unanswered">Only unanswered last time</string>
+    <string name="no_unanswered_cards">No info about unanswered cards; showing all</string>
 </resources>

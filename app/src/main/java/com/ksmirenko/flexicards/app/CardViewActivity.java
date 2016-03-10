@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 import com.ksmirenko.flexicards.app.adapters.CardsPagerAdapter;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class CardViewActivity extends AppCompatActivity
     private ViewPager cardContainerPager;
     private Cursor cardCursor;
 
+    private long moduleId;
     private int cardsTotalCount;
     private ArrayList<Long> cardsUnansweredIds;
 
@@ -35,15 +37,21 @@ public class CardViewActivity extends AppCompatActivity
 
         // extracting arguments
         Intent intent = getIntent();
-        long moduleId = intent.getLongExtra(ARG_MODULE_ID, 0);
+        moduleId = intent.getLongExtra(ARG_MODULE_ID, 0);
         boolean isBackFirst = intent.getBooleanExtra(ARG_IS_BACK_FIRST, false);
         boolean isRandom = intent.getBooleanExtra(ARG_IS_RANDOM, true);
         boolean isUnansweredOnly = intent.getBooleanExtra(ARG_IS_UNANSWERED_ONLY, false);
 
-        // preparing content
-        cardCursor = DatabaseManager.INSTANCE.getModuleCards(moduleId);
+        // obtaining cards
+        cardCursor = DatabaseManager.INSTANCE.getModuleCards(moduleId, isRandom, isUnansweredOnly);
+        if (isUnansweredOnly && cardCursor.getCount() == 0) {
+            cardCursor = DatabaseManager.INSTANCE.getModuleCards(moduleId, isRandom, false);
+            Toast.makeText(this, R.string.no_unanswered_cards, Toast.LENGTH_SHORT).show();
+        }
+
+        // setting up adapter
 //        CardsPagerAdapter pagerAdapter = new CardsPagerAdapter(getSupportFragmentManager(), cardCursor);
-        CardsPagerAdapter pagerAdapter = new CardsPagerAdapter(getFragmentManager(), cardCursor);
+        CardsPagerAdapter pagerAdapter = new CardsPagerAdapter(getFragmentManager(), cardCursor, isBackFirst);
         cardContainerPager = (ViewPager) findViewById(R.id.viewpager_card_container);
         cardContainerPager.setAdapter(pagerAdapter);
 
@@ -59,9 +67,10 @@ public class CardViewActivity extends AppCompatActivity
         if (position + 1 >= cardsTotalCount) {
             // setting module passage result and closing the activity
             Intent intent = new Intent();
-            intent.putExtra(CategoryFragment.ARG_CARDS_UNANSWERED, Utils.INSTANCE.listToString(cardsUnansweredIds));
-            intent.putExtra(CategoryFragment.ARG_CARDS_UNANSWERED_CNT, cardsUnansweredIds.size());
-            intent.putExtra(CategoryFragment.ARG_CARDS_TOTAL_CNT, cardsTotalCount);
+            intent.putExtra(CategoryFragment.RES_ARG_CARDS_UNANSWERED, Utils.INSTANCE.listToString(cardsUnansweredIds));
+            intent.putExtra(CategoryFragment.RES_ARG_CARDS_UNANSWERED_CNT, cardsUnansweredIds.size());
+            intent.putExtra(CategoryFragment.RES_ARG_CARDS_TOTAL_CNT, cardsTotalCount);
+            intent.putExtra(CategoryFragment.RES_ARG_MODULE_ID, moduleId);
             setResult(RESULT_OK, intent);
             finish();
         } else {

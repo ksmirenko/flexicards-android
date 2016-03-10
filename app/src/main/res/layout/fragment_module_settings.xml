@@ -36,7 +36,8 @@
                 android:id="@+id/cb_dlg_module_random"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"/>
+                android:layout_alignParentStart="true"
+                android:checked="true"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

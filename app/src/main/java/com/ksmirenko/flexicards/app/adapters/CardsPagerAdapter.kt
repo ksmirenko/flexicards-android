@@ -15,8 +15,11 @@ import com.ksmirenko.flexicards.app.DatabaseManager
  *
  * @author Kirill Smirenko
  */
-class CardsPagerAdapter(fm : FragmentManager, private val cardsCursor : Cursor)
-: FragmentStatePagerAdapter(fm) {
+class CardsPagerAdapter(
+        fm : FragmentManager,
+        private val cardsCursor : Cursor,
+        private val isBackFirst : Boolean = false
+) : FragmentStatePagerAdapter(fm) {
 
     override fun getItem(i : Int) : Fragment {
         val fragment = CardContainerFragment()
@@ -26,8 +29,7 @@ class CardsPagerAdapter(fm : FragmentManager, private val cardsCursor : Cursor)
                 cardsCursor.getString(DatabaseManager.CardQuery.COLUMN_INDEX_FRONT))
         args.putString(CardContainerFragment.ARG_BACK_CONTENT,
                 cardsCursor.getString(DatabaseManager.CardQuery.COLUMN_INDEX_BACK))
-        // stub; in future user will be setting translation direction
-        args.putBoolean(CardContainerFragment.ARG_IS_BACK_FIRST, false)
+        args.putBoolean(CardContainerFragment.ARG_IS_BACK_FIRST, isBackFirst)
         fragment.arguments = args
 
         return fragment

@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.ksmirenko.flexicards.app.adapters.ModuleCursorAdapter;
-import com.ksmirenko.flexicards.app.datatypes.Category;
 
 public class CategoryFragment extends Fragment {
     /**
@@ -23,9 +22,10 @@ public class CategoryFragment extends Fragment {
 
     // Request code and arguments for CardViewActivity result
     public static final int RES_REQUEST_CODE = 1;
-    public static final String ARG_CARDS_UNANSWERED = "CARDS_UNANSWERED";
-    public static final String ARG_CARDS_UNANSWERED_CNT = "CARDS_UNANSWERED_CNT";
-    public static final String ARG_CARDS_TOTAL_CNT = "CARDS_TOTAL_CNT";
+    public static final String RES_ARG_CARDS_UNANSWERED = "CARDS_UNANSWERED";
+    public static final String RES_ARG_CARDS_UNANSWERED_CNT = "CARDS_UNANSWERED_CNT";
+    public static final String RES_ARG_CARDS_TOTAL_CNT = "CARDS_TOTAL_CNT";
+    public static final String RES_ARG_MODULE_ID = "MODULE_ID";
 
     private long categoryId;
     private CursorAdapter modulesAdapter;
@@ -121,10 +121,12 @@ public class CategoryFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RES_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            int unansweredCount = data.getIntExtra(ARG_CARDS_UNANSWERED_CNT, 0);
-            int totalCount = data.getIntExtra(ARG_CARDS_TOTAL_CNT, 0);
+            int unansweredCount = data.getIntExtra(RES_ARG_CARDS_UNANSWERED_CNT, -1);
+            int totalCount = data.getIntExtra(RES_ARG_CARDS_TOTAL_CNT, -1);
             // TODO: save user progress on module
-            //String unanswered = data.getStringExtra(ARG_CARDS_UNANSWERED);
+            String unanswered = data.getStringExtra(RES_ARG_CARDS_UNANSWERED);
+            long moduleId = data.getLongExtra(RES_ARG_MODULE_ID, -1);
+            DatabaseManager.INSTANCE.updateModuleProgress(moduleId, unanswered);
             Toast.makeText(
                     getContext(),
                     "Cards answered: " + (totalCount - unansweredCount) + "/" + totalCount,

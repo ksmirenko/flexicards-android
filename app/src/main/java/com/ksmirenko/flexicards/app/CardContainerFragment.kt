@@ -33,17 +33,9 @@ import android.widget.TextView
  */
 class CardContainerFragment : Fragment() {
     companion object {
-        /**
-         * The argument representing content of the card's front side.
-         */
+        // arguments
         val ARG_FRONT_CONTENT = "front"
-        /**
-         * The argument representing content of the card's back side.
-         */
         val ARG_BACK_CONTENT = "back"
-        /**
-         * The argument representing whether the back side should be shown first
-         */
         val ARG_IS_BACK_FIRST = "backfirst"
 
         private val dummyCallbacks = DummyCallbacks()
@@ -61,10 +53,10 @@ class CardContainerFragment : Fragment() {
             savedInstanceState: Bundle?): View? {
         val rootView = inflater!!.inflate(R.layout.fragment_cards_container, container, false)
         val args = arguments
-        isShowingBack = args.getBoolean(ARG_IS_BACK_FIRST)
+        isShowingBack = args.getBoolean(ARG_IS_BACK_FIRST, false)
 
         // adding card layout
-        val cardFragment = CardFrontFragment(callbacks)
+        val cardFragment = if (isShowingBack) CardBackFragment(callbacks) else CardFrontFragment(callbacks)
         cardFragment.arguments = args // small workaround
         //        fragmentManager
         childFragmentManager
