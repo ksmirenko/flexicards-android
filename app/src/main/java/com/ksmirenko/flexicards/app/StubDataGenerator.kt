@@ -13,17 +13,10 @@ object StubDataGenerator {
      * Generates and returns stub categories.
      */
     val stubCategories : List<Category> = listOf(
-            Category(1, "Английский", "RU"),
-            Category(2, "Испанский", "RU"),
-            Category(3, "Немецкий", "RU"),
-            Category(4, "Эльфийский", "RU"),
-            Category(5, "Spanish", "EN"),
-            Category(6, "German", "EN"),
-            Category(7, "Russian", "EN"),
-            Category(8, "Englisch", "DE"),
-            Category(9, "Ingles", "ES"),
-            //CategoryInfo("Inglés", "ES"),
-            Category(10, "Ruso", "ES")
+            Category(41, "Английский", "RU"),
+            Category(42, "Испанский", "RU"),
+            Category(43, "Spanish", "EN"),
+            Category(44, "Long Content. Very long content and very long category name", "EN")
     )
 
     val stubPacks : List<CardPack> = listOf(
@@ -51,6 +44,61 @@ object StubDataGenerator {
                             Pair("frog", "лягушка"),
                             Pair("mouse", "мышь"),
                             Pair("cat", "кошка")
+                    )
+
+            ),
+            CardPack(
+                    "Испанский",
+                    "RU",
+                    "Местоимения",
+                    listOf(
+                            Pair("yo", "я"),
+                            Pair("tú", "ты"),
+                            Pair("él", "он"),
+                            Pair("ella", "она"),
+                            Pair("usded", "Вы (ед., вежливое)"),
+                            Pair("nosotros", "мы"),
+                            Pair("vosotros", "вы (мн.)"),
+                            Pair("ellos", "они"),
+                            Pair("ustedes", "Вы (мн., вежливое)")
+                    )
+
+            ),
+            CardPack(
+                    "Spanish",
+                    "EN",
+                    "Pronombres",
+                    listOf(
+                            Pair("yo", "I"),
+                            Pair("tú", "you (single, informal)"),
+                            Pair("él", "he"),
+                            Pair("ella", "she"),
+                            Pair("usded", "you (single, formal)"),
+                            Pair("nosotros", "we"),
+                            Pair("vosotros", "you (plural, informal)"),
+                            Pair("ellos", "they"),
+                            Pair("ustedes", "you (plural, formal)")
+                    )
+
+            ),
+            CardPack(
+                    "Long Content. Very long content and very long category name",
+                    "EN",
+                    "Sample very-very-very-very-very-very long module name",
+                    listOf(
+                            Pair("front content", "back content"),
+                            Pair("longer, but not too long front content", "back content"),
+                            Pair("front content", "longer, but not too long back content"),
+                            Pair("longer, but not too long front content", "longer, but not too long back content"),
+                            Pair("Incredibly long front content: bla-bla-bla-bla-bla-bla-bla-bla-bla-bla-bla-bla stop",
+                                    "longer, but not too long back content"),
+                            Pair("longer, but not too long front content",
+                                    "Incredibly long back content: bla-bla-bla-bla-bla-bla-bla-bla-bla-bla-bla-bla stop"),
+                            Pair("FRONT CONTENT front content FRONT CONTENT front content FRONT CONTENT front content " +
+                                    "FRONT CONTENT front content FRONT CONTENT front content FRONT CONTENT front content !",
+                                    "BACK CONTENT back content BACK CONTENT back content BACK CONTENT back content " +
+                                    "BACK CONTENT back content BACK CONTENT back content BACK CONTENT back content " +
+                                    "BACK CONTENT back content BACK CONTENT back content BACK CONTENT back content !")
                     )
 
             )
