@@ -93,7 +93,6 @@ public class CategoryFragment extends Fragment {
                     // showing module settings dialog dialog
                     new AlertDialog.Builder(context)
                             .setView(dlgView)
-                            .setTitle("Edit Card")
                             .setPositiveButton("OK",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {

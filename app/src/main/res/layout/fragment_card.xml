@@ -30,6 +30,10 @@
             android:textSize="@dimen/text_size_card"
             android:textColor="@color/textPrimary"
             android:singleLine="false"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:maxLines="10"
+            android:scrollbars="vertical"
             tools:ignore="RelativeOverlap"/>
 
     <!-- Intercard navigation panel -->

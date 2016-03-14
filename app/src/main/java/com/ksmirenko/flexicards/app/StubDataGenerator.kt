@@ -86,14 +86,19 @@ object StubDataGenerator {
                     "EN",
                     "Sample very-very-very-very-very-very long module name",
                     listOf(
-                            Pair("front content", "back content"),
-                            Pair("longer, but not too long front content", "back content"),
-                            Pair("front content", "longer, but not too long back content"),
-                            Pair("longer, but not too long front content", "longer, but not too long back content"),
-                            Pair("Incredibly long front content: bla-bla-bla-bla-bla-bla-bla-bla-bla-bla-bla-bla stop",
-                                    "longer, but not too long back content"),
-                            Pair("longer, but not too long front content",
-                                    "Incredibly long back content: bla-bla-bla-bla-bla-bla-bla-bla-bla-bla-bla-bla stop"),
+//                            Pair("front content", "back content"),
+//                            Pair("longer, but not too long front content", "back content"),
+//                            Pair("front content", "longer, but not too long back content"),
+//                            Pair("longer, but not too long front content", "longer, but not too long back content"),
+//                            Pair("Incredibly long front content: bla-bla-bla-bla-bla-bla-bla-bla-bla-bla-bla-bla stop",
+//                                    "longer, but not too long back content"),
+//                            Pair("longer, but not too long front content",
+//                                    "Incredibly long back content: bla-bla-bla-bla-bla-bla-bla-bla-bla-bla-bla-bla stop"),
+                            Pair("FRONT CONTENT 2 front content FRONT CONTENT front content FRONT CONTENT front content " +
+                                    "FRONT CONTENT front content FRONT CONTENT front content FRONT CONTENT front content !",
+                                    "BACK CONTENT 2 back content BACK CONTENT back content BACK CONTENT back content " +
+                                    "BACK CONTENT back content BACK CONTENT back content BACK CONTENT back content " +
+                                    "BACK CONTENT back content BACK CONTENT back content BACK CONTENT back content !"),
                             Pair("FRONT CONTENT front content FRONT CONTENT front content FRONT CONTENT front content " +
                                     "FRONT CONTENT front content FRONT CONTENT front content FRONT CONTENT front content !",
                                     "BACK CONTENT back content BACK CONTENT back content BACK CONTENT back content " +

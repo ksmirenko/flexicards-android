@@ -45,10 +45,10 @@ public class DictionaryActivity extends AppCompatActivity {
         final DictionaryCursorAdapter adapter = new DictionaryCursorAdapter(this, cursor);
         final ListView listView = (ListView) findViewById(R.id.listview_dictionary);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // FIXME: maybe we should reuse the window?
+                // WARNING: the window is not reused, may cost memory
                 // preparing view for popup window
                 final Context context = view.getContext();
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -75,13 +75,14 @@ public class DictionaryActivity extends AppCompatActivity {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         cardDetailWindow.dismiss();
-                        // FIXME: another window immediately opens when touching another list item outside this window
+                        // WARNING: another window immediately opens when touching another list item outside this window
+                        // so the hell with that, I disabled showing detail popup
                         return true;
                     }
                 });
                 cardDetailWindow.showAtLocation(listView, Gravity.CENTER, 0, 0);
             }
-        });
+        });*/
     }
 
     @Override

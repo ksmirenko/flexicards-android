@@ -110,11 +110,25 @@ object DatabaseManager :
                 arrayOf(moduleId.toString()),
                 null, null, null)
         moduleCursor.moveToFirst()
-        val moduleCards = Utils.stringToSqlReadyString(moduleCursor.getString(0))
+        val moduleCardsRaw : String? = moduleCursor.getString(0)
+        // if there is no data about unanswered, return all
+        val moduleCards = if (isUnansweredOnly && moduleCardsRaw == null) {
+            val anotherModuleCursor = readableDatabase.query(
+                    ModuleEntry.TABLE_NAME,
+                    arrayOf(ModuleEntry.COLUMN_NAME_CARDS),
+                    ModuleEntry._ID + "=?",
+                    arrayOf(moduleId.toString()),
+                    null, null, null)
+            anotherModuleCursor.moveToFirst()
+            anotherModuleCursor.getString(0)
+        }
+        else {
+            moduleCardsRaw!!
+        }
         return readableDatabase.query(
                 CardEntry.TABLE_NAME,
                 CardQuery.getQueryArg(),
-                CardEntry._ID + " in " + moduleCards,
+                CardEntry._ID + " in " + Utils.stringToSqlReadyString(moduleCards),
                 null, null, null,
                 if (isRandom) "RANDOM()" else null)
     }

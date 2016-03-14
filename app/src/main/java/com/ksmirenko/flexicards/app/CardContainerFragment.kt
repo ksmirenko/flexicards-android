@@ -22,10 +22,8 @@ import android.content.Context
 import android.os.Bundle
 import android.support.annotation.ColorRes
 import android.support.v4.content.ContextCompat
+import android.view.*
 //import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 
 /**
@@ -49,8 +47,8 @@ class CardContainerFragment : Fragment() {
         callbacks = context as Callbacks
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater : LayoutInflater?, container : ViewGroup?,
+            savedInstanceState : Bundle?) : View? {
         val rootView = inflater!!.inflate(R.layout.fragment_cards_container, container, false)
         val args = arguments
         isShowingBack = args.getBoolean(ARG_IS_BACK_FIRST, false)
@@ -63,11 +61,11 @@ class CardContainerFragment : Fragment() {
                 .beginTransaction()
                 .add(R.id.layout_card_container, cardFragment)
                 .commit()
-        // adding tap event handler
+        // adding event handler
+        val gestureDetector = GestureDetector(context, CardGestureDetector(flipCard))
         val layout = rootView.findViewById(R.id.layout_card_container)
         layout.setOnTouchListener { view, motionEvent ->
-            flipCard()
-            false
+            gestureDetector.onTouchEvent(motionEvent)
         }
         return rootView
     }
@@ -77,7 +75,7 @@ class CardContainerFragment : Fragment() {
         callbacks = dummyCallbacks
     }
 
-    private fun flipCard() {
+    private val flipCard = {
         //        if (isShowingBack) {
         //            fragmentManager.popBackStack()
         //            return
@@ -98,8 +96,8 @@ class CardContainerFragment : Fragment() {
     }
 
     class CardFrontFragment(val callbacks : Callbacks) : Fragment() {
-        override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                savedInstanceState: Bundle?): View? {
+        override fun onCreateView(inflater : LayoutInflater?, container : ViewGroup?,
+                savedInstanceState : Bundle?) : View? {
             val rootView = inflater!!.inflate(R.layout.fragment_card, container, false)
             rootView.setBackgroundColor(ContextCompat.getColor(MainActivity.getAppContext(), R.color.background))
             val textView = rootView.findViewById(R.id.textview_cardview_mainfield) as TextView
@@ -111,8 +109,8 @@ class CardContainerFragment : Fragment() {
     }
 
     class CardBackFragment(val callbacks : Callbacks) : Fragment() {
-        override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                savedInstanceState: Bundle?): View? {
+        override fun onCreateView(inflater : LayoutInflater?, container : ViewGroup?,
+                savedInstanceState : Bundle?) : View? {
             val rootView = inflater!!.inflate(R.layout.fragment_card, container, false)
             rootView.setBackgroundColor(ContextCompat.getColor(MainActivity.getAppContext(), R.color.backgroundDark))
             val textView = rootView.findViewById(R.id.textview_cardview_mainfield) as TextView
@@ -124,11 +122,35 @@ class CardContainerFragment : Fragment() {
     }
 
     class DummyCallbacks() : Callbacks {
-        override fun onCardButtonClicked(knowIt: Boolean) {
+        override fun onCardButtonClicked(knowIt : Boolean) {
+        }
+    }
+
+    private class CardGestureDetector(val onTapAction : () -> Unit) : GestureDetector.OnGestureListener {
+        override fun onScroll(p0 : MotionEvent?, p1 : MotionEvent?, p2 : Float, p3 : Float) : Boolean = false
+
+        override fun onFling(p0 : MotionEvent?, p1 : MotionEvent?, p2 : Float, p3 : Float) : Boolean = false
+
+        override fun onShowPress(p0 : MotionEvent?) {
+        }
+
+        override fun onLongPress(p0 : MotionEvent?) {
+        }
+
+        /*
+          If set to true, this nasty thing won't let me scroll textviews.
+          If set to false, card flipping won't work.
+          Have no idea what to do with this thing.
+        */
+        override fun onDown(e : MotionEvent) = true
+
+        override fun onSingleTapUp(e : MotionEvent?) : Boolean {
+            onTapAction()
+            return true
         }
     }
 
     interface Callbacks {
-        fun onCardButtonClicked(knowIt: Boolean)
+        fun onCardButtonClicked(knowIt : Boolean)
     }
 }
