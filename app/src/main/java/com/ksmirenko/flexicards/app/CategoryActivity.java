@@ -6,7 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 /**
- * Activity for category screen that shows a link to dictionary and modules list.
+ * Activity for category screen.
  *
  * @author Kirill Smirenko
  */

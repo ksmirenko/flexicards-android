@@ -14,6 +14,11 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.ksmirenko.flexicards.app.adapters.ModuleCursorAdapter;
 
+/**
+ * Fragment for category screen, contains a dictionary button and list of modules.
+ *
+ * @author Kirill Smirenko
+ */
 public class CategoryFragment extends Fragment {
     /**
      * The fragment argument representing the category ID that this fragment represents.
