@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+        /*switch (item.getItemId()) {
             case R.id.action_settings:
                 // settings action event handling should be here
                 return true;
@@ -73,7 +73,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-        }
+        }*/
+        return false;
     }
 
     private static class CategoryArrayAdapter extends ArrayAdapter<Category> {

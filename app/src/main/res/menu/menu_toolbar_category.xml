@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
+    <!--<item
             android:id="@+id/action_add_card"
             android:icon="@drawable/ic_note_add_black_48dp"
             android:title="@string/action_add_card"
             app:showAsAction="ifRoom"/>
     <item android:id="@+id/action_delete_category"
           android:title="@string/action_delete_category"
-          app:showAsAction="never"/>
+          app:showAsAction="never"/>-->
 </menu>

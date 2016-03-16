@@ -3,6 +3,11 @@ An Android app for easy learning vocabulary, definitons and facts on the go.
 
 Minimal supported Android version is 4.2 (API 17).
 
+## Installation
+
+Download the latest .apk file [here](https://github.com/ksmirenko/flexicards-android/releases). Open it on your Android device to launch installation.
+**Warning**: installation from untrusted sources must be enabled in your device's security settings.
+
 ## What it is and how it works
 You have a lot of paired information: terms and definitions, foreign words and translations, etc. You want to learn it all.
 
@@ -35,9 +40,7 @@ FlexiCards project is bigger than a single Android app. I also want there to be:
 ## Q&A
 > Why another flashcard app? There are plenty already.
 
-I have wanted to develop this project since 2012. I made a simpler and uglier version of it for myself (originally called WordWorm)
-when I was preparing for TOEFL and SATs, and decided to create a holistic, elaborate flashcard app.
-Now, finally, I got to it and I want it to be awesome.
+I have wanted to develop this project since 2012. I made a simpler and uglier version of it for myself (originally called WordWorm) when I was preparing for TOEFL and SATs, and decided to create a holistic, elaborate flashcard app. Now, finally, I got to it and I want it to be awesome.
 
 > How is it different from <...>?
 
