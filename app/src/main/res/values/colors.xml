@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="primary" type="color">#ff00bcd4</item>
+    <item name="primaryDark" type="color">#ff0097a7</item>
+    <item name="primaryLight" type="color">#ff4dd0e1</item>
+    <item name="accent" type="color">#ffffd740</item>
+    <item name="accentDark" type="color">#ffffab00</item>
+    <item name="textPrimary" type="color">#df000000</item>
+    <item name="textSecondary" type="color">#8a000000</item>
+    <item name="textHint" type="color">#61000000</item>
+    <item name="textLight" type="color">#ffffffff</item>
+    <item name="background" type="color">#cce0f7fa</item>
+    <item name="backgroundDark" type="color">#ccb2ebf2</item>
+    <item name="backgroundDialog" type="color">#ffffffff</item>
+
+    <integer-array name="androidcolors">
+        <item>@color/primary</item>
+        <item>@color/primaryDark</item>
+        <item>@color/primaryLight</item>
+        <item>@color/accent</item>
+        <item>@color/accentDark</item>
+        <item>@color/textPrimary</item>
+        <item>@color/textSecondary</item>
+        <item>@color/textHint</item>
+        <item>@color/textLight</item>
+        <item>@color/background</item>
+        <item>@color/backgroundDark</item>
+        <item>@color/backgroundDialog</item>
+    </integer-array>
+</resources>

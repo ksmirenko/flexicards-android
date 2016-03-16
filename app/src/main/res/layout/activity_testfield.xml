@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <FrameLayout android:id="@+id/testfield_fragment_container"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:visibility="invisible"
+                 tools:ignore="MergeRootFrame"/>
+    <LinearLayout android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent">
+        <Button android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/button_testfield_edit_category"
+                android:text="Test Edit Category"
+                android:onClick="testEditCategory"/>
+        <Button android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/button_testfield_edit_card"
+                android:text="Test Edit Card"
+                android:onClick="testEditCard"/>
+        <Button android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/button_testfield_view_module_cards"
+                android:text="Test View Module Cards"/>
+    </LinearLayout>
+</RelativeLayout>

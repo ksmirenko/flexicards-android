@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="2sp"
+            android:background="@color/primaryDark"
+            android:layout_marginTop="@dimen/margin_dialog_items"/>
+    <EditText
+            android:id="@+id/edittext_category_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_dialog_items"
+            android:hint="@string/hint_category_name"
+            android:singleLine="true"
+            android:textSize="@dimen/text_size_dialog">
+        <requestFocus/>
+    </EditText>
+
+    <EditText
+            android:id="@+id/edittext_category_lang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_dialog_items"
+            android:hint="@string/hint_category_lang"
+            android:singleLine="true"
+            android:maxLength="2"
+            android:textSize="@dimen/text_size_dialog"/>
+
+</LinearLayout>

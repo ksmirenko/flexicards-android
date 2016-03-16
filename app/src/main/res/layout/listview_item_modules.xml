@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+          android:id="@+id/textview_catscr_module_name"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:minHeight="50sp"
+          android:padding="8dp"
+          android:singleLine="true"
+          android:textColor="@color/textPrimary"
+          android:textSize="18sp"
+          android:textStyle="bold"/>
