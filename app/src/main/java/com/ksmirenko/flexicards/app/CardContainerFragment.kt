@@ -17,6 +17,7 @@
 
 package com.ksmirenko.flexicards.app
 
+import android.app.Activity
 import android.app.Fragment
 import android.content.Context
 import android.os.Bundle
@@ -47,6 +48,12 @@ class CardContainerFragment : Fragment() {
         callbacks = context as Callbacks
     }
 
+    @Suppress("OverridingDeprecatedMember")
+    override fun onAttach(activity : Activity) {
+        super.onAttach(activity)
+        callbacks = activity as Callbacks
+    }
+
     override fun onCreateView(inflater : LayoutInflater?, container : ViewGroup?,
             savedInstanceState : Bundle?) : View? {
         val rootView = inflater!!.inflate(R.layout.fragment_cards_container, container, false)
@@ -62,7 +69,7 @@ class CardContainerFragment : Fragment() {
                 .add(R.id.layout_card_container, cardFragment)
                 .commit()
         // adding event handler
-        val gestureDetector = GestureDetector(context, CardGestureDetector(flipCard))
+        val gestureDetector = GestureDetector(activity, CardGestureDetector(flipCard))
         val layout = rootView.findViewById(R.id.layout_card_container)
         layout.setOnTouchListener { view, motionEvent ->
             gestureDetector.onTouchEvent(motionEvent)
