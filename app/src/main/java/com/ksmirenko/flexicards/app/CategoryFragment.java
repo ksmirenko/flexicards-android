@@ -122,7 +122,6 @@ public class CategoryFragment extends Fragment {
         if (requestCode == RES_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             int unansweredCount = data.getIntExtra(RES_ARG_CARDS_UNANSWERED_CNT, -1);
             int totalCount = data.getIntExtra(RES_ARG_CARDS_TOTAL_CNT, -1);
-            // TODO: save user progress on module
             String unanswered = data.getStringExtra(RES_ARG_CARDS_UNANSWERED);
             long moduleId = data.getLongExtra(RES_ARG_MODULE_ID, -1);
             DatabaseManager.INSTANCE.updateModuleProgress(moduleId, unanswered);

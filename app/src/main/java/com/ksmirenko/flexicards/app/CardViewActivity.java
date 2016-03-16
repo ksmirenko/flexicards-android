@@ -64,6 +64,12 @@ public class CardViewActivity extends AppCompatActivity
     @Override
     public void onCardButtonClicked(boolean knowIt) {
         int position = cardContainerPager.getCurrentItem();
+        // saving information about last viewed card
+        if (!knowIt) {
+            cardCursor.moveToPosition(position);
+            // should I just write "0" for column index in the next line? too long
+            cardsUnansweredIds.add(cardCursor.getLong(DatabaseManager.CardQuery.Companion.getCOLUMN_INDEX_ID()));
+        }
         if (position + 1 >= cardsTotalCount) {
             // setting module passage result and closing the activity
             Intent intent = new Intent();
@@ -74,11 +80,6 @@ public class CardViewActivity extends AppCompatActivity
             setResult(RESULT_OK, intent);
             finish();
         } else {
-            if (!knowIt) {
-                cardCursor.moveToPosition(position);
-                // should I just write "0" as column index in the next line?
-                cardsUnansweredIds.add(cardCursor.getLong(DatabaseManager.CardQuery.Companion.getCOLUMN_INDEX_ID()));
-            }
             cardContainerPager.setCurrentItem(position + 1, true);
         }
     }

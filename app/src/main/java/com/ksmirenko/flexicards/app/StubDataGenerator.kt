@@ -73,7 +73,7 @@ object StubDataGenerator {
                             Pair("tú", "you (single, informal)"),
                             Pair("él", "he"),
                             Pair("ella", "she"),
-                            Pair("usded", "you (single, formal)"),
+                            Pair("usted", "you (single, formal)"),
                             Pair("nosotros", "we"),
                             Pair("vosotros", "you (plural, informal)"),
                             Pair("ellos", "they"),
@@ -109,12 +109,21 @@ object StubDataGenerator {
             )
     )
 
-    fun fillDatabaseWithCategories(dbmanager : DatabaseManager) {
-        dbmanager.reset()
+    fun fillDatabaseIfEmpty(dbmanager : DatabaseManager) {
+        if (dbmanager.isCategoriesEmpty()) {
+            stubCategories.forEach { cat -> dbmanager.createCategory(cat) }
+        }
+        if (dbmanager.isCardsEmpty()) {
+            stubPacks.forEach { pack -> dbmanager.insertCardPack(pack, false) }
+        }
+    }
+
+    private fun fillDatabaseWithCategories(dbmanager : DatabaseManager) {
+        dbmanager.resetAll()
         stubCategories.forEach { cat -> dbmanager.createCategory(cat) }
     }
 
-    fun fillDatabaseWithStubPacks(dbmanager : DatabaseManager) {
+    private fun fillDatabaseWithStubPacks(dbmanager : DatabaseManager) {
         stubPacks.forEach { pack -> dbmanager.insertCardPack(pack, false) }
     }
 }

@@ -8,7 +8,7 @@ package com.ksmirenko.flexicards.app.datatypes
  */
 data class Card(
         /**
-         * Unique card ID.
+         * Unique card ID. Ignored when adding a Card to DB (DB defines id).
          */
         var id : Int,
         /**

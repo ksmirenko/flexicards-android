@@ -8,7 +8,7 @@ package com.ksmirenko.flexicards.app.datatypes
  */
 data class Category(
         /**
-         * Unique category ID.
+         * Unique category ID. Ignored when adding a Category to DB (DB defines id).
          */
         var id : Int,
         /**

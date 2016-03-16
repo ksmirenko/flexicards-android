@@ -31,14 +31,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         MainActivity.context = getApplicationContext();
         setContentView(R.layout.activity_main);
-        // initializing DB manager
-        DatabaseManager.INSTANCE.reset();
         // setting up top action bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_activity_main);
         setSupportActionBar(toolbar);
+        // initializing DB tables if not exist
+        DatabaseManager.INSTANCE.init();
+        //DatabaseManager.INSTANCE.resetAll(); // FOR TESTING ONLY
         // calling StubDataGenerator
-        StubDataGenerator.INSTANCE.fillDatabaseWithCategories(DatabaseManager.INSTANCE);
-        StubDataGenerator.INSTANCE.fillDatabaseWithStubPacks(DatabaseManager.INSTANCE);
+        StubDataGenerator.INSTANCE.fillDatabaseIfEmpty(DatabaseManager.INSTANCE);
         // filling the main list view with categoryInfos
         ListView listView = (ListView) findViewById(R.id.listview_dictionary);
         Cursor cursor = DatabaseManager.INSTANCE.getCategories();

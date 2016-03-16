@@ -8,7 +8,7 @@ package com.ksmirenko.flexicards.app.datatypes
  */
 data class Module(
         /**
-         * Unique module ID.
+         * Unique module ID. Ignored when adding a Module to DB (DB defines id).
          */
         var id : Int,
         /**

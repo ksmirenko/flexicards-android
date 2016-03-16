@@ -64,13 +64,23 @@ object DatabaseManager :
     /**
      * Manually resets DB.
      */
-    fun reset() {
+    fun resetAll() {
         val db = this.readableDatabase
         db.execSQL(SQL_DELETE_CATEGORY_TABLE)
         db.execSQL(SQL_CREATE_CATEGORY_TABLE)
         db.execSQL(SQL_DELETE_CARD_TABLE)
         db.execSQL(SQL_CREATE_CARD_TABLE)
         db.execSQL(SQL_DELETE_MODULE_TABLE)
+        db.execSQL(SQL_CREATE_MODULE_TABLE)
+    }
+
+    /**
+     * Initializes internal DB and creates tables if they do not exist.
+     */
+    fun init() {
+        val db = this.writableDatabase
+        db.execSQL(SQL_CREATE_CATEGORY_TABLE)
+        db.execSQL(SQL_CREATE_CARD_TABLE)
         db.execSQL(SQL_CREATE_MODULE_TABLE)
     }
 
@@ -112,6 +122,7 @@ object DatabaseManager :
         moduleCursor.moveToFirst()
         val moduleCardsRaw : String? = moduleCursor.getString(0)
         // if there is no data about unanswered, return all
+        // WARNING: this policy may lead to inconsistency
         val moduleCards = if (isUnansweredOnly && moduleCardsRaw == null) {
             val anotherModuleCursor = readableDatabase.query(
                     ModuleEntry.TABLE_NAME,
@@ -152,7 +163,7 @@ object DatabaseManager :
             ModuleQuery.getNamesQueryArg(),
             ModuleEntry.COLUMN_NAME_CATEGORY_ID + "=?",
             arrayOf(categoryId.toString()),
-            null, null, null)
+            null, null, ModuleEntry.COLUMN_NAME_NAME)
 
     /**
      * Inserts [pack] into DB.
@@ -217,6 +228,18 @@ object DatabaseManager :
             db.close()
             return res > 0
         }
+    }
+
+    fun isCategoriesEmpty() : Boolean {
+        val db = readableDatabase
+        val cursor : Cursor? = db.rawQuery("SELECT _ID FROM ${CategoryEntry.TABLE_NAME} ", null)
+        return (cursor == null || cursor.count <= 0)
+    }
+
+    fun isCardsEmpty() : Boolean {
+        val db = readableDatabase
+        val cursor : Cursor? = db.rawQuery("SELECT _ID FROM ${CardEntry.TABLE_NAME} ", null)
+        return (cursor == null || cursor.count <= 0)
     }
 
     fun updateModuleProgress(moduleId : Long, unanswered : String) {
