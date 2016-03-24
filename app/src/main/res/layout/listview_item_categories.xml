@@ -2,25 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:orientation="vertical"
-              android:paddingBottom="8dp">
+              android:orientation="vertical">
     <TextView
             android:id="@+id/textview_mainscr_cat_language"
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding_list_item_leftright"
+            android:paddingRight="@dimen/padding_list_item_leftright"
+            android:textSize="@dimen/text_size_list_item_secondary"
             android:textColor="@color/textSecondary"/>
 
     <TextView
             android:id="@+id/textview_mainscr_cat_name"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="8dp"
+            android:layout_height="@dimen/height_list_item_oneline"
+            android:paddingLeft="@dimen/padding_list_item_leftright"
+            android:paddingRight="@dimen/padding_list_item_leftright"
+            android:paddingTop="@dimen/padding_list_item_topbottom_small"
+            android:paddingBottom="@dimen/padding_list_item_topbottom_small"
+            android:gravity="center_vertical"
             android:singleLine="true"
             android:textColor="@color/textPrimary"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_list_item_primary"
             android:textStyle="bold"/>
 
 </LinearLayout>
