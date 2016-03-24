@@ -17,13 +17,16 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".CategoryActivity">
+                android:name=".CategoryActivity"
+                android:parentActivityName="com.ksmirenko.flexicards.app.MainActivity">
         </activity>
         <activity
-                android:name=".CardViewActivity">
+                android:name=".CardViewActivity"
+                android:parentActivityName="com.ksmirenko.flexicards.app.CategoryActivity">
         </activity>
         <activity
-                android:name=".DictionaryActivity">
+                android:name=".DictionaryActivity"
+                android:parentActivityName="com.ksmirenko.flexicards.app.CategoryActivity">
         </activity>
         <activity
                 android:name=".TestfieldActivity"

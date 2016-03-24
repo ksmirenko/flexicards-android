@@ -28,4 +28,5 @@
     <string name="random_order">Random order</string>
     <string name="only_unanswered">Only unanswered last time</string>
     <string name="no_unanswered_cards">No unanswered cards; showing all</string>
+    <string name="view_all">View All</string>
 </resources>

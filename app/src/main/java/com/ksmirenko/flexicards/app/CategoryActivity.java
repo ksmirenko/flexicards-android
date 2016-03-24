@@ -1,8 +1,10 @@
 package com.ksmirenko.flexicards.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
 /**
@@ -42,14 +44,24 @@ public class CategoryActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_toolbar_category, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            // old solution for exiting, but it was freezing the app for too long
-            //NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
-            finish();
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_view_dictionary:
+                // launcing dictionary activity
+                Intent dictIntent = new Intent(this, DictionaryActivity.class);
+                dictIntent.putExtra(DictionaryActivity.ARG_CATEGORY_ID,
+                        getIntent().getLongExtra(CategoryFragment.ARG_CATEGORY_ID, 0));
+                startActivity(dictIntent);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }
