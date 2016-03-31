@@ -50,7 +50,6 @@ public class CardViewActivity extends AppCompatActivity
         }
 
         // setting up adapter
-//        CardsPagerAdapter pagerAdapter = new CardsPagerAdapter(getSupportFragmentManager(), cardCursor);
         CardsPagerAdapter pagerAdapter = new CardsPagerAdapter(getFragmentManager(), cardCursor, isBackFirst);
         cardContainerPager = (ViewPager) findViewById(R.id.viewpager_card_container);
         cardContainerPager.setAdapter(pagerAdapter);

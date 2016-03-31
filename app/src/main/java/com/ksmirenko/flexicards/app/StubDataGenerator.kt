@@ -16,7 +16,6 @@ object StubDataGenerator {
             Category(41, "Английский", "RU"),
             Category(42, "Испанский", "RU"),
             Category(43, "Spanish", "EN")
-//            Category(44, "Long Content. Very long content and very long category name", "EN")
     )
 
     val stubPacks : List<CardPack> = listOf(
@@ -81,31 +80,6 @@ object StubDataGenerator {
                     )
 
             )
-//            CardPack(
-//                    "Long Content. Very long content and very long category name",
-//                    "EN",
-//                    "Sample very-very-very-very-very-very long module name",
-//                    listOf(
-//                            Pair("front content", "back content"),
-//                            Pair("longer, but not too long front content", "back content"),
-//                            Pair("front content", "longer, but not too long back content"),
-//                            Pair("longer, but not too long front content", "longer, but not too long back content"),
-//                            Pair("Incredibly long front content: bla-bla-bla-bla-bla-bla-bla-bla-bla-bla-bla-bla stop",
-//                                    "longer, but not too long back content"),
-//                            Pair("longer, but not too long front content",
-//                                    "Incredibly long back content: bla-bla-bla-bla-bla-bla-bla-bla-bla-bla-bla-bla stop"),
-//                            Pair("FRONT CONTENT 2 front content FRONT CONTENT front content FRONT CONTENT front content " +
-//                                    "FRONT CONTENT front content FRONT CONTENT front content FRONT CONTENT front content !",
-//                                    "BACK CONTENT 2 back content BACK CONTENT back content BACK CONTENT back content " +
-//                                    "BACK CONTENT back content BACK CONTENT back content BACK CONTENT back content " +
-//                                    "BACK CONTENT back content BACK CONTENT back content BACK CONTENT back content !"),
-//                            Pair("FRONT CONTENT front content FRONT CONTENT front content FRONT CONTENT front content " +
-//                                    "FRONT CONTENT front content FRONT CONTENT front content FRONT CONTENT front content !",
-//                                    "BACK CONTENT back content BACK CONTENT back content BACK CONTENT back content " +
-//                                    "BACK CONTENT back content BACK CONTENT back content BACK CONTENT back content " +
-//                                    "BACK CONTENT back content BACK CONTENT back content BACK CONTENT back content !")
-//                    )
-//            )
     )
 
     fun fillDatabaseIfEmpty(dbmanager : DatabaseManager) {

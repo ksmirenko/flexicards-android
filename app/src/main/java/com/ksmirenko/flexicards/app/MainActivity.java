@@ -64,16 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        /*switch (item.getItemId()) {
-            case R.id.action_settings:
-                // settings action event handling should be here
-                return true;
-            case R.id.action_add_card:
-                // card add action event handling should be here
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }*/
         return false;
     }
 

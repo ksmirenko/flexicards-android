@@ -63,7 +63,6 @@ class CardContainerFragment : Fragment() {
         // adding card layout
         val cardFragment = if (isShowingBack) CardBackFragment(callbacks) else CardFrontFragment(callbacks)
         cardFragment.arguments = args // small workaround
-        //        fragmentManager
         childFragmentManager
                 .beginTransaction()
                 .add(R.id.layout_card_container, cardFragment)
@@ -83,13 +82,8 @@ class CardContainerFragment : Fragment() {
     }
 
     private val flipCard = {
-        //        if (isShowingBack) {
-        //            fragmentManager.popBackStack()
-        //            return
-        //        }
         val newFragment = if (isShowingBack) CardFrontFragment(callbacks) else CardBackFragment(callbacks)
         newFragment.arguments = arguments
-        //        fragmentManager
         childFragmentManager
                 .beginTransaction()
                 .setCustomAnimations(
@@ -97,7 +91,6 @@ class CardContainerFragment : Fragment() {
                         R.animator.card_flip_left_in, R.animator.card_flip_left_out
                 )
                 .replace(R.id.layout_card_container, newFragment)
-                //                .addToBackStack(null)
                 .commit()
         isShowingBack = !isShowingBack
     }

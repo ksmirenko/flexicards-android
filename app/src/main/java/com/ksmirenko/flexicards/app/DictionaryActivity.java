@@ -1,20 +1,15 @@
 package com.ksmirenko.flexicards.app;
 
+import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.method.ScrollingMovementMethod;
 import android.view.*;
 import android.widget.*;
 import com.ksmirenko.flexicards.app.adapters.DictionaryCursorAdapter;
-import com.ksmirenko.flexicards.app.datatypes.Category;
 
 /**
  * Dictionary activity - category selection screen.
@@ -45,44 +40,24 @@ public class DictionaryActivity extends AppCompatActivity {
         final DictionaryCursorAdapter adapter = new DictionaryCursorAdapter(this, cursor);
         final ListView listView = (ListView) findViewById(R.id.listview_dictionary);
         listView.setAdapter(adapter);
-        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // WARNING: the window is not reused, may cost memory
-                // preparing view for popup window
-                final Context context = view.getContext();
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View cardDetailView = inflater.inflate(R.layout.fragment_dict_card_detail, null); // NB: listView??
-                final TextView tvFront = (TextView) cardDetailView.findViewById(R.id.textview_card_detail_front);
-                final TextView tvBack = (TextView) cardDetailView.findViewById(R.id.textview_card_detail_back);
-                // setting textviews to be scrollable
-                tvFront.setMovementMethod(new ScrollingMovementMethod());
-                tvBack.setMovementMethod(new ScrollingMovementMethod());
-                // fetching content from cursor and filling textviews
-                cursor.moveToPosition(position);
-                tvFront.setText(cursor.getString(DatabaseManager.CardQuery.Companion.getCOLUMN_INDEX_FRONT()));
-                tvBack.setText(cursor.getString(DatabaseManager.CardQuery.Companion.getCOLUMN_INDEX_BACK()));
-                // preparing and showing popup window
-                final PopupWindow cardDetailWindow = new PopupWindow(
-                        cardDetailView,
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                );
-                cardDetailWindow.setOutsideTouchable(true);
-                cardDetailWindow.setTouchable(true);
-                cardDetailWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-                cardDetailWindow.setTouchInterceptor(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        cardDetailWindow.dismiss();
-                        // WARNING: another window immediately opens when touching another list item outside this window
-                        // so the hell with that, I disabled showing detail popup
-                        return true;
-                    }
-                });
-                cardDetailWindow.showAtLocation(listView, Gravity.CENTER, 0, 0);
-            }
-        });*/
+
+        handleIntent(getIntent());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_toolbar_dictionary, menu);
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.search_dict).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+
+        return true;
     }
 
     @Override
@@ -93,5 +68,12 @@ public class DictionaryActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            // TODO: use the query to filter the dictionary
+        }
     }
 }
