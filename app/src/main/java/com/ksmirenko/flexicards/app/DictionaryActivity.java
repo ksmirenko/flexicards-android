@@ -65,6 +65,7 @@ public class DictionaryActivity extends AppCompatActivity {
         // associating searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.search_dict).getActionView();
+        searchView.setMaxWidth(10000);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false);
 
