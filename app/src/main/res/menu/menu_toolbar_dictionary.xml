@@ -4,6 +4,7 @@
     <item android:id="@+id/search_dict"
           android:title="@string/hint_filter_dictionary"
           android:icon="@drawable/ic_search_black_24dp"
+          app:actionLayout="@layout/searchview_dictionary"
           app:showAsAction="collapseActionView|ifRoom"
-          app:actionViewClass="android.widget.SearchView" />
+          app:actionViewClass="android.widget.SearchView"/>
 </menu>

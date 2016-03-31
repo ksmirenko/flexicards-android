@@ -22,6 +22,8 @@ public class DictionaryActivity extends AppCompatActivity {
      */
     public static final String ARG_CATEGORY_ID = "category_id";
 
+    private CursorAdapter adapter;
+
     @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +36,25 @@ public class DictionaryActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.dictionary);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // filling the main list view with categoryInfos
+        // filling the main list view
         long categoryId = getIntent().getLongExtra(ARG_CATEGORY_ID, 0);
         final Cursor cursor = DatabaseManager.INSTANCE.getDictionary(categoryId);
-        final DictionaryCursorAdapter adapter = new DictionaryCursorAdapter(this, cursor);
+        //adapter = new DictionaryCursorAdapter(this, cursor);
+        adapter = new SimpleCursorAdapter(this, R.layout.listview_item_dictionary, cursor,
+                DatabaseManager.CardQuery.Companion.getCursorAdapterArg(),
+                new int[]{R.id.textview_listitem_dict_front, R.id.textview_listitem_dict_back},
+                CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+        adapter.setFilterQueryProvider(new DatabaseManager.DictionaryFilterQueryProvider(categoryId));
         final ListView listView = (ListView) findViewById(R.id.listview_dictionary);
         listView.setAdapter(adapter);
+        listView.setTextFilterEnabled(true);
 
         handleIntent(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        handleIntent(intent);
     }
 
     @Override
@@ -49,15 +62,29 @@ public class DictionaryActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_toolbar_dictionary, menu);
 
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.search_dict).getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
+        // associating searchable configuration with the SearchView
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search_dict).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false);
 
-        return true;
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                adapter.notifyDataSetChanged();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+                adapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -73,7 +100,8 @@ public class DictionaryActivity extends AppCompatActivity {
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            // TODO: use the query to filter the dictionary
+            adapter.getFilter().filter(query);
+            adapter.notifyDataSetChanged();
         }
     }
 }

@@ -26,7 +26,8 @@
         </activity>
         <activity
                 android:name=".DictionaryActivity"
-                android:parentActivityName="com.ksmirenko.flexicards.app.CategoryActivity">
+                android:parentActivityName="com.ksmirenko.flexicards.app.CategoryActivity"
+                android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>

@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
+import android.widget.FilterQueryProvider
 import com.ksmirenko.flexicards.app.datatypes.*
 import com.ksmirenko.flexicards.app.Utils
 import java.util.*
@@ -44,6 +45,9 @@ object DatabaseManager :
     private val SQL_DELETE_CARD_TABLE = "DROP TABLE IF EXISTS " + CardEntry.TABLE_NAME;
     private val SQL_DELETE_CATEGORY_TABLE = "DROP TABLE IF EXISTS " + CategoryEntry.TABLE_NAME;
     private val SQL_DELETE_MODULE_TABLE = "DROP TABLE IF EXISTS " + ModuleEntry.TABLE_NAME;
+
+    private val COLLATION = "COLLATE UNICODE";
+    private val COLLATION_SP = " COLLATE UNICODE";
 
     override fun onCreate(db : SQLiteDatabase) {
         db.execSQL(SQL_DELETE_CARD_TABLE)
@@ -107,7 +111,7 @@ object DatabaseManager :
             CardQuery.getQueryArg(),
             CardEntry.COLUMN_NAME_CATEGORY_ID + "=?",
             arrayOf(categoryId.toString()),
-            null, null, CardEntry.COLUMN_NAME_FRONT_CONTENT)
+            null, null, CardEntry.COLUMN_NAME_FRONT_CONTENT + COLLATION_SP)
 
     /**
      * Returns a Cursor to (all or unanswered last time) cards of the specified module.
@@ -118,7 +122,7 @@ object DatabaseManager :
                 arrayOf(if (isUnansweredOnly) ModuleEntry.COLUMN_NAME_UNANSWERED else ModuleEntry.COLUMN_NAME_CARDS),
                 ModuleEntry._ID + "=?",
                 arrayOf(moduleId.toString()),
-                null, null, null)
+                null, null, COLLATION)
         moduleCursor.moveToFirst()
         val moduleCardsRaw : String? = moduleCursor.getString(0)
         // if there is no data about unanswered, return all
@@ -129,7 +133,7 @@ object DatabaseManager :
                     arrayOf(ModuleEntry.COLUMN_NAME_CARDS),
                     ModuleEntry._ID + "=?",
                     arrayOf(moduleId.toString()),
-                    null, null, null)
+                    null, null, COLLATION)
             anotherModuleCursor.moveToFirst()
             anotherModuleCursor.getString(0)
         }
@@ -141,7 +145,7 @@ object DatabaseManager :
                 CardQuery.getQueryArg(),
                 CardEntry._ID + " in " + Utils.stringToSqlReadyString(moduleCards),
                 null, null, null,
-                if (isRandom) "RANDOM()" else null)
+                if (isRandom) "RANDOM()" + COLLATION_SP else COLLATION)
     }
 
     /**
@@ -151,7 +155,7 @@ object DatabaseManager :
         val db = readableDatabase
         // This SQL call should be conformed with CategoryQuery
         val sql = "SELECT * FROM ${CategoryEntry.TABLE_NAME} " +
-                "ORDER BY ${CategoryEntry.COLUMN_NAME_LANGUAGE}, ${CategoryEntry.COLUMN_NAME_NAME}"
+                "ORDER BY ${CategoryEntry.COLUMN_NAME_LANGUAGE}, ${CategoryEntry.COLUMN_NAME_NAME}$COLLATION_SP"
         return db.rawQuery(sql, null)
     }
 
@@ -163,7 +167,7 @@ object DatabaseManager :
             ModuleQuery.getNamesQueryArg(),
             ModuleEntry.COLUMN_NAME_CATEGORY_ID + "=?",
             arrayOf(categoryId.toString()),
-            null, null, ModuleEntry.COLUMN_NAME_NAME)
+            null, null, ModuleEntry.COLUMN_NAME_NAME + COLLATION_SP)
 
     /**
      * Inserts [pack] into DB.
@@ -339,6 +343,8 @@ object DatabaseManager :
             val COLUMN_INDEX_BACK = 2
             fun getQueryArg() = arrayOf(CardEntry._ID, CardEntry.COLUMN_NAME_FRONT_CONTENT,
                     CardEntry.COLUMN_NAME_BACK_CONTENT)
+            fun getCursorAdapterArg() = arrayOf(CardEntry.COLUMN_NAME_FRONT_CONTENT,
+                    CardEntry.COLUMN_NAME_BACK_CONTENT)
         }
     }
 
@@ -349,6 +355,20 @@ object DatabaseManager :
         companion object {
             val COLUMN_INDEX_NAME = 1
             fun getNamesQueryArg() = arrayOf(ModuleEntry._ID, ModuleEntry.COLUMN_NAME_NAME)
+        }
+    }
+
+    class DictionaryFilterQueryProvider(val categoryId : Long) : FilterQueryProvider {
+        override fun runQuery(constraint : CharSequence?) : Cursor? {
+            val constr = "%${constraint.toString()}%"
+            return readableDatabase.query(
+                    CardEntry.TABLE_NAME,
+                    CardQuery.getQueryArg(),
+                    "${CardEntry.COLUMN_NAME_CATEGORY_ID}=? AND " +
+                            "(${CardEntry.COLUMN_NAME_FRONT_CONTENT} like ? " +
+                            "OR ${CardEntry.COLUMN_NAME_BACK_CONTENT} like ?)",
+                    arrayOf(categoryId.toString(), constr, constr),
+                    null, null, CardEntry.COLUMN_NAME_FRONT_CONTENT + COLLATION_SP)
         }
     }
 
