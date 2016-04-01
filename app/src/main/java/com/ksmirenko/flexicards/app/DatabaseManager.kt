@@ -122,7 +122,7 @@ object DatabaseManager :
                 arrayOf(if (isUnansweredOnly) ModuleEntry.COLUMN_NAME_UNANSWERED else ModuleEntry.COLUMN_NAME_CARDS),
                 ModuleEntry._ID + "=?",
                 arrayOf(moduleId.toString()),
-                null, null, COLLATION)
+                null, null, null)
         moduleCursor.moveToFirst()
         val moduleCardsRaw : String? = moduleCursor.getString(0)
         // if there is no data about unanswered, return all
@@ -133,7 +133,7 @@ object DatabaseManager :
                     arrayOf(ModuleEntry.COLUMN_NAME_CARDS),
                     ModuleEntry._ID + "=?",
                     arrayOf(moduleId.toString()),
-                    null, null, COLLATION)
+                    null, null, null)
             anotherModuleCursor.moveToFirst()
             anotherModuleCursor.getString(0)
         }
@@ -145,7 +145,7 @@ object DatabaseManager :
                 CardQuery.getQueryArg(),
                 CardEntry._ID + " in " + Utils.stringToSqlReadyString(moduleCards),
                 null, null, null,
-                if (isRandom) "RANDOM()" + COLLATION_SP else COLLATION)
+                if (isRandom) "RANDOM()" else null)
     }
 
     /**

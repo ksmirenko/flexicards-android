@@ -24,6 +24,7 @@ import android.os.Bundle
 import android.support.annotation.ColorRes
 import android.support.v4.content.ContextCompat
 import android.view.*
+import android.widget.ImageView
 //import android.support.v4.app.Fragment
 import android.widget.TextView
 
@@ -48,7 +49,8 @@ class CardContainerFragment : Fragment() {
         callbacks = context as Callbacks
     }
 
-    @Suppress("OverridingDeprecatedMember")
+    // this is needed to support lower APIs
+    @Suppress("OverridingDeprecatedMember", "DEPRECATION")
     override fun onAttach(activity : Activity) {
         super.onAttach(activity)
         callbacks = activity as Callbacks
@@ -104,6 +106,8 @@ class CardContainerFragment : Fragment() {
             textView.text = arguments.getString(CardContainerFragment.ARG_FRONT_CONTENT)
             rootView.findViewById(R.id.button_cardview_know).setOnClickListener { callbacks.onCardButtonClicked(true) }
             rootView.findViewById(R.id.button_cardview_notknow).setOnClickListener { callbacks.onCardButtonClicked(false) }
+            val iconQuit = rootView.findViewById(R.id.icon_cardview_quit) as ImageView
+            iconQuit.setOnClickListener { callbacks.onQuitButtonClicked() }
             return rootView
         }
     }
@@ -117,12 +121,17 @@ class CardContainerFragment : Fragment() {
             textView.text = arguments.getString(CardContainerFragment.ARG_BACK_CONTENT)
             rootView.findViewById(R.id.button_cardview_know).setOnClickListener { callbacks.onCardButtonClicked(true) }
             rootView.findViewById(R.id.button_cardview_notknow).setOnClickListener { callbacks.onCardButtonClicked(false) }
+            val iconQuit = rootView.findViewById(R.id.icon_cardview_quit) as ImageView
+            iconQuit.setOnClickListener { callbacks.onQuitButtonClicked() }
             return rootView
         }
     }
 
     class DummyCallbacks() : Callbacks {
         override fun onCardButtonClicked(knowIt : Boolean) {
+        }
+
+        override fun onQuitButtonClicked() {
         }
     }
 
@@ -152,5 +161,6 @@ class CardContainerFragment : Fragment() {
 
     interface Callbacks {
         fun onCardButtonClicked(knowIt : Boolean)
+        fun onQuitButtonClicked()
     }
 }
