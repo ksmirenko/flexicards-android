@@ -8,7 +8,8 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/StandardListItem">
+            style="@style/StandardListItem"
+            android:layout_marginTop="8dp">
         <TextView
                 android:id="@+id/textview_dlg_module_whichside"
                 android:layout_width="wrap_content"
@@ -16,8 +17,6 @@
                 style="@style/ListItemTextView"
                 android:layout_centerVertical="true"
                 android:layout_alignParentStart="true"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:text="@string/front_side_first"
                 tools:ignore="RelativeOverlap"/>
         <Switch
@@ -28,44 +27,31 @@
                 android:layout_alignParentEnd="true"/>
     </RelativeLayout>
 
-    <RelativeLayout
-            android:layout_width="match_parent"
+    <CheckBox
+            android:id="@+id/cb_dlg_module_random"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/StandardListItem">
-        <CheckBox
-                android:id="@+id/cb_dlg_module_random"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:checked="true"/>
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/ListItemTextView"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/cb_dlg_module_random"
-                android:layout_marginStart="8dp"
-                android:text="@string/random_order"/>
-    </RelativeLayout>
+            style="@style/StandardListItem"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:paddingLeft="8dp"
+            android:paddingStart="8dp"
+            android:checked="true"
+            android:text="@string/random_order"
+            android:textSize="@dimen/text_size_list_item_primary"
+            tools:ignore="RtlHardcoded,RtlSymmetry"/>
 
-    <RelativeLayout
-            android:layout_width="match_parent"
+    <CheckBox
+            android:id="@+id/cb_dlg_module_unanswered"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/StandardListItem">
-        <CheckBox
-                android:id="@+id/cb_dlg_module_unanswered"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"/>
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/ListItemTextView"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/cb_dlg_module_unanswered"
-                android:layout_marginStart="8dp"
-                android:text="@string/only_unanswered"
-                android:singleLine="false"
-                tools:ignore="RelativeOverlap"/>
-    </RelativeLayout>
+            style="@style/StandardListItem"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:paddingLeft="8dp"
+            android:paddingStart="8dp"
+            android:checked="true"
+            android:text="@string/only_unanswered"
+            android:textSize="@dimen/text_size_list_item_primary"
+            tools:ignore="RtlHardcoded,RtlSymmetry"/>
 </LinearLayout>

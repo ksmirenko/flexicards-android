@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         DatabaseManager.INSTANCE.init();
         //DatabaseManager.INSTANCE.resetAll(); // FOR TESTING ONLY
         // calling StubDataGenerator
-        StubDataGenerator.INSTANCE.fillDatabaseIfEmpty(DatabaseManager.INSTANCE);
+        StubDataGenerator.INSTANCE.fillDatabaseIfEmptyOrOutdated(DatabaseManager.INSTANCE);
         // filling the main list view with categoryInfos
         ListView listView = (ListView) findViewById(R.id.listview_dictionary);
         Cursor cursor = DatabaseManager.INSTANCE.getCategories();
