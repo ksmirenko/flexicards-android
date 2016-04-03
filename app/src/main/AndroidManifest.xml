@@ -17,13 +17,22 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".CategoryActivity">
+                android:name=".CategoryActivity"
+                android:parentActivityName="com.ksmirenko.flexicards.app.MainActivity">
         </activity>
         <activity
-                android:name=".CardViewActivity">
+                android:name=".CardViewActivity"
+                android:parentActivityName="com.ksmirenko.flexicards.app.CategoryActivity">
         </activity>
         <activity
-                android:name=".DictionaryActivity">
+                android:name=".DictionaryActivity"
+                android:parentActivityName="com.ksmirenko.flexicards.app.CategoryActivity"
+                android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                       android:resource="@xml/searchable_dict"/>
         </activity>
         <activity
                 android:name=".TestfieldActivity"

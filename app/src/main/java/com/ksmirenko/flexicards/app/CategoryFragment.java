@@ -60,18 +60,6 @@ public class CategoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_category, container, false);
 
-        // setting up onClick for dictionary opening
-        TextView tvDictionary = (TextView) rootView.findViewById(R.id.textview_catscr_dictionary);
-        tvDictionary.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // launcing dictionary activity
-                Intent dictIntent = new Intent(getContext(), DictionaryActivity.class);
-                dictIntent.putExtra(DictionaryActivity.ARG_CATEGORY_ID, categoryId);
-                startActivity(dictIntent);
-            }
-        });
-
         // filling the list with modules and setting up onClick
         if (modulesAdapter != null) {
             ListView listView = (ListView) rootView.findViewById(R.id.listview_modules);
@@ -132,7 +120,7 @@ public class CategoryFragment extends Fragment {
             DatabaseManager.INSTANCE.updateModuleProgress(moduleId, unanswered);
             Toast.makeText(
                     getContext(),
-                    "Cards answered: " + (totalCount - unansweredCount) + "/" + totalCount,
+                    getString(R.string.cards_answered) + (totalCount - unansweredCount) + "/" + totalCount,
                     Toast.LENGTH_SHORT
             ).show();
         }

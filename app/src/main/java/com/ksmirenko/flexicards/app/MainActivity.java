@@ -1,11 +1,16 @@
 package com.ksmirenko.flexicards.app;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.*;
 import android.widget.*;
 import com.ksmirenko.flexicards.app.adapters.CategoryCursorAdapter;
@@ -38,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         DatabaseManager.INSTANCE.init();
         //DatabaseManager.INSTANCE.resetAll(); // FOR TESTING ONLY
         // calling StubDataGenerator
-        StubDataGenerator.INSTANCE.fillDatabaseIfEmpty(DatabaseManager.INSTANCE);
+        StubDataGenerator.INSTANCE.fillDatabaseIfEmptyOrOutdated(DatabaseManager.INSTANCE);
         // filling the main list view with categoryInfos
         ListView listView = (ListView) findViewById(R.id.listview_dictionary);
         Cursor cursor = DatabaseManager.INSTANCE.getCategories();
@@ -64,17 +69,42 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        /*switch (item.getItemId()) {
-            case R.id.action_settings:
-                // settings action event handling should be here
-                return true;
-            case R.id.action_add_card:
-                // card add action event handling should be here
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                showAboutDialog();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-        }*/
-        return false;
+        }
+    }
+
+    private void showAboutDialog() {
+        final SpannableString s = new SpannableString(getString(R.string.text_about));
+        Linkify.addLinks(s, Linkify.ALL);
+
+        final AlertDialog d = new AlertDialog.Builder(MainActivity.this)
+                .setPositiveButton(android.R.string.ok, null)
+                .setMessage(s)
+                .create();
+        d.show();
+
+        ((TextView)d.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+
+        /*LayoutInflater inflater =
+                (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View dlgView = inflater.inflate(R.layout.fragment_about, null, false);
+        final TextView tv = (TextView) dlgView.findViewById(R.id.textview_about_contents);
+        tv.setMovementMethod(LinkMovementMethod.getInstance());
+        // showing module settings dialog dialog
+        new AlertDialog.Builder(MainActivity.this)
+                .setView(dlgView)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        })
+                .show();*/
     }
 
     private static class CategoryArrayAdapter extends ArrayAdapter<Category> {

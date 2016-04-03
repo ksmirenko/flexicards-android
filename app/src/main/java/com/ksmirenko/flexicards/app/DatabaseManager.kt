@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
+import android.widget.FilterQueryProvider
 import com.ksmirenko.flexicards.app.datatypes.*
 import com.ksmirenko.flexicards.app.Utils
 import java.util.*
@@ -45,6 +46,8 @@ object DatabaseManager :
     private val SQL_DELETE_CATEGORY_TABLE = "DROP TABLE IF EXISTS " + CategoryEntry.TABLE_NAME;
     private val SQL_DELETE_MODULE_TABLE = "DROP TABLE IF EXISTS " + ModuleEntry.TABLE_NAME;
 
+    private val COLLATION = " COLLATE UNICODE";
+
     override fun onCreate(db : SQLiteDatabase) {
         db.execSQL(SQL_DELETE_CARD_TABLE)
         db.execSQL(SQL_DELETE_CATEGORY_TABLE)
@@ -55,14 +58,11 @@ object DatabaseManager :
     }
 
     override fun onUpgrade(db : SQLiteDatabase, oldVersion : Int, newVersion : Int) {
-        db.execSQL(SQL_DELETE_CARD_TABLE)
-        db.execSQL(SQL_DELETE_CATEGORY_TABLE)
-        db.execSQL(SQL_DELETE_MODULE_TABLE)
         onCreate(db)
     }
 
     /**
-     * Manually resets DB.
+     * Manually resets DB, deleting all tables (categories, cards and modules), and creating empty tables.
      */
     fun resetAll() {
         val db = this.readableDatabase
@@ -107,7 +107,7 @@ object DatabaseManager :
             CardQuery.getQueryArg(),
             CardEntry.COLUMN_NAME_CATEGORY_ID + "=?",
             arrayOf(categoryId.toString()),
-            null, null, CardEntry.COLUMN_NAME_FRONT_CONTENT)
+            null, null, CardEntry.COLUMN_NAME_FRONT_CONTENT + COLLATION)
 
     /**
      * Returns a Cursor to (all or unanswered last time) cards of the specified module.
@@ -151,7 +151,7 @@ object DatabaseManager :
         val db = readableDatabase
         // This SQL call should be conformed with CategoryQuery
         val sql = "SELECT * FROM ${CategoryEntry.TABLE_NAME} " +
-                "ORDER BY ${CategoryEntry.COLUMN_NAME_LANGUAGE}, ${CategoryEntry.COLUMN_NAME_NAME}"
+                "ORDER BY ${CategoryEntry.COLUMN_NAME_LANGUAGE}, ${CategoryEntry.COLUMN_NAME_NAME}$COLLATION"
         return db.rawQuery(sql, null)
     }
 
@@ -163,7 +163,7 @@ object DatabaseManager :
             ModuleQuery.getNamesQueryArg(),
             ModuleEntry.COLUMN_NAME_CATEGORY_ID + "=?",
             arrayOf(categoryId.toString()),
-            null, null, ModuleEntry.COLUMN_NAME_NAME)
+            null, null, ModuleEntry.COLUMN_NAME_NAME + COLLATION)
 
     /**
      * Inserts [pack] into DB.
@@ -230,23 +230,44 @@ object DatabaseManager :
         }
     }
 
+    /**
+     * Checks whether table of categories is empty.
+     */
     fun isCategoriesEmpty() : Boolean {
         val db = readableDatabase
         val cursor : Cursor? = db.rawQuery("SELECT _ID FROM ${CategoryEntry.TABLE_NAME} ", null)
         return (cursor == null || cursor.count <= 0)
     }
 
+    /**
+     * Checks whether table of cards is empty.
+     */
     fun isCardsEmpty() : Boolean {
         val db = readableDatabase
         val cursor : Cursor? = db.rawQuery("SELECT _ID FROM ${CardEntry.TABLE_NAME} ", null)
         return (cursor == null || cursor.count <= 0)
     }
 
+    /**
+     * Saves user progress on a module.
+     * @param moduleId Module ID.
+     * @param unanswered Information about unanswered cards in the format provided by [Utils] object.
+     */
     fun updateModuleProgress(moduleId : Long, unanswered : String) {
         val db = writableDatabase
         val values = ContentValues()
         values.put(ModuleEntry.COLUMN_NAME_UNANSWERED, unanswered)
         db.update(ModuleEntry.TABLE_NAME, values, ModuleEntry._ID + "=?", arrayOf(moduleId.toString()))
+    }
+
+    /**
+     * Checks whether a card with specific front content exists in the DB.
+     */
+    fun findCard(frontContent : String) : Boolean {
+        val db = readableDatabase
+        val cursor : Cursor? = db.rawQuery("SELECT _ID FROM ${CardEntry.TABLE_NAME} " +
+                "WHERE ${CardQuery.COLUMN_INDEX_FRONT} = ?", arrayOf(frontContent))
+        return (cursor != null && cursor.count > 0)
     }
 
     // FIXME: should not add if a category/module with the same name exists
@@ -339,6 +360,8 @@ object DatabaseManager :
             val COLUMN_INDEX_BACK = 2
             fun getQueryArg() = arrayOf(CardEntry._ID, CardEntry.COLUMN_NAME_FRONT_CONTENT,
                     CardEntry.COLUMN_NAME_BACK_CONTENT)
+            fun getCursorAdapterArg() = arrayOf(CardEntry.COLUMN_NAME_FRONT_CONTENT,
+                    CardEntry.COLUMN_NAME_BACK_CONTENT)
         }
     }
 
@@ -349,6 +372,20 @@ object DatabaseManager :
         companion object {
             val COLUMN_INDEX_NAME = 1
             fun getNamesQueryArg() = arrayOf(ModuleEntry._ID, ModuleEntry.COLUMN_NAME_NAME)
+        }
+    }
+
+    class DictionaryFilterQueryProvider(val categoryId : Long) : FilterQueryProvider {
+        override fun runQuery(constraint : CharSequence?) : Cursor? {
+            val constr = "%${constraint.toString()}%"
+            return readableDatabase.query(
+                    CardEntry.TABLE_NAME,
+                    CardQuery.getQueryArg(),
+                    "${CardEntry.COLUMN_NAME_CATEGORY_ID}=? AND " +
+                            "(${CardEntry.COLUMN_NAME_FRONT_CONTENT} like ? " +
+                            "OR ${CardEntry.COLUMN_NAME_BACK_CONTENT} like ?)",
+                    arrayOf(categoryId.toString(), constr, constr),
+                    null, null, CardEntry.COLUMN_NAME_FRONT_CONTENT + COLLATION)
         }
     }
 

@@ -4,9 +4,9 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:paddingStart="@dimen/padding_list_item_left"
-              android:paddingTop="@dimen/padding_list_item_topbottom"
-              android:paddingBottom="@dimen/padding_list_item_topbottom"
+              android:paddingStart="@dimen/padding_list_item_leftright"
+              android:paddingTop="@dimen/padding_list_item_topbottom_large"
+              android:paddingBottom="@dimen/padding_list_item_topbottom_large"
               android:gravity="center_vertical"
               tools:ignore="RtlSymmetry">
     <TextView

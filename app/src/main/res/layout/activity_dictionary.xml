@@ -18,6 +18,9 @@
             android:id="@+id/listview_dictionary"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/toolbar_activity_dictionary">
+            android:layout_below="@id/toolbar_activity_dictionary"
+            android:clickable="false"
+            android:listSelector="@android:color/transparent"
+            android:cacheColorHint="@android:color/transparent">
     </ListView>
 </RelativeLayout>
