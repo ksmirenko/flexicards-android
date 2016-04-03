@@ -120,7 +120,7 @@ public class CategoryFragment extends Fragment {
             DatabaseManager.INSTANCE.updateModuleProgress(moduleId, unanswered);
             Toast.makeText(
                     getContext(),
-                    "Cards answered: " + (totalCount - unansweredCount) + "/" + totalCount,
+                    getString(R.string.cards_answered) + (totalCount - unansweredCount) + "/" + totalCount,
                     Toast.LENGTH_SHORT
             ).show();
         }

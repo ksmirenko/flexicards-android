@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FlexiCards</string>
+    <string name="action_add_card">Добавить карточку</string>
+    <string name="action_delete_category">Удалить категорию</string>
+    <string name="action_settings">Настройки</string>
+    <string name="arrow_down">стрелка вниз</string>
+    <string name="arrow_left">стрелка влево</string>
+    <string name="arrow_right">стрелка вправо</string>
+    <string name="arrow_up">стрелка вверх</string>
+    <string name="back_side_first">С оборотной стороны</string>
+    <string name="button_knew">Знаю!</string>
+    <string name="button_notknew">Не знаю</string>
+    <string name="dictionary">Словарь</string>
+    <string name="front_side_first">С лицевой стороны</string>
+    <string name="help">помощь</string>
+    <string name="hint_card_back">оборотная сторона (на основном языке категории)</string>
+    <string name="hint_card_front">лицевая сторона</string>
+    <string name="hint_category_lang">код языка</string>
+    <string name="hint_category_name">имя категории</string>
+    <string name="hint_filter_dictionary">Поиск</string>
+    <string name="new_module">Создать модуль</string>
+    <string name="no_unanswered_cards">Нет неотвеченных; открыты все</string>
+    <string name="only_unanswered">Только неотвеченные</string>
+    <string name="quit">Выход</string>
+    <string name="random_order">Перемешать</string>
+    <string name="tap_to_flip">карточки переворачиваются\nпо касанию</string>
+    <string name="text_card_hint_down">Не знаю :(</string>
+    <string name="text_card_hint_left">Пропустить</string>
+    <string name="text_card_hint_right">Назад</string>
+    <string name="text_card_hint_up">Знаю!</string>
+    <string name="view_all">Просмотреть все</string>
+    <string name="cards_answered">Отвечено:</string>
+</resources>

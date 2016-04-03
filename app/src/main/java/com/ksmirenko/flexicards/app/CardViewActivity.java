@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.widget.Toast;
 import com.ksmirenko.flexicards.app.adapters.CardsPagerAdapter;
 
@@ -40,8 +41,10 @@ public class CardViewActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cards_view);
 
-        // setting up top button
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // showing "tap to flip cards" message
+        Toast toast = Toast.makeText(this, R.string.tap_to_flip, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 50);
+        toast.show();
 
         // extracting arguments
         Intent intent = getIntent();
