@@ -31,4 +31,6 @@
     <string name="hint_filter_dictionary">Search</string>
     <string name="quit">Quit</string>
     <string name="cards_answered">"Cards answered: "</string>
+    <string name="about">About</string>
+    <string name="text_about">© 2016 Kirill Smirenko\n\nThe project is open-source and is distributed under Apache License 2.0.\nhttps://github.com/ksmirenko/flexicards-android\n\nSome content has been taken from <a href="http://english4real.com">english4real.com</a> with owner\'s permission.</string>
 </resources>

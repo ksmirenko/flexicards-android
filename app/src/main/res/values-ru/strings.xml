@@ -31,4 +31,6 @@
     <string name="text_card_hint_up">Знаю!</string>
     <string name="view_all">Просмотреть все</string>
     <string name="cards_answered">Отвечено:</string>
+    <string name="about">О приложении</string>
+    <string name="text_about">© 2016 Кирилл Смиренко\n\nЭто проект с открытым исходным кодом и распространяется по лицензии Apache License 2.0.\nhttps://github.com/ksmirenko/flexicards-android\n\nЧасть контента взята с сайта <a href="http://english4real.com">english4real.com</a> с разрешения автора.</string>
 </resources>
