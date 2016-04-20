@@ -9,8 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.*;
 import android.widget.*;
-import com.ksmirenko.flexicards.core.adapters.DictionaryCursorAdapter;
-import com.ksmirenko.flexicards.core.DatabaseManager;
+
+import com.ksmirenko.flexicards.core.DictionaryFilterQueryProvider;
+import com.ksmirenko.flexicards.core.FlexiDatabase;
+import com.ksmirenko.flexicards.core.FlexiDatabaseProvider;
 import com.ksmirenko.flexicards.core.R;
 
 /**
@@ -40,13 +42,14 @@ public class DictionaryActivity extends AppCompatActivity {
 
         // filling the main list view
         long categoryId = getIntent().getLongExtra(ARG_CATEGORY_ID, 0);
-        final Cursor cursor = DatabaseManager.INSTANCE.getDictionary(categoryId);
+        final FlexiDatabase db = FlexiDatabaseProvider.INSTANCE.getDb();
+        final Cursor cursor = db.getDictionary(categoryId);
         //adapter = new DictionaryCursorAdapter(this, cursor);
         adapter = new SimpleCursorAdapter(this, R.layout.listview_item_dictionary, cursor,
-                DatabaseManager.CardQuery.Companion.getCursorAdapterArg(),
+                FlexiDatabase.CardQuery.Companion.getCursorAdapterArg(),
                 new int[]{R.id.textview_listitem_dict_front, R.id.textview_listitem_dict_back},
                 CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-        adapter.setFilterQueryProvider(new DatabaseManager.DictionaryFilterQueryProvider(categoryId));
+        adapter.setFilterQueryProvider(new DictionaryFilterQueryProvider(categoryId, db));
         final ListView listView = (ListView) findViewById(R.id.listview_dictionary);
         listView.setAdapter(adapter);
         listView.setTextFilterEnabled(true);

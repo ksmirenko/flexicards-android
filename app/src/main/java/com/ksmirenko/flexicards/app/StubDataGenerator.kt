@@ -2,7 +2,7 @@ package com.ksmirenko.flexicards.app
 
 import com.ksmirenko.flexicards.core.data.CardPack
 import com.ksmirenko.flexicards.core.data.Category
-import com.ksmirenko.flexicards.core.DatabaseManager
+import com.ksmirenko.flexicards.core.FlexiDatabase
 
 /**
  * Generates stub data for app testing.
@@ -253,7 +253,7 @@ object StubDataGenerator {
             )
     )
 
-    fun fillDatabaseIfEmptyOrOutdated(dbmanager: DatabaseManager) {
+    fun fillDatabaseIfEmptyOrOutdated(dbmanager: FlexiDatabase) {
         if (dbmanager.isCategoriesEmpty()) {
             addAllCategories(dbmanager)
         }
@@ -268,11 +268,11 @@ object StubDataGenerator {
         }
     }
 
-    private fun addAllCategories(dbmanager: DatabaseManager) {
+    private fun addAllCategories(dbmanager: FlexiDatabase) {
         stubCategories.forEach { cat -> dbmanager.createCategory(cat) }
     }
 
-    private fun addAllPacks(dbmanager: DatabaseManager) {
+    private fun addAllPacks(dbmanager: FlexiDatabase) {
         stubPacks.forEach { pack -> dbmanager.insertCardPack(pack, false) }
     }
 }

@@ -8,7 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.widget.Toast;
 
-import com.ksmirenko.flexicards.core.DatabaseManager;
+import com.ksmirenko.flexicards.core.FlexiDatabase;
+import com.ksmirenko.flexicards.core.FlexiDatabaseProvider;
 import com.ksmirenko.flexicards.core.adapters.CardsPagerAdapter;
 import com.ksmirenko.flexicards.core.R;
 import com.ksmirenko.flexicards.core.StringUtils;
@@ -29,7 +30,7 @@ public class CardActivity extends AppCompatActivity
     public static final String ARG_IS_UNANSWERED_ONLY = "unanswered";
 
     // for extracting data from cursor
-    private final int COLUMN_INDEX = DatabaseManager.CardQuery.Companion.getCOLUMN_INDEX_ID();
+    private final int COLUMN_INDEX = FlexiDatabase.CardQuery.Companion.getCOLUMN_INDEX_ID();
 
     private ViewPager cardContainerPager;
     private Cursor cardCursor;
@@ -46,7 +47,7 @@ public class CardActivity extends AppCompatActivity
 
         // showing "tap to flip cards" message
         Toast toast = Toast.makeText(this, R.string.tap_to_flip, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 50);
+        toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 50);
         toast.show();
 
         // extracting arguments
@@ -57,9 +58,11 @@ public class CardActivity extends AppCompatActivity
         boolean isUnansweredOnly = intent.getBooleanExtra(ARG_IS_UNANSWERED_ONLY, false);
 
         // obtaining cards
-        cardCursor = DatabaseManager.INSTANCE.getModuleCards(moduleId, isRandom, isUnansweredOnly);
+        final FlexiDatabase db = FlexiDatabaseProvider.INSTANCE.getDb();
+        cardCursor = db.getModuleCards(moduleId,
+                isRandom, isUnansweredOnly);
         if (isUnansweredOnly && cardCursor.getCount() == 0) {
-            cardCursor = DatabaseManager.INSTANCE.getModuleCards(moduleId, isRandom, false);
+            cardCursor = db.getModuleCards(moduleId, isRandom, false);
             Toast.makeText(this, R.string.no_unanswered_cards, Toast.LENGTH_SHORT).show();
         }
 

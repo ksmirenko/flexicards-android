@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CursorAdapter
 import android.widget.TextView
-import com.ksmirenko.flexicards.core.DatabaseManager
+import com.ksmirenko.flexicards.core.FlexiDatabase
 import com.ksmirenko.flexicards.core.R
 
 /**
@@ -35,8 +35,8 @@ class DictionaryCursorAdapter(context : Context, cursor : Cursor?) : CursorAdapt
 
     override fun bindView(view : View, context : Context, cursor : Cursor) {
         val holder = view.tag as DictionaryListItemViewHolder;
-        cursor.copyStringToBuffer(DatabaseManager.CardQuery.COLUMN_INDEX_FRONT, holder.frontBuffer)
-        cursor.copyStringToBuffer(DatabaseManager.CardQuery.COLUMN_INDEX_BACK, holder.backBuffer)
+        cursor.copyStringToBuffer(FlexiDatabase.CardQuery.COLUMN_INDEX_FRONT, holder.frontBuffer)
+        cursor.copyStringToBuffer(FlexiDatabase.CardQuery.COLUMN_INDEX_BACK, holder.backBuffer)
         holder.frontView.setText(holder.frontBuffer.data, 0, holder.frontBuffer.sizeCopied)
         holder.backView.setText(holder.backBuffer.data, 0, holder.backBuffer.sizeCopied)
     }

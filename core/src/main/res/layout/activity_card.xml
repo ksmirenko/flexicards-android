@@ -6,7 +6,7 @@
                 tools:context=".layout.CardActivity"
                 tools:ignore="MergeRootFrame">
 
-    <com.ksmirenko.flexicards.app.NonSwipableViewPager
+    <com.ksmirenko.flexicards.core.NonSwipableViewPager
               android:id="@+id/viewpager_card_container"
               android:layout_width="match_parent"
               android:layout_height="match_parent" />

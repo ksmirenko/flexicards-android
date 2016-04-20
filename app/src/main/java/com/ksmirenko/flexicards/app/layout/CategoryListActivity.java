@@ -16,8 +16,9 @@ import android.widget.*;
 import com.ksmirenko.flexicards.app.R;
 import com.ksmirenko.flexicards.app.StubDataGenerator;
 import com.ksmirenko.flexicards.app.adapters.CategoryCursorAdapter;
+import com.ksmirenko.flexicards.core.FlexiDatabaseProvider;
 import com.ksmirenko.flexicards.core.data.Category;
-import com.ksmirenko.flexicards.core.DatabaseManager;
+import com.ksmirenko.flexicards.core.FlexiDatabase;
 import com.ksmirenko.flexicards.core.layout.CategoryActivity;
 import com.ksmirenko.flexicards.core.layout.CategoryFragment;
 
@@ -29,7 +30,7 @@ import java.util.List;
  * @author Kirill Smirenko
  */
 public class CategoryListActivity extends AppCompatActivity {
-    private DatabaseManager dbmanager;
+    private FlexiDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,14 +39,14 @@ public class CategoryListActivity extends AppCompatActivity {
         // setting up top action bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_activity_main);
         setSupportActionBar(toolbar);
-        // initializing DB tables if not exist
-        DatabaseManager.INSTANCE.init();
-        //DatabaseManager.INSTANCE.resetAll(); // FOR TESTING ONLY
+        // initializing DB
+        FlexiDatabaseProvider.INSTANCE.init(CategoryListActivity.this);
+        db = FlexiDatabaseProvider.INSTANCE.getDb();
         // calling StubDataGenerator
-        StubDataGenerator.INSTANCE.fillDatabaseIfEmptyOrOutdated(DatabaseManager.INSTANCE);
+        StubDataGenerator.INSTANCE.fillDatabaseIfEmptyOrOutdated(db);
         // filling the main list view with categoryInfos
         ListView listView = (ListView) findViewById(R.id.listview_dictionary);
-        Cursor cursor = DatabaseManager.INSTANCE.getCategories();
+        Cursor cursor = db.getCategories();
         final CategoryCursorAdapter adapter = new CategoryCursorAdapter(this, cursor);
         assert listView != null;
         listView.setAdapter(adapter);
@@ -89,22 +90,6 @@ public class CategoryListActivity extends AppCompatActivity {
         d.show();
 
         ((TextView)d.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
-
-        /*LayoutInflater inflater =
-                (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View dlgView = inflater.inflate(R.layout.fragment_about, null, false);
-        final TextView tv = (TextView) dlgView.findViewById(R.id.textview_about_contents);
-        tv.setMovementMethod(LinkMovementMethod.getInstance());
-        // showing module settings dialog dialog
-        new AlertDialog.Builder(CategoryListActivity.this)
-                .setView(dlgView)
-                .setPositiveButton("OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                            }
-                        })
-                .show();*/
     }
 
     private static class CategoryArrayAdapter extends ArrayAdapter<Category> {

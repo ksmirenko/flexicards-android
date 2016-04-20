@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CursorAdapter
 import android.widget.TextView
-import com.ksmirenko.flexicards.core.DatabaseManager
+import com.ksmirenko.flexicards.core.FlexiDatabase
 import com.ksmirenko.flexicards.app.R
 
 /**
@@ -47,8 +47,8 @@ class CategoryCursorAdapter(context : Context, cursor : Cursor?) : CursorAdapter
     override fun bindView(view : View, context : Context, cursor : Cursor) {
         val holder = view.tag as CategoryListItemViewHolder;
 
-        cursor.copyStringToBuffer(DatabaseManager.CategoryQuery.COLUMN_INDEX_LANGUAGE, holder.languageBuffer)
-        cursor.copyStringToBuffer(DatabaseManager.CategoryQuery.COLUMN_INDEX_NAME, holder.nameBuffer)
+        cursor.copyStringToBuffer(FlexiDatabase.CategoryQuery.COLUMN_INDEX_LANGUAGE, holder.languageBuffer)
+        cursor.copyStringToBuffer(FlexiDatabase.CategoryQuery.COLUMN_INDEX_NAME, holder.nameBuffer)
 
         val position = cursor.position
         val separatorVisibility = when (rowTypeInfo[position]) {
@@ -63,7 +63,7 @@ class CategoryCursorAdapter(context : Context, cursor : Cursor?) : CursorAdapter
                 } else {
                     // if previous row's language is different than this one's
                     cursor.moveToPosition(position - 1)
-                    cursor.copyStringToBuffer(DatabaseManager.CategoryQuery.COLUMN_INDEX_LANGUAGE, langBuffer)
+                    cursor.copyStringToBuffer(FlexiDatabase.CategoryQuery.COLUMN_INDEX_LANGUAGE, langBuffer)
                     if (langBuffer.sizeCopied > 0 && holder.languageBuffer.sizeCopied > 0 &&
                             (langBuffer.data[0] != holder.languageBuffer.data[0] ||
                                     langBuffer.data[1] != holder.languageBuffer.data[1])) {
@@ -88,7 +88,7 @@ class CategoryCursorAdapter(context : Context, cursor : Cursor?) : CursorAdapter
     fun getCategoryName(position : Int) : String {
         val prevCursorPosition = cursor.position
         cursor.moveToPosition(position)
-        val catName = cursor.getString(DatabaseManager.CategoryQuery.COLUMN_INDEX_NAME)
+        val catName = cursor.getString(FlexiDatabase.CategoryQuery.COLUMN_INDEX_NAME)
         cursor.moveToPosition(prevCursorPosition)
         return catName
     }

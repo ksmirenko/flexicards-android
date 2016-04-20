@@ -1,66 +1,66 @@
 package com.ksmirenko.flexicards.core
 
 import android.content.ContentValues
+import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
-import android.widget.FilterQueryProvider
 import com.ksmirenko.flexicards.core.data.Card
 import com.ksmirenko.flexicards.core.data.CardPack
 import com.ksmirenko.flexicards.core.data.Category
 import com.ksmirenko.flexicards.core.data.Module
-import com.ksmirenko.flexicards.core.layout.CategoryActivity
-import java.util.*
+import com.readystatesoftware.sqliteasset.SQLiteAssetHelper
+import java.util.ArrayList
 
 /**
- * Application's SQL database manager.
+ * The application's SQL database manager.
+ * Not a singleton, so it's up to whichever class uses this DB to create an instance and
+ * pass it where needed. Or, use [FlexiDatabaseProvider], which is a singleton.
+ * Also, the file core/src/main/assets/databases/flexicards.db should be provided.
  *
  * @author Kirill Smirenko
  */
-object DatabaseManager :
-        SQLiteOpenHelper(CategoryActivity.getAppContext(), DatabaseManager.DATABASE_NAME, null, DatabaseManager.DATABASE_VERSION) {
-    private val DATABASE_NAME = "FlexiCardsDatabase"
-    private val DATABASE_VERSION = 1
+class FlexiDatabase(context: Context) :
+        SQLiteAssetHelper(context, FlexiDatabase.DATABASE_NAME, null, FlexiDatabase.DATABASE_VERSION) {
+    companion object {
+        private val DATABASE_NAME = "flexicards.db"
+        private val DATABASE_VERSION = 1
 
-    // SQLs for creating tables
-    private val SQL_CREATE_CARD_TABLE =
-            "CREATE TABLE IF NOT EXISTS ${CardEntry.TABLE_NAME} (" +
-                    "${CardEntry._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "${CardEntry.COLUMN_NAME_CATEGORY_ID} INTEGER, " +
-                    "${CardEntry.COLUMN_NAME_FRONT_CONTENT} TEXT, " +
-                    "${CardEntry.COLUMN_NAME_BACK_CONTENT} TEXT )";
-    private val SQL_CREATE_CATEGORY_TABLE =
-            "CREATE TABLE IF NOT EXISTS ${CategoryEntry.TABLE_NAME} (" +
-                    "${CategoryEntry._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "${CategoryEntry.COLUMN_NAME_NAME} TEXT, " +
-                    "${CategoryEntry.COLUMN_NAME_LANGUAGE} TEXT )";
-    private val SQL_CREATE_MODULE_TABLE =
-            "CREATE TABLE IF NOT EXISTS ${ModuleEntry.TABLE_NAME} (" +
-                    "${ModuleEntry._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "${ModuleEntry.COLUMN_NAME_CATEGORY_ID} INTEGER, " +
-                    "${ModuleEntry.COLUMN_NAME_NAME} TEXT, " +
-                    "${ModuleEntry.COLUMN_NAME_CARDS} TEXT," +
-                    "${ModuleEntry.COLUMN_NAME_UNANSWERED} TEXT )";
+        // SQLs for creating tables. Not sure I need them with SQLiteAssetHelper
+        private val SQL_CREATE_CARD_TABLE =
+                "CREATE TABLE IF NOT EXISTS ${CardEntry.TABLE_NAME} (" +
+                        "${CardEntry._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "${CardEntry.COLUMN_NAME_CATEGORY_ID} INTEGER, " +
+                        "${CardEntry.COLUMN_NAME_FRONT_CONTENT} TEXT, " +
+                        "${CardEntry.COLUMN_NAME_BACK_CONTENT} TEXT )";
+        private val SQL_CREATE_CATEGORY_TABLE =
+                "CREATE TABLE IF NOT EXISTS ${CategoryEntry.TABLE_NAME} (" +
+                        "${CategoryEntry._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "${CategoryEntry.COLUMN_NAME_NAME} TEXT, " +
+                        "${CategoryEntry.COLUMN_NAME_LANGUAGE} TEXT )";
+        private val SQL_CREATE_MODULE_TABLE =
+                "CREATE TABLE IF NOT EXISTS ${ModuleEntry.TABLE_NAME} (" +
+                        "${ModuleEntry._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "${ModuleEntry.COLUMN_NAME_CATEGORY_ID} INTEGER, " +
+                        "${ModuleEntry.COLUMN_NAME_NAME} TEXT, " +
+                        "${ModuleEntry.COLUMN_NAME_CARDS} TEXT," +
+                        "${ModuleEntry.COLUMN_NAME_UNANSWERED} TEXT )";
 
-    // SQLs for deleting tables
-    private val SQL_DELETE_CARD_TABLE = "DROP TABLE IF EXISTS " + CardEntry.TABLE_NAME;
-    private val SQL_DELETE_CATEGORY_TABLE = "DROP TABLE IF EXISTS " + CategoryEntry.TABLE_NAME;
-    private val SQL_DELETE_MODULE_TABLE = "DROP TABLE IF EXISTS " + ModuleEntry.TABLE_NAME;
+        // SQLs for deleting tables
+        private val SQL_DELETE_CARD_TABLE = "DROP TABLE IF EXISTS " + CardEntry.TABLE_NAME;
+        private val SQL_DELETE_CATEGORY_TABLE = "DROP TABLE IF EXISTS " + CategoryEntry.TABLE_NAME;
+        private val SQL_DELETE_MODULE_TABLE = "DROP TABLE IF EXISTS " + ModuleEntry.TABLE_NAME;
 
-    private val COLLATION = " COLLATE UNICODE";
+        private val COLLATION = " COLLATE UNICODE";
+    }
 
-    override fun onCreate(db: SQLiteDatabase) {
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL(SQL_DELETE_CARD_TABLE)
         db.execSQL(SQL_DELETE_CATEGORY_TABLE)
         db.execSQL(SQL_DELETE_MODULE_TABLE)
         db.execSQL(SQL_CREATE_CARD_TABLE)
         db.execSQL(SQL_CREATE_CATEGORY_TABLE)
         db.execSQL(SQL_CREATE_MODULE_TABLE)
-    }
-
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        onCreate(db)
     }
 
     /**
@@ -73,16 +73,6 @@ object DatabaseManager :
         db.execSQL(SQL_DELETE_CARD_TABLE)
         db.execSQL(SQL_CREATE_CARD_TABLE)
         db.execSQL(SQL_DELETE_MODULE_TABLE)
-        db.execSQL(SQL_CREATE_MODULE_TABLE)
-    }
-
-    /**
-     * Initializes internal DB and creates tables if they do not exist.
-     */
-    fun init() {
-        val db = this.writableDatabase
-        db.execSQL(SQL_CREATE_CATEGORY_TABLE)
-        db.execSQL(SQL_CREATE_CARD_TABLE)
         db.execSQL(SQL_CREATE_MODULE_TABLE)
     }
 
@@ -110,6 +100,22 @@ object DatabaseManager :
             CardEntry.COLUMN_NAME_CATEGORY_ID + "=?",
             arrayOf(categoryId.toString()),
             null, null, CardEntry.COLUMN_NAME_FRONT_CONTENT + COLLATION)
+
+    /**
+     * Returns a Cursor to cards of the specified module
+     * whose front or back content begins with [constraint].
+     */
+    fun getDictionaryFiltered(categoryId: Long, constraint: CharSequence?): Cursor? {
+        val constr = "%${constraint.toString()}%"
+        return readableDatabase.query(
+                CardEntry.TABLE_NAME,
+                CardQuery.getQueryArg(),
+                "${CardEntry.COLUMN_NAME_CATEGORY_ID}=? AND " +
+                        "(${CardEntry.COLUMN_NAME_FRONT_CONTENT} like ? " +
+                        "OR ${CardEntry.COLUMN_NAME_BACK_CONTENT} like ?)",
+                arrayOf(categoryId.toString(), constr, constr),
+                null, null, CardEntry.COLUMN_NAME_FRONT_CONTENT + COLLATION)
+    }
 
     /**
      * Returns a Cursor to (all or unanswered last time) cards of the specified module.
@@ -372,20 +378,6 @@ object DatabaseManager :
         companion object {
             val COLUMN_INDEX_NAME = 1
             fun getNamesQueryArg() = arrayOf(ModuleEntry._ID, ModuleEntry.COLUMN_NAME_NAME)
-        }
-    }
-
-    class DictionaryFilterQueryProvider(val categoryId: Long) : FilterQueryProvider {
-        override fun runQuery(constraint: CharSequence?): Cursor? {
-            val constr = "%${constraint.toString()}%"
-            return readableDatabase.query(
-                    CardEntry.TABLE_NAME,
-                    CardQuery.getQueryArg(),
-                    "${CardEntry.COLUMN_NAME_CATEGORY_ID}=? AND " +
-                            "(${CardEntry.COLUMN_NAME_FRONT_CONTENT} like ? " +
-                            "OR ${CardEntry.COLUMN_NAME_BACK_CONTENT} like ?)",
-                    arrayOf(categoryId.toString(), constr, constr),
-                    null, null, CardEntry.COLUMN_NAME_FRONT_CONTENT + COLLATION)
         }
     }
 

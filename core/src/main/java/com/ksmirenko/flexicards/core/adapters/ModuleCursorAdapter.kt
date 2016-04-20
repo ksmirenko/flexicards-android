@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CursorAdapter
 import android.widget.TextView
-import com.ksmirenko.flexicards.core.DatabaseManager
+import com.ksmirenko.flexicards.core.FlexiDatabase
 import com.ksmirenko.flexicards.core.R
 
 /**
@@ -32,14 +32,14 @@ class ModuleCursorAdapter(context : Context, cursor : Cursor?) : CursorAdapter(c
 
     override fun bindView(view : View, context : Context, cursor : Cursor) {
         val holder = view.tag as ModuleListItemViewHolder;
-        cursor.copyStringToBuffer(DatabaseManager.ModuleQuery.COLUMN_INDEX_NAME, holder.nameBuffer)
+        cursor.copyStringToBuffer(FlexiDatabase.ModuleQuery.COLUMN_INDEX_NAME, holder.nameBuffer)
         holder.nameView.setText(holder.nameBuffer.data, 0, holder.nameBuffer.sizeCopied)
     }
 
     fun getModuleName(position : Int) : String {
         val prevCursorPosition = cursor.position
         cursor.moveToPosition(position)
-        val catName = cursor.getString(DatabaseManager.CategoryQuery.COLUMN_INDEX_NAME)
+        val catName = cursor.getString(FlexiDatabase.CategoryQuery.COLUMN_INDEX_NAME)
         cursor.moveToPosition(prevCursorPosition)
         return catName
     }

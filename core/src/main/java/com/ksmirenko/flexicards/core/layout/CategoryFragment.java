@@ -13,7 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
-import com.ksmirenko.flexicards.core.DatabaseManager;
+import com.ksmirenko.flexicards.core.FlexiDatabase;
+import com.ksmirenko.flexicards.core.FlexiDatabaseProvider;
 import com.ksmirenko.flexicards.core.R;
 import com.ksmirenko.flexicards.core.adapters.ModuleCursorAdapter;
 
@@ -53,7 +54,8 @@ public class CategoryFragment extends Fragment {
         if (arguments.containsKey(ARG_CATEGORY_ID)) {
             // loading cursor to the list of modules
             categoryId = arguments.getLong(ARG_CATEGORY_ID);
-            Cursor cursor = DatabaseManager.INSTANCE.getModules(categoryId);
+            final FlexiDatabase db = FlexiDatabaseProvider.INSTANCE.getDb();
+            Cursor cursor = db.getModules(categoryId);
             modulesAdapter = new ModuleCursorAdapter(getContext(), cursor);
         }
     }
@@ -120,7 +122,8 @@ public class CategoryFragment extends Fragment {
             int totalCount = data.getIntExtra(RES_ARG_CARDS_TOTAL_CNT, -1);
             String unanswered = data.getStringExtra(RES_ARG_CARDS_UNANSWERED);
             long moduleId = data.getLongExtra(RES_ARG_MODULE_ID, -1);
-            DatabaseManager.INSTANCE.updateModuleProgress(moduleId, unanswered);
+            final FlexiDatabase db = FlexiDatabaseProvider.INSTANCE.getDb();
+            db.updateModuleProgress(moduleId, unanswered);
             Toast.makeText(
                     getContext(),
                     getString(R.string.cards_answered) + (totalCount - unansweredCount) + "/" + totalCount,

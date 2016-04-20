@@ -8,7 +8,7 @@ import android.os.Bundle
 //import android.support.v4.app.FragmentManager
 import android.support.v13.app.FragmentStatePagerAdapter
 import com.ksmirenko.flexicards.core.layout.CardContainerFragment
-import com.ksmirenko.flexicards.core.DatabaseManager
+import com.ksmirenko.flexicards.core.FlexiDatabase
 
 /**
  * Adapter for card collection (used when viewing a module).
@@ -26,9 +26,9 @@ class CardsPagerAdapter(
         val args = Bundle()
         cardsCursor.moveToPosition(i) // may be inefficient
         args.putString(CardContainerFragment.ARG_FRONT_CONTENT,
-                cardsCursor.getString(DatabaseManager.CardQuery.COLUMN_INDEX_FRONT))
+                cardsCursor.getString(FlexiDatabase.CardQuery.COLUMN_INDEX_FRONT))
         args.putString(CardContainerFragment.ARG_BACK_CONTENT,
-                cardsCursor.getString(DatabaseManager.CardQuery.COLUMN_INDEX_BACK))
+                cardsCursor.getString(FlexiDatabase.CardQuery.COLUMN_INDEX_BACK))
         args.putBoolean(CardContainerFragment.ARG_IS_BACK_FIRST, isBackFirst)
         fragment.arguments = args
 

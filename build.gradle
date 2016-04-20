@@ -16,6 +16,9 @@ allprojects {
         kotlin_version = '1.0.0'
         android_build_tools_version = '23.0.3'
         android_support_version = '23.3.0'
-        //android_support_version = '24.0.0-alpha2'
+    }
+
+    repositories {
+        mavenCentral()
     }
 }
