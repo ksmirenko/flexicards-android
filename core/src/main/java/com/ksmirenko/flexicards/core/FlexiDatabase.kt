@@ -106,7 +106,7 @@ class FlexiDatabase(context: Context) :
      * whose front or back content begins with [constraint].
      */
     fun getDictionaryFiltered(categoryId: Long, constraint: CharSequence?): Cursor? {
-        val constr = "%${constraint.toString()}%"
+        val constr = "${constraint.toString()}%"
         return readableDatabase.query(
                 CardEntry.TABLE_NAME,
                 CardQuery.getQueryArg(),
