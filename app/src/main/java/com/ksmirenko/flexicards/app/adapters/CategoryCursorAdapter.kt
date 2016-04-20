@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CursorAdapter
 import android.widget.TextView
-import com.ksmirenko.flexicards.app.DatabaseManager
+import com.ksmirenko.flexicards.core.DatabaseManager
 import com.ksmirenko.flexicards.app.R
 
 /**

@@ -1,7 +1,8 @@
 package com.ksmirenko.flexicards.app
 
-import com.ksmirenko.flexicards.app.datatypes.CardPack
-import com.ksmirenko.flexicards.app.datatypes.Category
+import com.ksmirenko.flexicards.core.data.CardPack
+import com.ksmirenko.flexicards.core.data.Category
+import com.ksmirenko.flexicards.core.DatabaseManager
 
 /**
  * Generates stub data for app testing.
@@ -12,13 +13,13 @@ object StubDataGenerator {
     /**
      * Generates and returns stub categories.
      */
-    val stubCategories : List<Category> = listOf(
+    val stubCategories: List<Category> = listOf(
             Category(41, "Английский", "RU"),
             Category(42, "Испанский", "RU"),
             Category(43, "Spanish", "EN")
     )
 
-    val stubPacks : List<CardPack> = listOf(
+    val stubPacks: List<CardPack> = listOf(
             CardPack(
                     "Английский",
                     "RU",
@@ -252,14 +253,14 @@ object StubDataGenerator {
             )
     )
 
-    fun fillDatabaseIfEmptyOrOutdated(dbmanager : DatabaseManager) {
+    fun fillDatabaseIfEmptyOrOutdated(dbmanager: DatabaseManager) {
         if (dbmanager.isCategoriesEmpty()) {
             addAllCategories(dbmanager)
         }
         if (dbmanager.isCardsEmpty()) {
             addAllPacks(dbmanager)
-        }
-        else if (dbmanager.findCard("calcetines")) { // workaround
+        } else if (dbmanager.findCard("calcetines")) {
+            // workaround
             // DB is outdated, should reset, re-add categories and add all cards
             dbmanager.resetAll()
             addAllCategories(dbmanager)
@@ -267,11 +268,11 @@ object StubDataGenerator {
         }
     }
 
-    private fun addAllCategories(dbmanager : DatabaseManager) {
+    private fun addAllCategories(dbmanager: DatabaseManager) {
         stubCategories.forEach { cat -> dbmanager.createCategory(cat) }
     }
 
-    private fun addAllPacks(dbmanager : DatabaseManager) {
+    private fun addAllPacks(dbmanager: DatabaseManager) {
         stubPacks.forEach { pack -> dbmanager.insertCardPack(pack, false) }
     }
 }

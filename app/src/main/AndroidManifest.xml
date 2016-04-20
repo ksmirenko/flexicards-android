@@ -8,7 +8,7 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".MainActivity"
+                android:name=".layout.CategoryListActivity"
                 android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -17,25 +17,25 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".CategoryActivity"
-                android:parentActivityName="com.ksmirenko.flexicards.app.MainActivity">
+            android:name="com.ksmirenko.flexicards.core.layout.CategoryActivity"
+            android:parentActivityName=".layout.CategoryListActivity">
         </activity>
         <activity
-                android:name=".CardViewActivity"
-                android:parentActivityName="com.ksmirenko.flexicards.app.CategoryActivity">
+            android:name="com.ksmirenko.flexicards.core.layout.CardActivity"
+            android:parentActivityName="com.ksmirenko.flexicards.core.layout.CategoryActivity">
         </activity>
         <activity
-                android:name=".DictionaryActivity"
-                android:parentActivityName="com.ksmirenko.flexicards.app.CategoryActivity"
-                android:launchMode="singleTop">
+            android:name="com.ksmirenko.flexicards.core.layout.DictionaryActivity"
+            android:parentActivityName="com.ksmirenko.flexicards.core.layout.CategoryActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>
             <meta-data android:name="android.app.searchable"
-                       android:resource="@xml/searchable_dict"/>
+                android:resource="@xml/searchable_dict"/>
         </activity>
         <activity
-                android:name=".TestfieldActivity"
+                android:name=".layout.TestfieldActivity"
                 android:label="Testfield">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
