@@ -20,10 +20,10 @@ import java.util.ArrayList
  *
  * @author Kirill Smirenko
  */
-class FlexiDatabase(context: Context) :
-        SQLiteAssetHelper(context, FlexiDatabase.DATABASE_NAME, null, FlexiDatabase.DATABASE_VERSION) {
+class FlexiDatabase(context: Context, dbname : String) :
+        SQLiteAssetHelper(context, dbname, null, FlexiDatabase.DATABASE_VERSION) {
+    // TODO: remove workaround; databases should be located in "app" or "toefl"
     companion object {
-        private val DATABASE_NAME = "flexicards.db"
         private val DATABASE_VERSION = 1
 
         // SQLs for creating tables. Not sure I need them with SQLiteAssetHelper

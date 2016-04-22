@@ -54,6 +54,7 @@ public class CategoryFragment extends Fragment {
         if (arguments.containsKey(ARG_CATEGORY_ID)) {
             // loading cursor to the list of modules
             categoryId = arguments.getLong(ARG_CATEGORY_ID);
+            // TODO: load db either from instance or from meta-data in CategoryActivity
             final FlexiDatabase db = FlexiDatabaseProvider.INSTANCE.getDb();
             Cursor cursor = db.getModules(categoryId);
             modulesAdapter = new ModuleCursorAdapter(getContext(), cursor);
