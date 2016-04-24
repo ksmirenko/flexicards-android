@@ -30,7 +30,7 @@ import java.util.List;
  * @author Kirill Smirenko
  */
 public class CategoryListActivity extends AppCompatActivity {
-    private FlexiDatabase db;
+    private static final String FLEXI_DB_NAME = "flexicards.db";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +40,8 @@ public class CategoryListActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_activity_main);
         setSupportActionBar(toolbar);
         // initializing DB
-        FlexiDatabaseProvider.INSTANCE.init(CategoryListActivity.this);
-        db = FlexiDatabaseProvider.INSTANCE.getDb();
+        FlexiDatabaseProvider.INSTANCE.init(CategoryListActivity.this, FLEXI_DB_NAME);
+        FlexiDatabase db = FlexiDatabaseProvider.INSTANCE.getDb();
         // calling StubDataGenerator
         StubDataGenerator.INSTANCE.fillDatabaseIfEmptyOrOutdated(db);
         // filling the main list view with categoryInfos
@@ -89,7 +89,10 @@ public class CategoryListActivity extends AppCompatActivity {
                 .create();
         d.show();
 
-        ((TextView)d.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+        TextView tv = (TextView) d.findViewById(android.R.id.message);
+        if (tv != null) {
+            tv.setMovementMethod(LinkMovementMethod.getInstance());
+        }
     }
 
     private static class CategoryArrayAdapter extends ArrayAdapter<Category> {

@@ -8,16 +8,19 @@ import android.content.Context
  * @author Kirill Smirenko
  */
 object FlexiDatabaseProvider {
-    private var database: FlexiDatabase? = null
+    private var database : FlexiDatabase? = null
 
-    fun init(context: Context) {
-        database = FlexiDatabase(context);
+    fun init(context : Context, dbname : String) {
+        database = FlexiDatabase(context, dbname);
     }
 
-    val db: FlexiDatabase
+    fun hasDb() = database != null
+
+    val db : FlexiDatabase
         get() {
             if (database == null) {
-                throw IllegalStateException("FlexiDatabaseProvider must be initialized prior to usage.")
+                throw IllegalStateException(
+                    "FlexiDatabaseProvider must be initialized prior to usage.")
             }
             return database as FlexiDatabase
         }

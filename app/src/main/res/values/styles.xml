@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- FlexiCards application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--<item name="android:listSeparatorTextViewStyle">@style/mListSeparatorTextViewStyle</item>-->
+    </style>
+
+</resources>

@@ -20,31 +20,31 @@ import java.util.ArrayList
  *
  * @author Kirill Smirenko
  */
-class FlexiDatabase(context: Context, dbname : String) :
-        SQLiteAssetHelper(context, dbname, null, FlexiDatabase.DATABASE_VERSION) {
+class FlexiDatabase(context : Context, dbname : String) :
+    SQLiteAssetHelper(context, dbname, null, FlexiDatabase.DATABASE_VERSION) {
     // TODO: remove workaround; databases should be located in "app" or "toefl"
     companion object {
         private val DATABASE_VERSION = 1
 
         // SQLs for creating tables. Not sure I need them with SQLiteAssetHelper
         private val SQL_CREATE_CARD_TABLE =
-                "CREATE TABLE IF NOT EXISTS ${CardEntry.TABLE_NAME} (" +
-                        "${CardEntry._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        "${CardEntry.COLUMN_NAME_CATEGORY_ID} INTEGER, " +
-                        "${CardEntry.COLUMN_NAME_FRONT_CONTENT} TEXT, " +
-                        "${CardEntry.COLUMN_NAME_BACK_CONTENT} TEXT )";
+            "CREATE TABLE IF NOT EXISTS ${CardEntry.TABLE_NAME} (" +
+                "${CardEntry._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "${CardEntry.COLUMN_NAME_CATEGORY_ID} INTEGER, " +
+                "${CardEntry.COLUMN_NAME_FRONT_CONTENT} TEXT, " +
+                "${CardEntry.COLUMN_NAME_BACK_CONTENT} TEXT )";
         private val SQL_CREATE_CATEGORY_TABLE =
-                "CREATE TABLE IF NOT EXISTS ${CategoryEntry.TABLE_NAME} (" +
-                        "${CategoryEntry._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        "${CategoryEntry.COLUMN_NAME_NAME} TEXT, " +
-                        "${CategoryEntry.COLUMN_NAME_LANGUAGE} TEXT )";
+            "CREATE TABLE IF NOT EXISTS ${CategoryEntry.TABLE_NAME} (" +
+                "${CategoryEntry._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "${CategoryEntry.COLUMN_NAME_NAME} TEXT, " +
+                "${CategoryEntry.COLUMN_NAME_LANGUAGE} TEXT )";
         private val SQL_CREATE_MODULE_TABLE =
-                "CREATE TABLE IF NOT EXISTS ${ModuleEntry.TABLE_NAME} (" +
-                        "${ModuleEntry._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        "${ModuleEntry.COLUMN_NAME_CATEGORY_ID} INTEGER, " +
-                        "${ModuleEntry.COLUMN_NAME_NAME} TEXT, " +
-                        "${ModuleEntry.COLUMN_NAME_CARDS} TEXT," +
-                        "${ModuleEntry.COLUMN_NAME_UNANSWERED} TEXT )";
+            "CREATE TABLE IF NOT EXISTS ${ModuleEntry.TABLE_NAME} (" +
+                "${ModuleEntry._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "${ModuleEntry.COLUMN_NAME_CATEGORY_ID} INTEGER, " +
+                "${ModuleEntry.COLUMN_NAME_NAME} TEXT, " +
+                "${ModuleEntry.COLUMN_NAME_CARDS} TEXT," +
+                "${ModuleEntry.COLUMN_NAME_UNANSWERED} TEXT )";
 
         // SQLs for deleting tables
         private val SQL_DELETE_CARD_TABLE = "DROP TABLE IF EXISTS " + CardEntry.TABLE_NAME;
@@ -54,7 +54,7 @@ class FlexiDatabase(context: Context, dbname : String) :
         private val COLLATION = " COLLATE UNICODE";
     }
 
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+    override fun onUpgrade(db : SQLiteDatabase, oldVersion : Int, newVersion : Int) {
         db.execSQL(SQL_DELETE_CARD_TABLE)
         db.execSQL(SQL_DELETE_CATEGORY_TABLE)
         db.execSQL(SQL_DELETE_MODULE_TABLE)
@@ -79,98 +79,99 @@ class FlexiDatabase(context: Context, dbname : String) :
     /**
      * Adds a new [category] to database.
      */
-    fun createCategory(category: Category) = addCategory(category) > 0
+    fun createCategory(category : Category) = addCategory(category) > 0
 
     /**
      * Adds a new [card] to database.
      */
-    fun createCard(card: Card) = addCard(card) > 0
+    fun createCard(card : Card) = addCard(card) > 0
 
     /**
      * Adds a new [module] to database.
      */
-    fun createModule(module: Module) = addModule(module) > 0
+    fun createModule(module : Module) = addModule(module) > 0
 
     /**
      * Returns a Cursor to cards of the specified module.
      */
-    fun getDictionary(categoryId: Long) = readableDatabase.query(
-            CardEntry.TABLE_NAME,
-            CardQuery.getQueryArg(),
-            CardEntry.COLUMN_NAME_CATEGORY_ID + "=?",
-            arrayOf(categoryId.toString()),
-            null, null, CardEntry.COLUMN_NAME_FRONT_CONTENT + COLLATION)
+    fun getDictionary(categoryId : Long) = readableDatabase.query(
+        CardEntry.TABLE_NAME,
+        CardQuery.getQueryArg(),
+        CardEntry.COLUMN_NAME_CATEGORY_ID + "=?",
+        arrayOf(categoryId.toString()),
+        null, null, CardEntry.COLUMN_NAME_FRONT_CONTENT + COLLATION)
 
     /**
      * Returns a Cursor to cards of the specified module
      * whose front or back content begins with [constraint].
      */
-    fun getDictionaryFiltered(categoryId: Long, constraint: CharSequence?): Cursor? {
+    fun getDictionaryFiltered(categoryId : Long, constraint : CharSequence?) : Cursor? {
         val constr = "${constraint.toString()}%"
         return readableDatabase.query(
-                CardEntry.TABLE_NAME,
-                CardQuery.getQueryArg(),
-                "${CardEntry.COLUMN_NAME_CATEGORY_ID}=? AND " +
-                        "(${CardEntry.COLUMN_NAME_FRONT_CONTENT} like ? " +
-                        "OR ${CardEntry.COLUMN_NAME_BACK_CONTENT} like ?)",
-                arrayOf(categoryId.toString(), constr, constr),
-                null, null, CardEntry.COLUMN_NAME_FRONT_CONTENT + COLLATION)
+            CardEntry.TABLE_NAME,
+            CardQuery.getQueryArg(),
+            "${CardEntry.COLUMN_NAME_CATEGORY_ID}=? AND " +
+                "(${CardEntry.COLUMN_NAME_FRONT_CONTENT} like ? " +
+                "OR ${CardEntry.COLUMN_NAME_BACK_CONTENT} like ?)",
+            arrayOf(categoryId.toString(), constr, constr),
+            null, null, CardEntry.COLUMN_NAME_FRONT_CONTENT + COLLATION)
     }
 
     /**
      * Returns a Cursor to (all or unanswered last time) cards of the specified module.
      */
-    fun getModuleCards(moduleId: Long, isRandom: Boolean, isUnansweredOnly: Boolean): Cursor {
+    fun getModuleCards(moduleId : Long, isRandom : Boolean, isUnansweredOnly : Boolean) : Cursor {
         val moduleCursor = readableDatabase.query(
-                ModuleEntry.TABLE_NAME,
-                arrayOf(if (isUnansweredOnly) ModuleEntry.COLUMN_NAME_UNANSWERED else ModuleEntry.COLUMN_NAME_CARDS),
-                ModuleEntry._ID + "=?",
-                arrayOf(moduleId.toString()),
-                null, null, null)
+            ModuleEntry.TABLE_NAME,
+            arrayOf(if (isUnansweredOnly) ModuleEntry.COLUMN_NAME_UNANSWERED else ModuleEntry.COLUMN_NAME_CARDS),
+            ModuleEntry._ID + "=?",
+            arrayOf(moduleId.toString()),
+            null, null, null)
         moduleCursor.moveToFirst()
-        val moduleCardsRaw: String? = moduleCursor.getString(0)
+        val moduleCardsRaw : String? = moduleCursor.getString(0)
         // if there is no data about unanswered, return all
         // WARNING: this policy may lead to inconsistency
         val moduleCards = if (isUnansweredOnly && moduleCardsRaw == null) {
             val anotherModuleCursor = readableDatabase.query(
-                    ModuleEntry.TABLE_NAME,
-                    arrayOf(ModuleEntry.COLUMN_NAME_CARDS),
-                    ModuleEntry._ID + "=?",
-                    arrayOf(moduleId.toString()),
-                    null, null, null)
+                ModuleEntry.TABLE_NAME,
+                arrayOf(ModuleEntry.COLUMN_NAME_CARDS),
+                ModuleEntry._ID + "=?",
+                arrayOf(moduleId.toString()),
+                null, null, null)
             anotherModuleCursor.moveToFirst()
             anotherModuleCursor.getString(0)
-        } else {
+        }
+        else {
             moduleCardsRaw!!
         }
         return readableDatabase.query(
-                CardEntry.TABLE_NAME,
-                CardQuery.getQueryArg(),
-                CardEntry._ID + " in " + StringUtils.stringToSqlReadyString(moduleCards),
-                null, null, null,
-                if (isRandom) "RANDOM()" else null)
+            CardEntry.TABLE_NAME,
+            CardQuery.getQueryArg(),
+            CardEntry._ID + " in " + StringUtils.stringToSqlReadyString(moduleCards),
+            null, null, null,
+            if (isRandom) "RANDOM()" else null)
     }
 
     /**
      * Returns a Cursor to all categories (for category selecting).
      */
-    fun getCategories(): Cursor {
+    fun getCategories() : Cursor {
         val db = readableDatabase
         // This SQL call should be conformed with CategoryQuery
         val sql = "SELECT * FROM ${CategoryEntry.TABLE_NAME} " +
-                "ORDER BY ${CategoryEntry.COLUMN_NAME_LANGUAGE}, ${CategoryEntry.COLUMN_NAME_NAME}$COLLATION"
+            "ORDER BY ${CategoryEntry.COLUMN_NAME_LANGUAGE}, ${CategoryEntry.COLUMN_NAME_NAME}$COLLATION"
         return db.rawQuery(sql, null)
     }
 
     /**
      * Returns a Cursor to modules for the specified category.
      */
-    fun getModules(categoryId: Long) = readableDatabase.query(
-            ModuleEntry.TABLE_NAME,
-            ModuleQuery.getNamesQueryArg(),
-            ModuleEntry.COLUMN_NAME_CATEGORY_ID + "=?",
-            arrayOf(categoryId.toString()),
-            null, null, ModuleEntry.COLUMN_NAME_NAME + COLLATION)
+    fun getModules(categoryId : Long) = readableDatabase.query(
+        ModuleEntry.TABLE_NAME,
+        ModuleQuery.getNamesQueryArg(),
+        ModuleEntry.COLUMN_NAME_CATEGORY_ID + "=?",
+        arrayOf(categoryId.toString()),
+        null, null, ModuleEntry.COLUMN_NAME_NAME + COLLATION)
 
     /**
      * Inserts [pack] into DB.
@@ -178,17 +179,17 @@ class FlexiDatabase(context: Context, dbname : String) :
      *  If true, new cards will be added to the existing module (if it exists).
      *  Otherwise the module will be overwritten.
      */
-    fun insertCardPack(pack: CardPack, shouldAppendModule: Boolean): Boolean {
+    fun insertCardPack(pack : CardPack, shouldAppendModule : Boolean) : Boolean {
         if (pack.categoryName == null) return false
         val db = writableDatabase
         // finding or creating category and memorizing its ID
         val categoryCursor = db.query(
-                CategoryEntry.TABLE_NAME,
-                arrayOf(CategoryEntry._ID),
-                CategoryEntry.COLUMN_NAME_NAME + "=?",
-                arrayOf(pack.categoryName),
-                null, null, null)
-        var categoryId: Long
+            CategoryEntry.TABLE_NAME,
+            arrayOf(CategoryEntry._ID),
+            CategoryEntry.COLUMN_NAME_NAME + "=?",
+            arrayOf(pack.categoryName),
+            null, null, null)
+        var categoryId : Long
         if (categoryCursor != null && categoryCursor.moveToFirst())
             categoryId = categoryCursor.getString(0).toLong()
         else {
@@ -204,17 +205,18 @@ class FlexiDatabase(context: Context, dbname : String) :
         // creating or updating module
         if (pack.moduleName == null) return true
         val moduleCursor = db.query(
-                ModuleEntry.TABLE_NAME,
-                arrayOf(ModuleEntry._ID, ModuleEntry.COLUMN_NAME_CARDS),
-                ModuleEntry.COLUMN_NAME_NAME + "=?",
-                arrayOf(pack.moduleName),
-                null, null, null)
+            ModuleEntry.TABLE_NAME,
+            arrayOf(ModuleEntry._ID, ModuleEntry.COLUMN_NAME_CARDS),
+            ModuleEntry.COLUMN_NAME_NAME + "=?",
+            arrayOf(pack.moduleName),
+            null, null, null)
         if (moduleCursor.count > 0) {
             val moduleId = categoryCursor.getString(0)
             val newCardIdsString = if (shouldAppendModule) {
                 val existingCardIds = StringUtils.stringToIntList(categoryCursor.getString(1))
                 StringUtils.listToString(existingCardIds.union(cardIds).toList())
-            } else {
+            }
+            else {
                 StringUtils.listToString(cardIds)
             }
             val values = ContentValues()
@@ -223,7 +225,8 @@ class FlexiDatabase(context: Context, dbname : String) :
             moduleCursor.close()
             db.close()
             return res > 0
-        } else {
+        }
+        else {
             val values = ContentValues()
             values.put(ModuleEntry.COLUMN_NAME_CATEGORY_ID, categoryId)
             values.put(ModuleEntry.COLUMN_NAME_NAME, pack.moduleName)
@@ -238,18 +241,18 @@ class FlexiDatabase(context: Context, dbname : String) :
     /**
      * Checks whether table of categories is empty.
      */
-    fun isCategoriesEmpty(): Boolean {
+    fun isCategoriesEmpty() : Boolean {
         val db = readableDatabase
-        val cursor: Cursor? = db.rawQuery("SELECT _ID FROM ${CategoryEntry.TABLE_NAME} ", null)
+        val cursor : Cursor? = db.rawQuery("SELECT _ID FROM ${CategoryEntry.TABLE_NAME} ", null)
         return (cursor == null || cursor.count <= 0)
     }
 
     /**
      * Checks whether table of cards is empty.
      */
-    fun isCardsEmpty(): Boolean {
+    fun isCardsEmpty() : Boolean {
         val db = readableDatabase
-        val cursor: Cursor? = db.rawQuery("SELECT _ID FROM ${CardEntry.TABLE_NAME} ", null)
+        val cursor : Cursor? = db.rawQuery("SELECT _ID FROM ${CardEntry.TABLE_NAME} ", null)
         return (cursor == null || cursor.count <= 0)
     }
 
@@ -258,7 +261,7 @@ class FlexiDatabase(context: Context, dbname : String) :
      * @param moduleId Module ID.
      * @param unanswered Information about unanswered cards in the format provided by [StringUtils] object.
      */
-    fun updateModuleProgress(moduleId: Long, unanswered: String) {
+    fun updateModuleProgress(moduleId : Long, unanswered : String) {
         val db = writableDatabase
         val values = ContentValues()
         values.put(ModuleEntry.COLUMN_NAME_UNANSWERED, unanswered)
@@ -268,10 +271,10 @@ class FlexiDatabase(context: Context, dbname : String) :
     /**
      * Checks whether a card with specific front content exists in the DB.
      */
-    fun findCard(frontContent: String): Boolean {
+    fun findCard(frontContent : String) : Boolean {
         val db = readableDatabase
-        val cursor: Cursor? = db.rawQuery("SELECT _ID FROM ${CardEntry.TABLE_NAME} " +
-                "WHERE ${CardQuery.COLUMN_INDEX_FRONT} = ?", arrayOf(frontContent))
+        val cursor : Cursor? = db.rawQuery("SELECT _ID FROM ${CardEntry.TABLE_NAME} " +
+            "WHERE ${CardQuery.COLUMN_INDEX_FRONT} = ?", arrayOf(frontContent))
         return (cursor != null && cursor.count > 0)
     }
 
@@ -280,7 +283,7 @@ class FlexiDatabase(context: Context, dbname : String) :
      * Adds a new category to DB (private method).
      * @return Row ID of the new category.
      */
-    private fun addCategory(category: Category): Long {
+    private fun addCategory(category : Category) : Long {
         val db = this.writableDatabase
         db.execSQL(SQL_CREATE_CATEGORY_TABLE)
 
@@ -296,7 +299,7 @@ class FlexiDatabase(context: Context, dbname : String) :
      * Adds a new card to DB (private method).
      * @return Row ID of the new card.
      */
-    private fun addCard(card: Card): Long {
+    private fun addCard(card : Card) : Long {
         val db = this.writableDatabase
         db.execSQL(SQL_CREATE_CARD_TABLE)
 
@@ -313,7 +316,7 @@ class FlexiDatabase(context: Context, dbname : String) :
      * Adds several cards to DB (private method).
      * @return IDs of the new cards.
      */
-    private fun addCards(categoryId: Long, cardContentList: List<Pair<String, String>>): List<Long> {
+    private fun addCards(categoryId : Long, cardContentList : List<Pair<String, String>>) : List<Long> {
         val db = this.writableDatabase
         val newCardIds = ArrayList<Long>()
         val values = ContentValues()
@@ -331,7 +334,7 @@ class FlexiDatabase(context: Context, dbname : String) :
      * Adds a new module to DB (private method).
      * @return Row ID of the new module.
      */
-    private fun addModule(module: Module): Long {
+    private fun addModule(module : Module) : Long {
         val db = this.writableDatabase
         db.execSQL(SQL_CREATE_MODULE_TABLE)
 
@@ -364,10 +367,10 @@ class FlexiDatabase(context: Context, dbname : String) :
             val COLUMN_INDEX_FRONT = 1
             val COLUMN_INDEX_BACK = 2
             fun getQueryArg() = arrayOf(CardEntry._ID, CardEntry.COLUMN_NAME_FRONT_CONTENT,
-                    CardEntry.COLUMN_NAME_BACK_CONTENT)
+                CardEntry.COLUMN_NAME_BACK_CONTENT)
 
             fun getCursorAdapterArg() = arrayOf(CardEntry.COLUMN_NAME_FRONT_CONTENT,
-                    CardEntry.COLUMN_NAME_BACK_CONTENT)
+                CardEntry.COLUMN_NAME_BACK_CONTENT)
         }
     }
 
