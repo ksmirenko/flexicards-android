@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:2.0.0"
+        classpath 'com.android.tools.build:gradle:2.1.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -12,7 +12,7 @@ buildscript {
 
 allprojects {
     ext {
-        gradle_version = '2.0.0'
+        gradle_version = '2.1.0'
         kotlin_version = '1.0.0'
         android_build_tools_version = '23.0.3'
         android_support_version = '23.3.0'
