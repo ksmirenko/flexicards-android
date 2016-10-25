@@ -1,4 +1,4 @@
-package com.ksmirenko.flexicards.app;
+package io.github.ksmirenko.flexicards;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.ksmirenko.flexicards.app.datatypes.Card;
-import com.ksmirenko.flexicards.app.datatypes.Category;
+import io.github.ksmirenko.flexicards.datatypes.Card;
+import io.github.ksmirenko.flexicards.datatypes.Category;
 
 import java.util.List;
 

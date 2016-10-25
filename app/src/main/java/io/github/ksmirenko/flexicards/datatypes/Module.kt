@@ -1,4 +1,4 @@
-package com.ksmirenko.flexicards.app.datatypes
+package io.github.ksmirenko.flexicards.datatypes
 
 /**
  * A Module is a holistic pack of cards of one category.

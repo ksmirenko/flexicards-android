@@ -1,4 +1,4 @@
-package com.ksmirenko.flexicards.app
+package io.github.ksmirenko.flexicards
 
 /**
  * Utilities such as data converting.

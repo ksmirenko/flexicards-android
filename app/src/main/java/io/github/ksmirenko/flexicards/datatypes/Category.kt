@@ -1,4 +1,4 @@
-package com.ksmirenko.flexicards.app.datatypes
+package io.github.ksmirenko.flexicards.datatypes
 
 /**
  * A CategoryInfo describes a category and is shown on the category select screen.

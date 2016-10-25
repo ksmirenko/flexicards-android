@@ -1,4 +1,4 @@
-package com.ksmirenko.flexicards.app;
+package io.github.ksmirenko.flexicards;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.ksmirenko.flexicards.app.adapters.ModuleCursorAdapter;
+import io.github.ksmirenko.flexicards.adapters.ModuleCursorAdapter;
 
 /**
  * Fragment for category screen, contains a dictionary button and list of modules.

@@ -1,4 +1,4 @@
-package com.ksmirenko.flexicards.app.adapters
+package io.github.ksmirenko.flexicards.adapters
 
 import android.app.Fragment
 import android.app.FragmentManager
@@ -7,8 +7,8 @@ import android.os.Bundle
 //import android.support.v4.app.Fragment
 //import android.support.v4.app.FragmentManager
 import android.support.v13.app.FragmentStatePagerAdapter
-import com.ksmirenko.flexicards.app.CardContainerFragment
-import com.ksmirenko.flexicards.app.DatabaseManager
+import io.github.ksmirenko.flexicards.CardContainerFragment
+import io.github.ksmirenko.flexicards.DatabaseManager
 
 /**
  * Adapter for card collection (used when viewing a module).

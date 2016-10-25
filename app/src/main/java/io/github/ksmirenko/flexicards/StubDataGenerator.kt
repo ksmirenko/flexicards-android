@@ -1,7 +1,7 @@
-package com.ksmirenko.flexicards.app
+package io.github.ksmirenko.flexicards
 
-import com.ksmirenko.flexicards.app.datatypes.CardPack
-import com.ksmirenko.flexicards.app.datatypes.Category
+import io.github.ksmirenko.flexicards.datatypes.CardPack
+import io.github.ksmirenko.flexicards.datatypes.Category
 
 /**
  * Generates stub data for app testing.

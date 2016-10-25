@@ -1,4 +1,4 @@
-package com.ksmirenko.flexicards.app;
+package io.github.ksmirenko.flexicards;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,8 +13,8 @@ import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.*;
 import android.widget.*;
-import com.ksmirenko.flexicards.app.adapters.CategoryCursorAdapter;
-import com.ksmirenko.flexicards.app.datatypes.Category;
+import io.github.ksmirenko.flexicards.adapters.CategoryCursorAdapter;
+import io.github.ksmirenko.flexicards.datatypes.Category;
 
 import java.util.List;
 

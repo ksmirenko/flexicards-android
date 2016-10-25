@@ -1,4 +1,4 @@
-package com.ksmirenko.flexicards.app.datatypes
+package io.github.ksmirenko.flexicards.datatypes
 
 /**
  * A Card is a flash card with two sides.

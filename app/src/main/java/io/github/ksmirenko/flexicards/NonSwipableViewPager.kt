@@ -1,4 +1,4 @@
-package com.ksmirenko.flexicards.app
+package io.github.ksmirenko.flexicards
 
 import android.content.Context
 import android.support.v4.view.ViewPager

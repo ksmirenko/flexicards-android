@@ -21,7 +21,7 @@ android {
     buildToolsVersion android_build_tools_version
 
     defaultConfig {
-        applicationId "com.ksmirenko.flexicards.app"
+        applicationId "io.github.ksmirenko.flexicards"
         minSdkVersion 17
         targetSdkVersion 25
         versionCode 2

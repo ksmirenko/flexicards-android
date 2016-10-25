@@ -1,4 +1,4 @@
-package com.ksmirenko.flexicards.app;
+package io.github.ksmirenko.flexicards;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -8,7 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.widget.Toast;
-import com.ksmirenko.flexicards.app.adapters.CardsPagerAdapter;
+import io.github.ksmirenko.flexicards.adapters.CardsPagerAdapter;
 
 import java.util.ArrayList;
 

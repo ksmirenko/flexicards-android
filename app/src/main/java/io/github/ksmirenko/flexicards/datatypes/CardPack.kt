@@ -1,4 +1,4 @@
-package com.ksmirenko.flexicards.app.datatypes
+package io.github.ksmirenko.flexicards.datatypes
 
 /**
  * Pack of cards to be added to DB that can be

@@ -1,4 +1,4 @@
-package com.ksmirenko.flexicards.app.adapters
+package io.github.ksmirenko.flexicards.adapters
 
 import android.content.Context
 import android.database.CharArrayBuffer
@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CursorAdapter
 import android.widget.TextView
-import com.ksmirenko.flexicards.app.DatabaseManager
-import com.ksmirenko.flexicards.app.R
+import io.github.ksmirenko.flexicards.DatabaseManager
+import io.github.ksmirenko.flexicards.R
 
 /**
  * CursorAdapter for category select screen.

@@ -1,4 +1,4 @@
-package com.ksmirenko.flexicards.app
+package io.github.ksmirenko.flexicards
 
 import android.content.ContentValues
 import android.content.Context
@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
 import android.widget.FilterQueryProvider
-import com.ksmirenko.flexicards.app.datatypes.*
-import com.ksmirenko.flexicards.app.Utils
+import io.github.ksmirenko.flexicards.datatypes.*
+import io.github.ksmirenko.flexicards.Utils
 import java.util.*
 
 /**

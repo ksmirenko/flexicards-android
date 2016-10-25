@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.ksmirenko.flexicards.app">
+          package="io.github.ksmirenko.flexicards">
 
     <application
             android:allowBackup="true"
@@ -18,15 +18,15 @@
         </activity>
         <activity
                 android:name=".CategoryActivity"
-                android:parentActivityName="com.ksmirenko.flexicards.app.MainActivity">
+                android:parentActivityName="io.github.ksmirenko.flexicards.MainActivity">
         </activity>
         <activity
                 android:name=".CardViewActivity"
-                android:parentActivityName="com.ksmirenko.flexicards.app.CategoryActivity">
+                android:parentActivityName="io.github.ksmirenko.flexicards.CategoryActivity">
         </activity>
         <activity
                 android:name=".DictionaryActivity"
-                android:parentActivityName="com.ksmirenko.flexicards.app.CategoryActivity"
+                android:parentActivityName="io.github.ksmirenko.flexicards.CategoryActivity"
                 android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH"/>

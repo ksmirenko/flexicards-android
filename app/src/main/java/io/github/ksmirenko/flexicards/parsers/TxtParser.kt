@@ -1,6 +1,6 @@
-package com.ksmirenko.flexicards.app.parsers
+package io.github.ksmirenko.flexicards.parsers
 
-import com.ksmirenko.flexicards.app.datatypes.CardPack
+import io.github.ksmirenko.flexicards.datatypes.CardPack
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader

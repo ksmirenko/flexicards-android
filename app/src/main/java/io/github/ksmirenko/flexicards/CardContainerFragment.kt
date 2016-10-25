@@ -15,8 +15,9 @@
  * limitations under the License.
  */
 
-package com.ksmirenko.flexicards.app
+package io.github.ksmirenko.flexicards
 
+import android.annotation.TargetApi
 import android.app.Activity
 import android.app.Fragment
 import android.content.Context
@@ -44,13 +45,14 @@ class CardContainerFragment : Fragment() {
     private var callbacks : Callbacks = dummyCallbacks
     private var isShowingBack = false
 
+    @TargetApi(23)
     override fun onAttach(context : Context) {
         super.onAttach(context)
         callbacks = context as Callbacks
     }
 
-    // this is needed to support lower APIs
     @Suppress("OverridingDeprecatedMember", "DEPRECATION")
+    @TargetApi(17)
     override fun onAttach(activity : Activity) {
         super.onAttach(activity)
         callbacks = activity as Callbacks

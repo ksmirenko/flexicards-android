@@ -1,4 +1,4 @@
-package com.ksmirenko.flexicards.app;
+package io.github.ksmirenko.flexicards;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.*;
 import android.widget.*;
-import com.ksmirenko.flexicards.app.adapters.DictionaryCursorAdapter;
+import io.github.ksmirenko.flexicards.adapters.DictionaryCursorAdapter;
 
 /**
  * Dictionary activity - category selection screen.
