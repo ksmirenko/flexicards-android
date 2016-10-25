@@ -17,7 +17,7 @@ import java.util.*
  * @author Kirill Smirenko
  */
 object DatabaseManager :
-        SQLiteOpenHelper(MainActivity.getAppContext(), DatabaseManager.DATABASE_NAME, null, DatabaseManager.DATABASE_VERSION) {
+        SQLiteOpenHelper(MainActivity.getAppContext(), "FlexiCardsDatabase", null, 1) {
     private val DATABASE_NAME = "FlexiCardsDatabase"
     private val DATABASE_VERSION = 1
 
